@@ -7,7 +7,8 @@ DIR_INTERACTIONS := interactions/
 DIR_GRAPHICS := graphics/
 DIR_ERRORS := errors/
 
-SRC_MANDATORY := index.c
+SRC_MANDATORY := index.c \
+	src/parsing/read_cube.c
 OBJ := $(SRC_MANDATORY:.c=.o)
 
 LIBFLAGS := -L./libft -lft
@@ -27,7 +28,7 @@ else
 endif
 
 CC := cc
-BASE_FLAGS := -Wall -Wextra -Werror -Imlx
+BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 
