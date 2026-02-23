@@ -7,8 +7,12 @@ DIR_INTERACTIONS := interactions/
 DIR_GRAPHICS := graphics/
 DIR_ERRORS := errors/
 
+SRC_ENGINE := $(addprefix src/engine/, engine_lifecycle.c)
+
 SRC_MANDATORY := index.c \
-	src/parsing/read_cube.c
+	src/parsing/read_cube.c \
+	$(SRC_ENGINE)
+
 OBJ := $(SRC_MANDATORY:.c=.o)
 
 LIBFLAGS := -L./libft -lft
