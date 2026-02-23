@@ -71,8 +71,8 @@ static void	init_mlx(t_game *game)
     }
 	game->mlx_window = mlx_new_window(
 			game->mlx_session,
-			game->map_meta.width * TILE_SIZE,
-			game->map_meta.height * TILE_SIZE,
+			MAX_WIN_WIDTH,
+			MAX_WIN_HEIGHT,
 			GAME_TITLE);
 	if (!game->mlx_window)
 	{

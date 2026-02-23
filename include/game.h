@@ -6,12 +6,6 @@
 # define FOV 60
 # define GAME_TITLE  "CUB3D"
 
-typedef struct s_position
-{
-	float	x;
-	float	y;
-}	t_position;
-
 typedef struct s_game
 {
 	void			*mlx_session;

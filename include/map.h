@@ -5,6 +5,12 @@
 
 # define TILE_SIZE 64
 
+typedef struct s_position
+{
+	float	x;
+	float	y;
+}	t_position;
+
 typedef struct s_map_meta
 {
 	int			width;

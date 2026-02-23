@@ -7,11 +7,14 @@ DIR_INTERACTIONS := interactions/
 DIR_GRAPHICS := graphics/
 DIR_ERRORS := errors/
 
-SRC_ENGINE := $(addprefix src/engine/, engine_lifecycle.c)
+SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, engine_lifecycle.c)
+
+SRC_RAYCAST := $(addprefix $(DIR_SRC)raycast/, raycast.c)
 
 SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
-	$(SRC_ENGINE)
+	$(SRC_ENGINE) \
+	$(SRC_RAYCAST)
 
 OBJ := $(SRC_MANDATORY:.c=.o)
 
