@@ -22,16 +22,7 @@ int	main(int argc, char **argv)
     t_game	game;
 
 	ft_bzero(&game, sizeof(t_game));
-
-    
-    // Mock info
-    game.map_meta.height = SIZE;
-    game.map_meta.width = SIZE;
-
-    game.player_pos.x = 2.0;
-    game.player_pos.y = 2.0;
-
-    static char *mock_map[SIZE] = {
+     static char *mock_map[SIZE] = {
         "1111111111",
         "1000000001",
         "1000000001",
@@ -44,17 +35,27 @@ int	main(int argc, char **argv)
         "1111111111"
     };
 
-    game.map = ft_calloc(game.map_meta.height + 1, sizeof(char *));
-    if (!game.map)
+    // INIT_SCENE
+    // Mock info
+    game.scene.map_meta.height = SIZE;
+    game.scene.map_meta.width = SIZE;
+
+    game.scene.player.pos.x = 2.0;
+    game.scene.player.pos.y = 2.0;
+
+    game.scene.player.angle = 0.0;
+
+    game.scene.map = ft_calloc(game.scene.map_meta.height + 1, sizeof(char *));
+    if (!game.scene.map)
         return (1); // TODO: error handling
     int i = 0;
-    for (i = 0; i < game.map_meta.height; i++) {
-        game.map[i] = ft_strdup(mock_map[i]);
-        if (!game.map[i])
+    for (i = 0; i < game.scene.map_meta.height; i++) {
+        game.scene.map[i] = ft_strdup(mock_map[i]);
+        if (!game.scene.map[i])
             return (1); // TODO: error handling + cleanup
     }   
 
-    game.map[game.map_meta.height] = NULL;
+    game.scene.map[game.scene.map_meta.height] = NULL;
     // INIT ENGINE
     game.engine.window_width  = MAX_WIN_WIDTH;
     game.engine.window_height = MAX_WIN_HEIGHT;
