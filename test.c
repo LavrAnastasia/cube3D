@@ -1,5 +1,4 @@
 #include "game.h"
-#include "engine.h"
 #include "libft.h"
 // module engine
 
@@ -56,9 +55,22 @@ int	main(int argc, char **argv)
     }   
 
     game.map[game.map_meta.height] = NULL;
+    // INIT ENGINE
+    game.engine.window_width  = MAX_WIN_WIDTH;
+    game.engine.window_height = MAX_WIN_HEIGHT;
+    if (!engine_init(&game.engine, GAME_TITLE)) {
+        // TODO: clean other sources
+        return (1);
+    }
 
-    // TODO: Engine Header now knows about game, this is unappropriate
-    engine_init(&game);
+    // INIT GRAPHICS
+    game.graphics.tile_size = TILE_SIZE; 
+    if (!graphics_load(&game.graphics, game.engine.mlx_session)) {
+        // TODO: clean other sources
+        graphics_destroy(&game.graphics, game.engine.mlx_session);
+        engine_shutdown(&game.engine);
+        return (1);
+    }
 
     return (0);
 }
