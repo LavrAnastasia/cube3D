@@ -1,5 +1,6 @@
 #include "game.h"
 #include "libft.h"
+#include "render.h"
 // module engine
 #include "math_u.h" // TODO: prbl delete in future
 
@@ -59,8 +60,10 @@ int	main(int argc, char **argv)
     game.scene.map[game.scene.map_meta.height] = NULL;
 
     game.scene.camera.fov = deg_to_rad(FOV);
+    game.scene.camera.scale = tan(game.scene.camera.fov / 2);
 
     // INIT ENGINE
+    // TODO: mb t_dimension
     game.engine.window_width  = MAX_WIN_WIDTH;
     game.engine.window_height = MAX_WIN_HEIGHT;
     if (!engine_init(&game.engine, GAME_TITLE)) {
@@ -76,7 +79,7 @@ int	main(int argc, char **argv)
         engine_shutdown(&game.engine);
         return (1);
     }
-
+    render(&game.scene, (t_dimensions){.width = game.engine.window_width, .height = game.engine.window_height});
     engine_run(&game.engine);
 
     return (0);

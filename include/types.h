@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 # define TYPES_H
 
+#include <stdlib.h> // TODO: bc of size_t
+
 typedef struct s_position
 {
 	double	x;

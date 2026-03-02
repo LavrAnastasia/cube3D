@@ -1,28 +1,50 @@
-#include <stdlib.h> // TODO: delete, uses for exit func
+#include <stdlib.h>
 #include <mlx.h>
 #include "engine.h"
 
-// TODO: think about it 
-// Previously, the game had a single exit function.
-// Should quitting be handled by the engine, or by the game/app layer?
+// TODO:  quitting should be handled by the game/app layer
 
 
 // Private API
 
 #ifdef __linux__
 
-void	clean_mlx_session(t_engine *engine)
+static void	clean_mlx_session(t_engine *engine)
 {
 	mlx_destroy_display(engine->mlx_session);
 	free(engine->mlx_session);
 }
 #else
 
-void	clean_mlx_session(t_engine *engine)
+static void	clean_mlx_session(t_engine *engine)
 {
 	(void)(engine);
 }
 #endif
+
+static int	init_image_buffer(t_engine *engine)
+{
+	engine->buffer.img = mlx_new_image(
+		engine->mlx_session, engine->window_width, engine->window_height);
+	if (!engine->buffer.img)
+		return (0); // TODO: error
+	engine->buffer.data = mlx_get_data_addr(
+		engine->buffer.img,
+		&engine->buffer.bpp,
+		&engine->buffer.line_len,
+		&engine->buffer.endian);
+	if (!engine->buffer.data)
+		return (0); // TODO: error
+	return (1);
+}
+
+static void	destroy_image_buffer(t_engine *engine)
+{
+	if (engine->buffer.img)
+		mlx_destroy_image(engine->mlx_session, engine->buffer.img);
+	engine->buffer.img = NULL;
+	engine->buffer.data = NULL;
+}
 
 
 static int	init_mlx(t_engine *engine, char *game_name)
@@ -44,7 +66,7 @@ static int	init_mlx(t_engine *engine, char *game_name)
 
 int	engine_init(t_engine *engine, char *game_name)
 {
-    if (!init_mlx(engine, game_name))
+    if (!init_mlx(engine, game_name) || !init_image_buffer(engine))
     {
         engine_shutdown(engine);
         return (0); // TODO: error
@@ -61,8 +83,15 @@ void engine_run(t_engine *engine)
 
 void engine_shutdown(t_engine *engine)
 {
+	destroy_image_buffer(engine);
     if (engine->mlx_session && engine->mlx_window)
+	{
 		mlx_destroy_window(engine->mlx_session, engine->mlx_window);
+		engine->mlx_window = NULL;
+	}
 	if (engine->mlx_session)
+	{
 		clean_mlx_session(engine);
+		engine->mlx_session = NULL;
+	}
 }

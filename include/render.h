@@ -6,5 +6,7 @@
 # include "scene.h"
 # include "raycast.h"
 
+void render(t_scene *scene, t_dimensions window_size);
+
 #endif
 

@@ -11,7 +11,8 @@ typedef struct s_player
 
 typedef struct s_camera
 {
-	double		fov;
+	double	fov;
+	double	scale;
 }	t_camera;
 
 typedef struct s_scene
