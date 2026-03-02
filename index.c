@@ -2,8 +2,7 @@
 
 int	main(int argc, char **argv)
 {
-    (void) argc;
-    (void) argv;
+    t_game  game;
 
     // Init Game
     // Validate Input
@@ -14,7 +13,9 @@ int	main(int argc, char **argv)
     // Hooks
     // Mlx_loop
 
-    if(argc != 2)
-        return(printf("Please provide a .cub map file"), 1);
-    return(read_cube(argv[1]));
+    if(check_args(argc, argv))
+        return(1);
+    if(parse_settings(&game, argv) != 0)
+        return (1);
+    return (0);
 }

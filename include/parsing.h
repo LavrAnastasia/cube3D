@@ -4,8 +4,18 @@
 #include <fcntl.h> //open
 #include <unistd.h> // close, read 
 #include <stdio.h> // printf, perror
-#include <stdlib.h> // free, malloc, exit
+#include <stdlib.h> // free, malloc, exits
+#include "libft.h"
+#include "game.h"
 
-int             read_cube(const char *path);
+//error messages
+# define NO_MAP "Please provide a .cub map file"
+# define MANY_ARG "Too many arguments provided, required: program + map"
+# define EXTENTION_MSG "Map must have .cub extension"
+
+int parse_settings(t_game *game, char **argv);
+int check_args(int argc, char **argv);
+int print_error_msg(char *msg);
+
 
 #endif
