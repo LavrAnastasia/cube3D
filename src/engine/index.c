@@ -52,6 +52,13 @@ int	engine_init(t_engine *engine, char *game_name)
     return (1); // TODO: succcess
 }
 
+void engine_run(t_engine *engine)
+{
+	// TODO: Hooks
+	// TODO: mlx_loop_hook
+	mlx_loop(engine->mlx_session);
+}
+
 void engine_shutdown(t_engine *engine)
 {
     if (engine->mlx_session && engine->mlx_window)

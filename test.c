@@ -1,6 +1,7 @@
 #include "game.h"
 #include "libft.h"
 // module engine
+#include "math_u.h" // TODO: prbl delete in future
 
 #define SIZE 10 // TODO: delete
 
@@ -26,10 +27,10 @@ int	main(int argc, char **argv)
         "1111111111",
         "1000000001",
         "1000000001",
-        "1000000001",
-        "1000000001",
-        "1000000001",
-        "1000000001",
+        "1000010001",
+        "1000010001",
+        "1000010001",
+        "1000010001",
         "1000000001",
         "1000000001",
         "1111111111"
@@ -56,6 +57,9 @@ int	main(int argc, char **argv)
     }   
 
     game.scene.map[game.scene.map_meta.height] = NULL;
+
+    game.scene.camera.fov = deg_to_rad(FOV);
+
     // INIT ENGINE
     game.engine.window_width  = MAX_WIN_WIDTH;
     game.engine.window_height = MAX_WIN_HEIGHT;
@@ -72,6 +76,8 @@ int	main(int argc, char **argv)
         engine_shutdown(&game.engine);
         return (1);
     }
+
+    engine_run(&game.engine);
 
     return (0);
 }

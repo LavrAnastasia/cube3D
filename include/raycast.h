@@ -29,5 +29,7 @@ typedef enum e_ray_crossing
 	R_CROSS_HORIZONTAL 
 }	t_ray_crossing;
 
+void ray_dda(double angle, double player_x, double player_y, char **map);
+
 #endif
 

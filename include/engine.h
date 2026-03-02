@@ -11,5 +11,6 @@ typedef struct s_engine
 
 int		engine_init(t_engine *engine, char *game_name);
 void    engine_shutdown(t_engine *engine);
+void	engine_run(t_engine *engine);
 
 #endif

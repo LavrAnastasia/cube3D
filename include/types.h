@@ -3,8 +3,8 @@
 
 typedef struct s_position
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_position;
 
 #endif

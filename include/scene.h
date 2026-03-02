@@ -9,11 +9,17 @@ typedef struct s_player
 	double		angle;
 }	t_player;
 
+typedef struct s_camera
+{
+	double		fov;
+}	t_camera;
+
 typedef struct s_scene
 {
 	char		**map;
 	t_map_meta	map_meta;
 	t_player	player;
+	t_camera	camera;
 }	t_scene;
 
 #endif
