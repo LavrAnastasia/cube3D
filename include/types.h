@@ -1,7 +1,7 @@
 #ifndef TYPES_H
 # define TYPES_H
 
-#include <stdlib.h> // TODO: bc of size_t
+typedef unsigned int t_color;
 
 typedef struct s_position
 {

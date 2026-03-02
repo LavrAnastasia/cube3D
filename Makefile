@@ -3,8 +3,8 @@ NAME := cub3D
 DIR_SRC := src/
 
 SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
-SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, graphics_destroy.c \
-	graphics_load.c)
+SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, index.c \
+	load_utils.c)
 SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
 SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c )
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )

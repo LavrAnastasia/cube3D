@@ -25,15 +25,15 @@ static void	clean_mlx_session(t_engine *engine)
 static int	init_image_buffer(t_engine *engine)
 {
 	engine->buffer.img = mlx_new_image(
-		engine->mlx_session, engine->window_width, engine->window_height);
+		engine->mlx_session, engine->window_size.width, engine->window_size.height);
 	if (!engine->buffer.img)
 		return (0); // TODO: error
-	engine->buffer.data = mlx_get_data_addr(
+	engine->buffer.px.data = mlx_get_data_addr(
 		engine->buffer.img,
-		&engine->buffer.bpp,
-		&engine->buffer.line_len,
-		&engine->buffer.endian);
-	if (!engine->buffer.data)
+		&engine->buffer.px.bpp,
+		&engine->buffer.px.line_len,
+		&engine->buffer.px.endian);
+	if (!engine->buffer.px.data)
 		return (0); // TODO: error
 	return (1);
 }
@@ -43,7 +43,7 @@ static void	destroy_image_buffer(t_engine *engine)
 	if (engine->buffer.img)
 		mlx_destroy_image(engine->mlx_session, engine->buffer.img);
 	engine->buffer.img = NULL;
-	engine->buffer.data = NULL;
+	engine->buffer.px.data = NULL;
 }
 
 
@@ -54,8 +54,8 @@ static int	init_mlx(t_engine *engine, char *game_name)
         return (0); // TODO: error
 	engine->mlx_window = mlx_new_window(
 			engine->mlx_session,
-			engine->window_width,
-			engine->window_height,
+			engine->window_size.width,
+			engine->window_size.height,
 			game_name);
 	if (!engine->mlx_window)
 	    return (0); // TODO: error
