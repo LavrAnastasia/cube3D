@@ -7,6 +7,7 @@
 #include <stdlib.h> // free, malloc, exits
 #include "libft.h"
 #include "game.h"
+#include "config.h"
 
 //error messages
 # define NO_MAP "Please provide a .cub map file"
@@ -17,6 +18,7 @@
 int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
 int print_error_msg(char *msg);
+void init_config(t_config *config);
 
 
 #endif
