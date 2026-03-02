@@ -1,11 +1,6 @@
 NAME := cub3D
 
 DIR_SRC := src/
-DIR_MAPS := maps/
-DIR_UTILS := utils/
-DIR_INTERACTIONS := interactions/
-DIR_GRAPHICS := graphics/
-DIR_ERRORS := errors/
 
 SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
 SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, graphics_destroy.c \

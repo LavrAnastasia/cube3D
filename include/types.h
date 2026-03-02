@@ -7,4 +7,16 @@ typedef struct s_position
 	double	y;
 }	t_position;
 
+typedef struct s_cell
+{
+	int	x;
+	int	y;
+}	t_cell;
+
+typedef struct s_dimensions
+{
+	int	width;
+	int	height;
+}	t_dimensions;
+
 #endif
