@@ -1,10 +1,24 @@
 #ifndef TYPES_H
 # define TYPES_H
 
+typedef unsigned int t_color;
+
 typedef struct s_position
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_position;
+
+typedef struct s_cell
+{
+	int	x;
+	int	y;
+}	t_cell;
+
+typedef struct s_dimensions
+{
+	int	width;
+	int	height;
+}	t_dimensions;
 
 #endif

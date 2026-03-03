@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 # define SCENE_H
 
-# include "map.h"
+# include "types.h"
 
 typedef struct s_player
 {
@@ -9,11 +9,25 @@ typedef struct s_player
 	double		angle;
 }	t_player;
 
+typedef struct s_camera
+{
+	double	fov;
+	double	scale;
+}	t_camera;
+
+typedef struct s_palette
+{
+	t_color	ceiling;
+	t_color	floor;
+}	t_palette;
+
 typedef struct s_scene
 {
-	char		**map;
-	t_map_meta	map_meta;
-	t_player	player;
+	char			**map;
+	t_dimensions	map_size;
+	t_player		player;
+	t_camera		camera;
+	t_palette		palette; 
 }	t_scene;
 
 #endif

@@ -1,17 +1,7 @@
 # include <mlx.h>
-# include "graphics.h"
+#include "graphics.h"
 
-static void	*load_xpm(void *mlx_session, const char *path, int size)
-{
-	return (
-		mlx_xpm_file_to_image(
-			mlx_session,
-			(char *)path,
-			&size,
-			&size
-		)
-	);
-}
+void	*load_xpm(void *mlx_session, const char *path, int size);
 
 int	graphics_load(t_graphics *graphics, void *mlx_session)
 {
@@ -33,4 +23,24 @@ int	graphics_load(t_graphics *graphics, void *mlx_session)
 		|| !graphics->sprites.west_texture)
         return (0); // TODO: error
     return (1); // // TODO: success
+}
+
+void	put_pixel(t_px_buffer *buffer, int x, int y, t_color color)
+{
+	char *dst;
+    
+    dst = buffer->data + (y * buffer->line_len + x * (buffer->bpp / 8));
+	*(t_color *)dst = color;
+}
+
+void	graphics_destroy(t_graphics *graphics, void *mlx_session)
+{
+	if (graphics->sprites.north_texture)
+		mlx_destroy_image(mlx_session, graphics->sprites.north_texture);
+	if (graphics->sprites.south_texture)
+		mlx_destroy_image(mlx_session, graphics->sprites.south_texture);
+	if (graphics->sprites.east_texture)
+		mlx_destroy_image(mlx_session, graphics->sprites.east_texture);
+	if (graphics->sprites.west_texture)
+		mlx_destroy_image(mlx_session, graphics->sprites.west_texture);
 }

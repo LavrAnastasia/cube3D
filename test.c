@@ -1,6 +1,9 @@
 #include "game.h"
 #include "libft.h"
+#include "render.h"
 // module engine
+#include "math_u.h" // TODO: prbl delete in future
+#include <mlx.h>
 
 #define SIZE 10 // TODO: delete
 
@@ -26,10 +29,10 @@ int	main(int argc, char **argv)
         "1111111111",
         "1000000001",
         "1000000001",
-        "1000000001",
-        "1000000001",
-        "1000000001",
-        "1000000001",
+        "1000010001",
+        "1000010001",
+        "1000010001",
+        "1000010001",
         "1000000001",
         "1000000001",
         "1111111111"
@@ -37,28 +40,37 @@ int	main(int argc, char **argv)
 
     // INIT_SCENE
     // Mock info
-    game.scene.map_meta.height = SIZE;
-    game.scene.map_meta.width = SIZE;
+    game.scene.map_size.height = SIZE;
+    game.scene.map_size.width = SIZE;
 
     game.scene.player.pos.x = 2.0;
     game.scene.player.pos.y = 2.0;
 
     game.scene.player.angle = 0.0;
 
-    game.scene.map = ft_calloc(game.scene.map_meta.height + 1, sizeof(char *));
+    game.scene.palette.ceiling = 0x202030;
+    game.scene.palette.floor = 0x151515;
+
+    game.scene.map = ft_calloc(game.scene.map_size.height + 1, sizeof(char *));
     if (!game.scene.map)
         return (1); // TODO: error handling
     int i = 0;
-    for (i = 0; i < game.scene.map_meta.height; i++) {
+    for (i = 0; i < game.scene.map_size.height; i++) {
         game.scene.map[i] = ft_strdup(mock_map[i]);
         if (!game.scene.map[i])
             return (1); // TODO: error handling + cleanup
     }   
 
-    game.scene.map[game.scene.map_meta.height] = NULL;
+    game.scene.map[game.scene.map_size.height] = NULL;
+
+    game.scene.camera.fov = deg_to_rad(FOV);
+    game.scene.camera.scale = tan(game.scene.camera.fov / 2);
+
     // INIT ENGINE
-    game.engine.window_width  = MAX_WIN_WIDTH;
-    game.engine.window_height = MAX_WIN_HEIGHT;
+    game.engine.window_size = (t_dimensions){
+        .width = MAX_WIN_WIDTH,
+        .height = MAX_WIN_HEIGHT
+    };
     if (!engine_init(&game.engine, GAME_TITLE)) {
         // TODO: clean other sources
         return (1);
@@ -72,6 +84,12 @@ int	main(int argc, char **argv)
         engine_shutdown(&game.engine);
         return (1);
     }
+    render(&game.scene, game.engine.window_size, &game.engine.buffer.px);
+    mlx_put_image_to_window(game.engine.mlx_session,
+                        game.engine.mlx_window,
+                        game.engine.buffer.img,
+                        0, 0);
+    engine_run(&game.engine);
 
     return (0);
 }

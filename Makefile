@@ -1,20 +1,19 @@
 NAME := cub3D
 
 DIR_SRC := src/
-DIR_MAPS := maps/
-DIR_UTILS := utils/
-DIR_INTERACTIONS := interactions/
-DIR_GRAPHICS := graphics/
-DIR_ERRORS := errors/
 
-SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, engine_lifecycle.c)
-SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, graphics_destroy.c \
-	graphics_load.c)
-SRC_RAYCAST := $(addprefix $(DIR_SRC)raycast/, raycast.c)
+SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
+SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, index.c \
+	load_utils.c)
+SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
+SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c )
+SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
 SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
+	$(SRC_MATH) \
 	$(SRC_ENGINE) \
+	$(SRC_RENDER) \
 	$(SRC_RAYCAST) \
 	$(SRC_GRAPHICS)
 
