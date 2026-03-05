@@ -13,13 +13,13 @@ static void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer
 	}	
 }
 
-static double calc_distance(double ray_distance, double angle_diff)
+static double correct_fisheye_distance(double ray_length, double angle_diff)
 {
-	const double distance = ray_distance * cos(angle_diff);
+	const double perp_distance = ray_length * cos(angle_diff);
 	
-	if (distance < EPS_DIST)
+	if (perp_distance < EPS_DIST)
 		return (EPS_DIST);
-	return (distance);
+	return (perp_distance);
 }
 
 static t_wall_bounds calc_wall_bounds(double distance, t_dimensions window_size, double scale)
@@ -51,14 +51,16 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer)
 		camera_x = 2.0 * ((double)x + 0.5) / (double)window_size.width - 1.0;
 		ray_angle = normalize_angle(
 			scene->player.angle +  atan(camera_x * scale));
+
+		// TODO: ray_length is MAX — draw celling and print warning
 		ray_intersection = ray_dda(ray_angle,
 			scene->player.pos,
 			scene->map,
 			scene->map_size
 		);
 
-		double distance = calc_distance(ray_intersection.distance, ray_angle - scene->player.angle);
-		t_wall_bounds wall_bounds = calc_wall_bounds(distance, window_size, scale);
+		double perp_distance = correct_fisheye_distance(ray_intersection.ray_length, ray_angle - scene->player.angle);
+		t_wall_bounds wall_bounds = calc_wall_bounds(perp_distance, window_size, scale);
 		
 		render_vertical_segment(
 			(t_range){.start = 0, .end = wall_bounds.top},

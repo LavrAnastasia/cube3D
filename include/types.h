@@ -9,11 +9,11 @@ typedef struct s_position
 	double	y;
 }	t_position;
 
-typedef struct s_cell
+typedef struct s_point
 {
 	int	x;
 	int	y;
-}	t_cell;
+}	t_point;
 
 typedef struct s_dimensions
 {
