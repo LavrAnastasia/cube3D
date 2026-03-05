@@ -1,14 +1,14 @@
 # include <mlx.h>
-# include "graphics.h"
+# include "graphics_types.h"
 
-void	*load_xpm(void *mlx_session, const char *path, int size)
+void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size)
 {
 	return (
 		mlx_xpm_file_to_image(
 			mlx_session,
 			(char *)path,
-			&size,
-			&size
+			&size->width,
+			&size->height
 		)
 	);
 }

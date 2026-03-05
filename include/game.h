@@ -7,7 +7,6 @@
 
 # define FOV 60
 # define GAME_TITLE  "CUB3D"
-# define TILE_SIZE 64
 
 # ifdef __linux__
 #  define MAX_WIN_WIDTH 2560

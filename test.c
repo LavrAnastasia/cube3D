@@ -77,14 +77,11 @@ int	main(int argc, char **argv)
     }
 
     // INIT GRAPHICS
-    game.graphics.tile_size = TILE_SIZE; 
     if (!graphics_load(&game.graphics, game.engine.mlx_session)) {
-        // TODO: clean other sources
-        graphics_destroy(&game.graphics, game.engine.mlx_session);
         engine_shutdown(&game.engine);
         return (1);
     }
-    render(&game.scene, game.engine.window_size, &game.engine.buffer.px);
+    render(&game.scene, game.engine.window_size, &game.engine.buffer.px, &game.graphics);
     mlx_put_image_to_window(game.engine.mlx_session,
                         game.engine.mlx_window,
                         game.engine.buffer.img,

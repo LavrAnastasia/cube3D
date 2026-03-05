@@ -2,6 +2,10 @@
 # define RENDER_INTERNAL_H
 
 #include <stddef.h>
+#include <float.h>
+
+# include "math_u.h"
+# include "raycast.h"
 
 #define EPS_DIST 1e-6
 

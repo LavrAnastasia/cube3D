@@ -8,7 +8,7 @@ static void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer
 	y = range.start;
 	while (y < range.end)
 	{
-		put_pixel(buffer, x, y, color);
+		graphics_put_pixel(buffer, x, y, color);
 		y++;
 	}	
 }
@@ -37,7 +37,15 @@ static t_wall_bounds calc_wall_bounds(double distance, t_dimensions window_size,
 	return (t_wall_bounds){.top = (size_t)top, .bottom = (size_t)bottom};
 }
 
-void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer)
+static t_position calc_hit_position(t_position player_pos, double ray_length, t_vector ray_direction)
+{
+	return (t_position){
+		.x = player_pos.x + ray_length * ray_direction.x,
+		.y = player_pos.y + ray_length * ray_direction.y
+	};
+}	
+
+void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_graphics *graphics)
 {
 	const double scale = scene->camera.scale;
 	double camera_x;
@@ -52,12 +60,20 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer)
 		ray_angle = normalize_angle(
 			scene->player.angle +  atan(camera_x * scale));
 
-		// TODO: ray_length is MAX — draw celling and print warning
 		ray_intersection = ray_dda(ray_angle,
 			scene->player.pos,
 			scene->map,
 			scene->map_size
 		);
+
+		if (ray_intersection.ray_length == DBL_MAX) {
+			render_vertical_segment(
+				(t_range){.start = 0, .end = (size_t)window_size.height},
+				x, buffer, scene->palette.ceiling);
+			// TODO: trigger warning
+			x++;
+			continue;
+		}
 
 		double perp_distance = correct_fisheye_distance(ray_intersection.ray_length, ray_angle - scene->player.angle);
 		t_wall_bounds wall_bounds = calc_wall_bounds(perp_distance, window_size, scale);
@@ -66,11 +82,103 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer)
 			(t_range){.start = 0, .end = wall_bounds.top},
 			x, buffer, scene->palette.ceiling);
 
-		// TODO: RENDER WALL
-
 		render_vertical_segment(
 			(t_range){.start = wall_bounds.bottom, .end = (size_t)window_size.height},
 			x, buffer, scene->palette.floor);
-		x += 1;
+
+		const double wall_height = wall_bounds.bottom - wall_bounds.top;
+
+		// TODO: trigger a warning
+		if (wall_bounds.bottom <= wall_bounds.top)
+		{
+			render_vertical_segment(
+				(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
+				x, buffer, scene->palette.ceiling);
+			x++;
+			continue;
+		}
+
+		const t_position hit_position = calc_hit_position(
+			scene->player.pos, ray_intersection.ray_length, ray_intersection.ray_direction);
+
+		// TODO: position type?
+		
+		double position_down_wall;
+		t_image_buffer *wall_texture;
+		wall_texture = NULL;
+		// TODO: point type ?
+		int texture_y;
+
+		double position_along_wall;
+		// INIT POSITION ALONG WALL
+
+		if (ray_intersection.crossing == R_CROSS_VERTICAL)
+		{
+			position_along_wall = hit_position.y - floor(hit_position.y);
+
+			if (ray_intersection.axis_direction.x == X_LEFT)
+				wall_texture = &graphics->sprites.west_texture;
+			else if (ray_intersection.axis_direction.x == X_RIGHT)
+				wall_texture = &graphics->sprites.east_texture;
+		}
+		else
+		{
+			position_along_wall = hit_position.x - floor(hit_position.x);
+
+			if (ray_intersection.axis_direction.y == Y_TOP)
+				wall_texture = &graphics->sprites.north_texture;
+			else if (ray_intersection.axis_direction.y == Y_BOTTOM)
+				wall_texture = &graphics->sprites.south_texture;
+		}
+
+		// TODO: trigger a warning
+		if (wall_texture == NULL)
+		{
+			render_vertical_segment(
+				(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
+				x, buffer, scene->palette.ceiling);
+			x++;
+			continue;
+		}
+
+		// INIT TEXTURE
+
+		int texture_x;
+
+		texture_x = (int)floor(position_along_wall * wall_texture->size.width);
+		if ((ray_intersection.crossing == R_CROSS_VERTICAL && ray_intersection.axis_direction.x == X_RIGHT)
+			|| (ray_intersection.crossing == R_CROSS_HORIZONTAL && ray_intersection.axis_direction.y == Y_BOTTOM)
+		)
+		{
+			texture_x = wall_texture->size.width - 1 - texture_x;  // TODO: check!!! flip moment
+		}
+
+		// TODO: separate fucntion for clamping
+
+		if (texture_x >= wall_texture->size.width)
+			texture_x = wall_texture->size.width - 1;
+		if (texture_x < 0)
+			texture_x = 0;
+
+		size_t y;
+
+		y = wall_bounds.top;
+		while (y < wall_bounds.bottom)
+		{
+			position_down_wall = (double)(y - wall_bounds.top) / wall_height;
+			texture_y = (int)floor(position_down_wall * wall_texture->size.height);
+
+			// TODO: separate fucntion for clamping
+
+			if (texture_y >= wall_texture->size.height)
+				texture_y = wall_texture->size.height - 1;
+			if (texture_y < 0)
+				texture_y = 0;
+
+			int color = graphics_get_pixel_color(&wall_texture->px, texture_x, texture_y);
+			graphics_put_pixel(buffer, x, y, color);
+			y++;
+		}
+		x++;
 	}
 }
