@@ -19,6 +19,8 @@ int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
 int print_error_msg(char *msg);
 void init_config(t_config *config);
+int parse_config_section(char *line, t_game *game);
+int parse_clean(int fd, char *line);
 
 
 #endif

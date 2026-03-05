@@ -19,6 +19,7 @@ int parse_settings(t_game *game, char **argv)
 {
     int fd;
     char *line;
+    int status;
     
     fd = open(argv[1], O_RDONLY);
     if(fd < 0)
@@ -27,7 +28,17 @@ int parse_settings(t_game *game, char **argv)
     line = get_next_line(fd);
     while(line)
     {
-        printf("%s", line);
+        if(!line)
+            return(1);
+        status = parse_config_section(line, game);
+        if(status == -1)
+            return(parse_clean(fd, line));
+        if(status == 1)
+        {
+            // parse_map_section(line, fd, game)
+            free(line);
+            break;//?
+        }
         free(line);
         line = get_next_line(fd);
     }
