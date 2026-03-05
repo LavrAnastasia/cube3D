@@ -21,4 +21,10 @@ typedef struct s_dimensions
 	int	height;
 }	t_dimensions;
 
+typedef struct s_vector
+{
+	double	x;
+	double	y;
+}	t_vector;
+
 #endif

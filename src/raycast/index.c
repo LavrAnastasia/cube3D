@@ -2,25 +2,25 @@
 #include "raycast_internal.h"
 #include "map.h" // TODO:  map[map_y][map_x] != TILE_WALL -- is_inbounds and is_wall shoul bw helpers
 
-static t_axis_direction	calc_axis_direction(double cx, double sy)
+static t_axis_direction	calc_axis_direction(double ray_direction_x, double ray_direction_y)
 {
     const double eps = 1e-9;
 	t_axis_direction	direction;
 
     direction.x = X_NONE;
     direction.y = Y_NONE;
-	if (cx < -eps)
+	if (ray_direction_x < -eps)
         direction.x = X_LEFT;
-    else if (cx > eps)
+    else if (ray_direction_x > eps)
         direction.x = X_RIGHT;  
-    if (sy < -eps)
+    if (ray_direction_y < -eps)
         direction.y = Y_TOP;
-    else if (sy > eps)
+    else if (ray_direction_y > eps)
         direction.y = Y_BOTTOM; 
 	return (direction);
 }
 
-static double ray_delta_direction(double ray_direction_value)
+static double ray_delta_distance(double ray_direction_value)
 {
     const double eps = 1e-9;
 
@@ -45,11 +45,10 @@ static int	is_wall(char tile)
 t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_dimensions map_size)
 {
     // TODO: setup ray
-    const double cx = cos(angle);
-    const double sy = sin(angle);
-    const t_axis_direction axis_direction = calc_axis_direction(cx, sy);
-    const double delta_dist_x = ray_delta_direction(cx);
-    const double delta_dist_y = ray_delta_direction(sy);
+    const t_vector ray_direction = (t_vector){.x = cos(angle), .y = sin(angle)};
+    const t_axis_direction axis_direction = calc_axis_direction(ray_direction.x, ray_direction.y);
+    const double delta_dist_x = ray_delta_distance(ray_direction.x);
+    const double delta_dist_y = ray_delta_distance(ray_direction.y);
 
     int map_x = (int)floor(player_pos.x);
     int map_y = (int)floor(player_pos.y);
@@ -75,7 +74,9 @@ t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_di
         return (t_ray_intersection){
             .point = point,
             .crossing = R_CROSS_VERTICAL,
-            .ray_length = DBL_MAX
+            .ray_length = DBL_MAX,
+            .ray_direction = ray_direction,
+            .axis_direction = axis_direction
         };
     }
     int step_x;
@@ -122,6 +123,8 @@ t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_di
     return (t_ray_intersection){
         .point = point,
         .crossing = crossing,
-        .ray_length = ray_length
+        .ray_length = ray_length,
+        .ray_direction = ray_direction,
+        .axis_direction = axis_direction
     };
 }
