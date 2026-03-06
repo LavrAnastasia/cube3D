@@ -76,8 +76,15 @@ int	main(int argc, char **argv)
         return (1);
     }
 
-    // INIT GRAPHICS
-    if (!graphics_load(&game.textures, game.engine.mlx_session)) {
+    // LOAD TEXTURES
+    const t_wall_texture_paths paths = (t_wall_texture_paths) {
+        .east =  "resources/ea.xpm",
+        .north = "resources/no.xpm",
+        .south = "resources/so.xpm", 
+        .west = "resources/we.xpm"
+    };
+    
+    if (!textures_load(&game.textures, game.engine.mlx_session, paths)) {
         engine_shutdown(&game.engine);
         return (1);
     }
