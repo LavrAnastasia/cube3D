@@ -77,7 +77,7 @@ int	main(int argc, char **argv)
     }
 
     // LOAD TEXTURES
-    t_wall_texture_paths paths = (t_wall_texture_paths) {
+    const t_wall_texture_paths paths = (t_wall_texture_paths) {
         .east =  "resources/ea.xpm",
         .north = "resources/no.xpm",
         .south = "resources/so.xpm", 

@@ -23,4 +23,3 @@ char	*load_px_data(t_image_buffer *buffer)
 		&buffer->px.endian)
 	);
 }
-
