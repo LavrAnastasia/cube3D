@@ -33,24 +33,6 @@ int	textures_load(t_textures *textures, void *mlx_session, t_wall_texture_paths 
     return (1); // // TODO: success
 }
 
-void	graphics_put_pixel(t_px_buffer *buffer, int x, int y, t_color color)
-{
-	char *dst;
-    
-    dst = buffer->data + (y * buffer->line_len + x * (buffer->bpp / 8));
-	*(t_color *)dst = color;
-}
-
-
-t_color graphics_get_pixel_color(t_px_buffer *buffer, int x, int y)
-{
-	t_color		color;
-	const int	i = y * buffer->line_len + x * (buffer->bpp / 8);
-
-	color = *(t_color *)(buffer->data + i);
-	return (color);
-}
-
 void	textures_destroy(t_textures *textures, void *mlx_session)
 {
 	texture_destroy(mlx_session, &textures->wall.north);

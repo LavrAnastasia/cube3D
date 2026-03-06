@@ -8,7 +8,7 @@ static void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer
 	y = range.start;
 	while (y < range.end)
 	{
-		graphics_put_pixel(buffer, x, y, color);
+		pixels_put(buffer, x, y, color);
 		y++;
 	}	
 }
@@ -175,8 +175,8 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			if (texture_y < 0)
 				texture_y = 0;
 
-			int color = graphics_get_pixel_color(&wall_texture->px, texture_x, texture_y);
-			graphics_put_pixel(buffer, x, y, color);
+			int color = pixels_get(&wall_texture->px, texture_x, texture_y);
+			pixels_put(buffer, x, y, color);
 			y++;
 		}
 		x++;

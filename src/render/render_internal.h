@@ -5,6 +5,7 @@
 #include <float.h>
 
 # include "math_u.h"
+# include "pixels.h"
 # include "raycast.h"
 
 #define EPS_DIST 1e-6
