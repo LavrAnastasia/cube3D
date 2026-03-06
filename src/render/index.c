@@ -117,18 +117,18 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			position_along_wall = hit_position.y - floor(hit_position.y);
 
 			if (ray_intersection.axis_direction.x == X_LEFT)
-				wall_texture = &textures->sprites.west_texture;
+				wall_texture = &textures->wall.west;
 			else if (ray_intersection.axis_direction.x == X_RIGHT)
-				wall_texture = &textures->sprites.east_texture;
+				wall_texture = &textures->wall.east;
 		}
 		else
 		{
 			position_along_wall = hit_position.x - floor(hit_position.x);
 
 			if (ray_intersection.axis_direction.y == Y_TOP)
-				wall_texture = &textures->sprites.north_texture;
+				wall_texture = &textures->wall.north;
 			else if (ray_intersection.axis_direction.y == Y_BOTTOM)
-				wall_texture = &textures->sprites.south_texture;
+				wall_texture = &textures->wall.south;
 		}
 
 		// TODO: trigger a warning

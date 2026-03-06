@@ -18,17 +18,17 @@ typedef struct s_image_buffer
 	t_dimensions 	size;
 }	t_image_buffer;
 
-typedef struct s_sprites
+typedef struct s_wall
 {
-	t_image_buffer north_texture;
-	t_image_buffer south_texture;
-	t_image_buffer east_texture;
-	t_image_buffer west_texture;
-}	t_sprites;
+	t_image_buffer north;
+	t_image_buffer south;
+	t_image_buffer east;
+	t_image_buffer west;
+}	t_wall;
 
 typedef struct s_textures
 {
-	t_sprites	sprites;
+	t_wall	wall;
 }	t_textures;
 
 
