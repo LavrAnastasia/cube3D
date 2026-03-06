@@ -3,6 +3,7 @@
 #include "graphics_types.h"
 
 void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size);
+char	*load_px_data(t_image_buffer *buffer);
 void	graphics_destroy(t_graphics *graphics, void *mlx_session);
 
 int	graphics_load(t_graphics *graphics, void *mlx_session)
@@ -27,29 +28,10 @@ int	graphics_load(t_graphics *graphics, void *mlx_session)
 		return (0); // TODO: error
 	}
 
-	graphics->sprites.north_texture.px.data = mlx_get_data_addr(
-		graphics->sprites.north_texture.img,
-		&graphics->sprites.north_texture.px.bpp,
-		&graphics->sprites.north_texture.px.line_len,
-		&graphics->sprites.north_texture.px.endian);
-
-	graphics->sprites.south_texture.px.data = mlx_get_data_addr(
-		graphics->sprites.south_texture.img,
-		&graphics->sprites.south_texture.px.bpp,
-		&graphics->sprites.south_texture.px.line_len,
-		&graphics->sprites.south_texture.px.endian);
-
-	graphics->sprites.east_texture.px.data = mlx_get_data_addr(
-		graphics->sprites.east_texture.img,
-		&graphics->sprites.east_texture.px.bpp,
-		&graphics->sprites.east_texture.px.line_len,
-		&graphics->sprites.east_texture.px.endian);
-
-	graphics->sprites.west_texture.px.data = mlx_get_data_addr(
-		graphics->sprites.west_texture.img,
-		&graphics->sprites.west_texture.px.bpp,
-		&graphics->sprites.west_texture.px.line_len,
-		&graphics->sprites.west_texture.px.endian);
+	graphics->sprites.north_texture.px.data = load_px_data(&graphics->sprites.north_texture);
+	graphics->sprites.south_texture.px.data = load_px_data(&graphics->sprites.south_texture);
+	graphics->sprites.east_texture.px.data = load_px_data(&graphics->sprites.east_texture);
+	graphics->sprites.west_texture.px.data = load_px_data(&graphics->sprites.west_texture);
 
 	if (!graphics->sprites.north_texture.px.data
         || !graphics->sprites.south_texture.px.data

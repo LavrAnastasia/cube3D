@@ -13,3 +13,14 @@ void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size)
 	);
 }
 
+char	*load_px_data(t_image_buffer *buffer)
+{
+	return (
+		mlx_get_data_addr(
+		buffer->img,
+		&buffer->px.bpp,
+		&buffer->px.line_len,
+		&buffer->px.endian)
+	);
+}
+
