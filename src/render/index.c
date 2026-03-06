@@ -45,7 +45,7 @@ static t_position calc_hit_position(t_position player_pos, double ray_length, t_
 	};
 }	
 
-void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_graphics *graphics)
+void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_textures *textures)
 {
 	const double scale = scene->camera.scale;
 	double camera_x;
@@ -117,18 +117,18 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_gra
 			position_along_wall = hit_position.y - floor(hit_position.y);
 
 			if (ray_intersection.axis_direction.x == X_LEFT)
-				wall_texture = &graphics->sprites.west_texture;
+				wall_texture = &textures->sprites.west_texture;
 			else if (ray_intersection.axis_direction.x == X_RIGHT)
-				wall_texture = &graphics->sprites.east_texture;
+				wall_texture = &textures->sprites.east_texture;
 		}
 		else
 		{
 			position_along_wall = hit_position.x - floor(hit_position.x);
 
 			if (ray_intersection.axis_direction.y == Y_TOP)
-				wall_texture = &graphics->sprites.north_texture;
+				wall_texture = &textures->sprites.north_texture;
 			else if (ray_intersection.axis_direction.y == Y_BOTTOM)
-				wall_texture = &graphics->sprites.south_texture;
+				wall_texture = &textures->sprites.south_texture;
 		}
 
 		// TODO: trigger a warning

@@ -26,10 +26,10 @@ typedef struct s_sprites
 	t_image_buffer west_texture;
 }	t_sprites;
 
-typedef struct s_graphics
+typedef struct s_textures
 {
 	t_sprites	sprites;
-}	t_graphics;
+}	t_textures;
 
 
 #endif

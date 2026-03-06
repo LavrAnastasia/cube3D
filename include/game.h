@@ -19,7 +19,7 @@
 typedef struct s_game
 {
 	t_engine		engine;
-	t_graphics		graphics;
+	t_textures		textures;
 	t_scene			scene;
 }	t_game;
 
