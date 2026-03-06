@@ -77,14 +77,14 @@ int	main(int argc, char **argv)
     }
 
     // LOAD TEXTURES
-    const t_wall_texture_paths paths = (t_wall_texture_paths) {
+    t_wall_texture_paths paths = (t_wall_texture_paths) {
         .east =  "resources/ea.xpm",
         .north = "resources/no.xpm",
         .south = "resources/so.xpm", 
         .west = "resources/we.xpm"
     };
-    
-    if (!textures_load(&game.textures, game.engine.mlx_session, paths)) {
+
+    if (!textures_load(&game.textures, game.engine.mlx_session, &paths)) {
         engine_shutdown(&game.engine);
         return (1);
     }

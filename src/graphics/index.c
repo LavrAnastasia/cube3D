@@ -1,17 +1,14 @@
-#include <mlx.h>
-#include <stddef.h>
-#include "graphics_types.h"
+#include "textures_internal.h"
 
-void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size);
-char	*load_px_data(t_image_buffer *buffer);
 void	textures_destroy(t_textures *textures, void *mlx_session);
 
-int	textures_load(t_textures *textures, void *mlx_session, t_wall_texture_paths path)
+int	textures_load(t_textures *textures, void *mlx_session, t_wall_texture_paths *paths)
 {
-    textures->wall.north.img = load_xpm(mlx_session, path.north, &textures->wall.north.size);
-    textures->wall.south.img = load_xpm(mlx_session, path.south, &textures->wall.south.size);
-	textures->wall.east.img = load_xpm(mlx_session, path.east, &textures->wall.east.size);
-	textures->wall.west.img = load_xpm(mlx_session, path.west, &textures->wall.west.size);
+    textures->wall.north.img = load_xpm(mlx_session, paths->north, &textures->wall.north.size);
+    textures->wall.south.img = load_xpm(mlx_session, paths->south, &textures->wall.south.size);
+	textures->wall.east.img = load_xpm(mlx_session, paths->east, &textures->wall.east.size);
+	textures->wall.west.img = load_xpm(mlx_session, paths->west, &textures->wall.west.size);
+
     if (!textures->wall.north.img || !textures->wall.south.img
 		|| !textures->wall.east.img || !textures->wall.west.img)
 	{
@@ -56,28 +53,8 @@ t_color graphics_get_pixel_color(t_px_buffer *buffer, int x, int y)
 
 void	textures_destroy(t_textures *textures, void *mlx_session)
 {
-	if (textures->wall.north.img)
-	{
-		mlx_destroy_image(mlx_session, textures->wall.north.img);
-		textures->wall.north.img = NULL;
-		textures->wall.north.px.data = NULL;
-	}
-	if (textures->wall.south.img)
-	{
-		mlx_destroy_image(mlx_session, textures->wall.south.img);
-		textures->wall.south.img = NULL;
-		textures->wall.south.px.data = NULL;
-	}
-	if (textures->wall.east.img)
-	{
-		mlx_destroy_image(mlx_session, textures->wall.east.img);
-		textures->wall.east.img = NULL;
-		textures->wall.east.px.data = NULL;
-	}
-	if (textures->wall.west.img)
-	{
-		mlx_destroy_image(mlx_session, textures->wall.west.img);
-		textures->wall.west.img = NULL;
-		textures->wall.west.px.data = NULL;
-	}
+	texture_destroy(mlx_session, &textures->wall.north);
+	texture_destroy(mlx_session, &textures->wall.south);
+	texture_destroy(mlx_session, &textures->wall.east);
+	texture_destroy(mlx_session, &textures->wall.west);
 }
