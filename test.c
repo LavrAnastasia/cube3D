@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
         .west = "resources/we.xpm"
     };
 
-    if (!textures_load(&game.textures, game.engine.mlx_session, &paths)) {
+    if (textures_load(&game.textures, game.engine.mlx_session, &paths) != TEX_OK) {
         engine_shutdown(&game.engine);
         return (1);
     }

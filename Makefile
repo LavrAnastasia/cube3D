@@ -10,7 +10,7 @@ SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
 SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c )
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
-SRC_MANDATORY := test.c \
+SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
@@ -38,7 +38,7 @@ else
 endif
 
 CC := cc
-BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft
+BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft -Isrc/textures
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 

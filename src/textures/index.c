@@ -1,4 +1,5 @@
 #include "textures_internal.h"
+#include "textures_errors.h"
 
 void	textures_destroy(t_textures *textures, void *mlx_session)
 {
@@ -24,23 +25,21 @@ static void load_wall_pixels(t_textures *textures)
 	textures->wall.west.px.data = load_px_data(&textures->wall.west);
 }
 
-int	textures_load(t_textures *textures, void *mlx_session, const t_wall_texture_paths *paths)
+t_textures_status	textures_load(t_textures *textures, void *mlx_session, const t_wall_texture_paths *paths)
 {
     load_wall_textures(textures, mlx_session, paths);
     if (!textures->wall.north.img || !textures->wall.south.img
 		|| !textures->wall.east.img || !textures->wall.west.img)
 	{
 		textures_destroy(textures, mlx_session);
-		return (0); // TODO: error
+		return (TEX_ERR_LOAD_IMAGE);
 	}
-
 	load_wall_pixels(textures);
 	if (!textures->wall.north.px.data || !textures->wall.south.px.data
 		|| !textures->wall.east.px.data || !textures->wall.west.px.data)
 	{
 		textures_destroy(textures, mlx_session);
-		return (0); // TODO: error
+		return (TEX_ERR_LOAD_PIXELS);
 	}
-	
-    return (1); // // TODO: success
+    return (TEX_OK);
 }
