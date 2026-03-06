@@ -15,7 +15,7 @@ SRC_MANDATORY := test.c \
 	$(SRC_ENGINE) \
 	$(SRC_RENDER) \
 	$(SRC_RAYCAST) \
-	$(SRC_GRAPHICS)
+	$(SRC_TEXTURES)
 
 OBJ := $(SRC_MANDATORY:.c=.o)
 

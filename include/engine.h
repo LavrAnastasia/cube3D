@@ -2,7 +2,7 @@
 # define ENGINE_H
 
 #include "types.h"
-#include "graphics_types.h"
+#include "textures_types.h"
 
 typedef struct s_engine
 {

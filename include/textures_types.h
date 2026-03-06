@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_TYPES_H
-# define GRAPHICS_TYPES_H
+#ifndef TEXTURES_TYPES_H
+# define TEXTURES_TYPES_H
 
 # include "types.h"
 

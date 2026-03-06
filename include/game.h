@@ -2,7 +2,7 @@
 # define GAME_H
 
 # include "engine.h"
-# include "graphics.h"
+# include "textures.h"
 # include "scene.h"
 
 # define FOV 60

@@ -3,7 +3,7 @@
 
 #include <mlx.h>
 #include <stddef.h>
-#include "graphics_types.h"
+#include "textures_types.h"
 
 void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size);
 char	*load_px_data(t_image_buffer *buffer);
