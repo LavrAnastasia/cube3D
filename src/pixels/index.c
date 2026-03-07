@@ -9,7 +9,7 @@ void	pixels_put(t_px_buffer *buffer, int x, int y, t_color color)
 }
 
 
-t_color pixels_get(t_px_buffer *buffer, int x, int y)
+t_color pixels_get(const t_px_buffer *buffer, int x, int y)
 {
 	t_color		color;
 	const int	i = y * buffer->line_len + x * (buffer->bpp / 8);

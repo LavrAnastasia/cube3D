@@ -45,6 +45,48 @@ static t_position calc_hit_position(t_position player_pos, double ray_length, t_
 	};
 }	
 
+static int clamp(int value, int min, int max)
+{
+	if (value > max)
+		return (max);
+	if (value < min)
+		return (min);
+	return (value);
+}
+
+static double calc_position_along_wall(t_position hit_position, t_ray_crossing crossing)
+{
+	double position_along_wall;
+
+	if (crossing == R_CROSS_VERTICAL)
+		position_along_wall = (hit_position.y - floor(hit_position.y));
+	else
+		position_along_wall = (hit_position.x - floor(hit_position.x));	
+	return (position_along_wall);
+}
+
+static t_image_buffer *select_wall_texture(t_ray_intersection ray_intersection, t_textures *textures)
+{
+	t_image_buffer *wall_texture;
+
+	wall_texture = NULL;
+	if (ray_intersection.crossing == R_CROSS_VERTICAL)
+	{
+		if (ray_intersection.axis_direction.x == X_LEFT)
+			wall_texture = &textures->wall.west;
+		else if (ray_intersection.axis_direction.x == X_RIGHT)
+			wall_texture = &textures->wall.east;
+	}
+	else
+	{
+		if (ray_intersection.axis_direction.y == Y_TOP)
+			wall_texture = &textures->wall.north;
+		else if (ray_intersection.axis_direction.y == Y_BOTTOM)
+			wall_texture = &textures->wall.south;
+	}
+	return (wall_texture);
+}
+
 void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_textures *textures)
 {
 	const double scale = scene->camera.scale;
@@ -57,9 +99,7 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 	while (x < (size_t)window_size.width)
 	{
 		camera_x = 2.0 * ((double)x + 0.5) / (double)window_size.width - 1.0;
-		ray_angle = normalize_angle(
-			scene->player.angle +  atan(camera_x * scale));
-
+		ray_angle = normalize_angle(scene->player.angle +  atan(camera_x * scale));
 		ray_intersection = ray_dda(ray_angle,
 			scene->player.pos,
 			scene->map,
@@ -101,36 +141,9 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 		const t_position hit_position = calc_hit_position(
 			scene->player.pos, ray_intersection.ray_length, ray_intersection.ray_direction);
 
-		// TODO: position type?
+		const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
+		const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
 		
-		double position_down_wall;
-		t_image_buffer *wall_texture;
-		wall_texture = NULL;
-		// TODO: point type ?
-		int texture_y;
-
-		double position_along_wall;
-		// INIT POSITION ALONG WALL
-
-		if (ray_intersection.crossing == R_CROSS_VERTICAL)
-		{
-			position_along_wall = hit_position.y - floor(hit_position.y);
-
-			if (ray_intersection.axis_direction.x == X_LEFT)
-				wall_texture = &textures->wall.west;
-			else if (ray_intersection.axis_direction.x == X_RIGHT)
-				wall_texture = &textures->wall.east;
-		}
-		else
-		{
-			position_along_wall = hit_position.x - floor(hit_position.x);
-
-			if (ray_intersection.axis_direction.y == Y_TOP)
-				wall_texture = &textures->wall.north;
-			else if (ray_intersection.axis_direction.y == Y_BOTTOM)
-				wall_texture = &textures->wall.south;
-		}
-
 		// TODO: trigger a warning
 		if (wall_texture == NULL)
 		{
@@ -153,12 +166,14 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			texture_x = wall_texture->size.width - 1 - texture_x;  // TODO: check!!! flip moment
 		}
 
-		// TODO: separate fucntion for clamping
+		texture_x = clamp(texture_x, 0, wall_texture->size.width - 1);
 
-		if (texture_x >= wall_texture->size.width)
-			texture_x = wall_texture->size.width - 1;
-		if (texture_x < 0)
-			texture_x = 0;
+		// TODO: position type?
+		
+		double position_down_wall;
+		
+		// TODO: point type ?
+		int texture_y;
 
 		size_t y;
 
@@ -168,12 +183,7 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			position_down_wall = (double)(y - wall_bounds.top) / wall_height;
 			texture_y = (int)floor(position_down_wall * wall_texture->size.height);
 
-			// TODO: separate fucntion for clamping
-
-			if (texture_y >= wall_texture->size.height)
-				texture_y = wall_texture->size.height - 1;
-			if (texture_y < 0)
-				texture_y = 0;
+			texture_y = clamp(texture_y, 0, wall_texture->size.height - 1);
 
 			int color = pixels_get(&wall_texture->px, texture_x, texture_y);
 			pixels_put(buffer, x, y, color);
