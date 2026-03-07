@@ -102,7 +102,7 @@ static int calc_texture_x(double position_along_wall, t_ray_intersection ray_int
 	return (clamp(texture_x, 0, texture->size.width - 1));
 }
 
-static void render_wall(t_column_segment column, int texture_x, const t_image_buffer *texture, t_px_buffer *buffer)
+static void render_wall(t_column_segment column, t_wall_sample wall, t_px_buffer *buffer)
 {
 	const double	wall_height = column.y_range.end - column.y_range.start;	
 	double			position_down_wall;
@@ -114,11 +114,11 @@ static void render_wall(t_column_segment column, int texture_x, const t_image_bu
 	while (y < column.y_range.end)
 	{
 		position_down_wall = (double)(y - column.y_range.start) / wall_height;
-		texture_y = (int)floor(position_down_wall * texture->size.height);
+		texture_y = (int)floor(position_down_wall * wall.texture->size.height);
 
-		texture_y = clamp(texture_y, 0, texture->size.height - 1);
+		texture_y = clamp(texture_y, 0, wall.texture->size.height - 1);
 
-		color = pixels_get(&texture->px, texture_x, texture_y);
+		color = pixels_get(&wall.texture->px, wall.texture_x, texture_y);
 		pixels_put(buffer, column.x, y, color);
 		y++;
 	}
@@ -130,10 +130,42 @@ static void render_wall_fallback(size_t x, t_px_buffer *buffer, t_range range, t
 	render_vertical_segment(range, x, buffer, color);
 }
 
-static void render_ceiling_and_floor(t_column_segment ceiling, t_column_segment floor, t_px_buffer *buffer, t_palette *pallete)
+static void render_ceiling_and_floor(t_column_segment ceiling, t_column_segment floor, t_px_buffer *buffer, t_palette *palette)
 {
-	render_vertical_segment(ceiling.y_range, ceiling.x, buffer, pallete->ceiling);
-	render_vertical_segment(floor.y_range, floor.x, buffer, pallete->floor);
+	render_vertical_segment(ceiling.y_range, ceiling.x, buffer, palette->ceiling);
+	render_vertical_segment(floor.y_range, floor.x, buffer, palette->floor);
+}
+
+static t_wall_sample build_wall_sample(t_ray_intersection ray_intersection, t_textures *textures, t_position player_pos)
+{
+	const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
+	const t_position hit_position = calc_hit_position(player_pos, ray_intersection.ray_length, ray_intersection.ray_direction);
+	const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
+
+	if (wall_texture == NULL)
+		return (t_wall_sample){ .texture =wall_texture, .texture_x = 0 };
+
+	return (t_wall_sample){
+		.texture = wall_texture,
+		.texture_x = calc_texture_x(
+			position_along_wall,
+			ray_intersection,
+			wall_texture)
+	};
+}
+
+static void render_wall_segment(t_column_segment wall_column, t_wall_sample wall_sample, t_px_buffer *buffer, t_color fallback_color) {
+	if (wall_column.y_range.end <= wall_column.y_range.start) {
+		render_wall_fallback(wall_column.x, buffer, wall_column.y_range, fallback_color);
+		return;
+	}
+	
+	if (wall_sample.texture == NULL) {
+		render_wall_fallback(wall_column.x, buffer, wall_column.y_range, fallback_color);
+		return;
+	}
+	
+	render_wall(wall_column, wall_sample, buffer);
 }
 
 void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_textures *textures)
@@ -172,30 +204,12 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			buffer, &scene->palette
 		);
 
-		if (wall_range.end <= wall_range.start)
-		{
-			render_wall_fallback(x, buffer, wall_range, scene->palette.ceiling);
-			x++;
-			continue;
-		}
-
-		const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
-		
-		if (wall_texture == NULL)
-		{
-			render_wall_fallback(x, buffer, wall_range, scene->palette.ceiling);
-			x++;
-			continue;
-		}
-
-		const t_position hit_position = calc_hit_position(
-			scene->player.pos, ray_intersection.ray_length, ray_intersection.ray_direction);
-		const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
-		const int texture_x = calc_texture_x(position_along_wall, ray_intersection, wall_texture);
-
-
-		t_column_segment column_segment = (t_column_segment){.x = x, .y_range = wall_range};
-		render_wall(column_segment, texture_x, wall_texture, buffer);
+		render_wall_segment(
+			(t_column_segment){.x = x, .y_range = wall_range},
+			build_wall_sample(ray_intersection, textures, scene->player.pos),
+			buffer,
+			scene->palette.ceiling
+		);
 
 		x++;
 	}

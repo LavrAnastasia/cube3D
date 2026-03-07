@@ -22,11 +22,16 @@ typedef struct s_column_segment
 	t_range	y_range;
 } t_column_segment;
 
-typedef struct s_column_segments
+typedef struct s_wall_sample
 {
-	t_range	ceiling;
-	t_range	wall;
-	t_range	floor;
-}	t_column_segments;
+	const t_image_buffer	*texture;
+	int						texture_x;
+}	t_wall_sample;
+
+typedef struct s_frame
+{
+	t_px_buffer		*buffer;
+	t_dimensions	window_size;
+}	t_frame;
 
 #endif
