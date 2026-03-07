@@ -11,7 +11,7 @@ SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
 	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
-SRC_MANDATORY := test.c \
+SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
