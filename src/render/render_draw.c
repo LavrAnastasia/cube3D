@@ -15,10 +15,15 @@ void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer, int c
 	}	
 }
 
-void render_ceiling_and_floor(t_column_segment ceiling, t_column_segment floor, t_px_buffer *buffer, t_palette *palette)
+
+void render_ceiling_and_floor(t_column_segment wall_column, size_t window_height, t_px_buffer *buffer, t_palette *palette)
 {
-	render_vertical_segment(ceiling.y_range, ceiling.x, buffer, palette->ceiling);
-	render_vertical_segment(floor.y_range, floor.x, buffer, palette->floor);
+	render_vertical_segment(
+        (t_range){.start = 0, .end = wall_column.y_range.start},
+        wall_column.x, buffer, palette->ceiling);
+	render_vertical_segment(
+        (t_range){.start = wall_column.y_range.end, .end = window_height },
+        wall_column.x, buffer, palette->floor);
 }
 
 void render_wall(t_column_segment wall_column, t_wall_sample wall_sample, t_px_buffer *buffer, t_color fallback_color)

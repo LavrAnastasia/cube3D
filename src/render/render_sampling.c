@@ -7,12 +7,15 @@ static int calc_texture_x(double position_along_wall, t_ray_intersection ray_int
 
 t_wall_sample build_wall_sample(t_ray_intersection ray_intersection, const t_textures *textures, t_position player_pos)
 {
-	const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
-	const t_position hit_position = calc_hit_position(player_pos, ray_intersection.ray_length, ray_intersection.ray_direction);
-	const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
+	t_position	hit_position;
+	double		position_along_wall;
+	const		t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
 
 	if (wall_texture == NULL)
 		return (t_wall_sample){ .texture = wall_texture, .texture_x = 0 };
+
+	hit_position = calc_hit_position(player_pos, ray_intersection.ray_length, ray_intersection.ray_direction);
+	position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
 
 	return (t_wall_sample){
 		.texture = wall_texture,

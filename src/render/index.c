@@ -30,17 +30,14 @@ void render_scene(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer,
 			window_size, scale
 		);
 
-		render_ceiling_and_floor(
-			(t_column_segment){.x = x, .y_range = (t_range){.start = 0, .end = wall_range.start}},
-			(t_column_segment){.x = x, .y_range = (t_range){.start = wall_range.end, .end = (size_t)window_size.height}},
-			buffer, &scene->palette
-		);
+		t_column_segment wall_column = (t_column_segment){ .x = x, .y_range = wall_range} ;
+
+		render_ceiling_and_floor(wall_column, (size_t)window_size.height, buffer, &scene->palette);
 
 		render_wall(
-			(t_column_segment){.x = x, .y_range = wall_range},
+			wall_column,
 			build_wall_sample(ray_intersection, textures, scene->player.pos),
-			buffer,
-			scene->palette.ceiling
+			buffer, scene->palette.ceiling
 		);
 
 		x++;
