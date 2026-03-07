@@ -65,7 +65,7 @@ static double calc_position_along_wall(t_position hit_position, t_ray_crossing c
 	return (position_along_wall);
 }
 
-static t_image_buffer *select_wall_texture(t_ray_intersection ray_intersection, t_textures *textures)
+static const t_image_buffer *select_wall_texture(t_ray_intersection ray_intersection, t_textures *textures)
 {
 	t_image_buffer *wall_texture;
 
@@ -85,6 +85,50 @@ static t_image_buffer *select_wall_texture(t_ray_intersection ray_intersection, 
 			wall_texture = &textures->wall.south;
 	}
 	return (wall_texture);
+}
+
+static int calc_texture_x(double position_along_wall, t_ray_intersection ray_intersection, const t_image_buffer *texture)
+{
+	int texture_x;
+
+	texture_x = (int)floor(position_along_wall * texture->size.width);
+	if ((ray_intersection.crossing == R_CROSS_VERTICAL && ray_intersection.axis_direction.x == X_RIGHT)
+		|| (ray_intersection.crossing == R_CROSS_HORIZONTAL && ray_intersection.axis_direction.y == Y_BOTTOM)
+	)
+	{
+		texture_x = texture->size.width - 1 - texture_x;  // TODO: check!!! flip moment
+	}
+
+	return (clamp(texture_x, 0, texture->size.width - 1));
+}
+
+static void render_wall(int x, int texture_x, t_wall_bounds wall_bounds, const t_image_buffer *texture, t_px_buffer *buffer)
+{
+	const double wall_height = wall_bounds.bottom - wall_bounds.top;	
+	double position_down_wall;
+	int texture_y;
+	size_t y;
+
+	y = wall_bounds.top;
+	while (y < wall_bounds.bottom)
+	{
+		position_down_wall = (double)(y - wall_bounds.top) / wall_height;
+		texture_y = (int)floor(position_down_wall * texture->size.height);
+
+		texture_y = clamp(texture_y, 0, texture->size.height - 1);
+
+		int color = pixels_get(&texture->px, texture_x, texture_y);
+		pixels_put(buffer, x, y, color);
+		y++;
+	}
+}
+
+// TODO: trigger a warning
+static void render_wall_fallback(int x, t_px_buffer *buffer, t_wall_bounds wall_bounds, t_color color)
+{
+	render_vertical_segment(
+		(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
+		x, buffer, color);
 }
 
 void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_textures *textures)
@@ -126,14 +170,9 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			(t_range){.start = wall_bounds.bottom, .end = (size_t)window_size.height},
 			x, buffer, scene->palette.floor);
 
-		const double wall_height = wall_bounds.bottom - wall_bounds.top;
-
-		// TODO: trigger a warning
 		if (wall_bounds.bottom <= wall_bounds.top)
 		{
-			render_vertical_segment(
-				(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
-				x, buffer, scene->palette.ceiling);
+			render_wall_fallback(x, buffer, wall_bounds, scene->palette.ceiling);
 			x++;
 			continue;
 		}
@@ -144,51 +183,17 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 		const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
 		const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
 		
-		// TODO: trigger a warning
 		if (wall_texture == NULL)
 		{
-			render_vertical_segment(
-				(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
-				x, buffer, scene->palette.ceiling);
+			render_wall_fallback(x, buffer, wall_bounds, scene->palette.ceiling);
 			x++;
 			continue;
 		}
 
-		// INIT TEXTURE
+		const int texture_x = calc_texture_x(position_along_wall, ray_intersection, wall_texture);
 
-		int texture_x;
+		render_wall(x, texture_x, wall_bounds, wall_texture, buffer);
 
-		texture_x = (int)floor(position_along_wall * wall_texture->size.width);
-		if ((ray_intersection.crossing == R_CROSS_VERTICAL && ray_intersection.axis_direction.x == X_RIGHT)
-			|| (ray_intersection.crossing == R_CROSS_HORIZONTAL && ray_intersection.axis_direction.y == Y_BOTTOM)
-		)
-		{
-			texture_x = wall_texture->size.width - 1 - texture_x;  // TODO: check!!! flip moment
-		}
-
-		texture_x = clamp(texture_x, 0, wall_texture->size.width - 1);
-
-		// TODO: position type?
-		
-		double position_down_wall;
-		
-		// TODO: point type ?
-		int texture_y;
-
-		size_t y;
-
-		y = wall_bounds.top;
-		while (y < wall_bounds.bottom)
-		{
-			position_down_wall = (double)(y - wall_bounds.top) / wall_height;
-			texture_y = (int)floor(position_down_wall * wall_texture->size.height);
-
-			texture_y = clamp(texture_y, 0, wall_texture->size.height - 1);
-
-			int color = pixels_get(&wall_texture->px, texture_x, texture_y);
-			pixels_put(buffer, x, y, color);
-			y++;
-		}
 		x++;
 	}
 }
