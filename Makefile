@@ -7,10 +7,11 @@ SRC_PIXELS := $(addprefix $(DIR_SRC)pixels/, index.c)
 SRC_TEXTURES := $(addprefix $(DIR_SRC)textures/, index.c \
 	load_utils.c destroy_utils.c)
 SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
-SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c )
+SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
+	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
-SRC_MANDATORY := index.c \
+SRC_MANDATORY := test.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \

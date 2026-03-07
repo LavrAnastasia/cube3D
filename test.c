@@ -88,7 +88,7 @@ int	main(int argc, char **argv)
         engine_shutdown(&game.engine);
         return (1);
     }
-    render(&game.scene, game.engine.window_size, &game.engine.buffer.px, &game.textures);
+    render_scene(&game.scene, game.engine.window_size, &game.engine.buffer.px, &game.textures);
     mlx_put_image_to_window(game.engine.mlx_session,
                         game.engine.mlx_window,
                         game.engine.buffer.img,
