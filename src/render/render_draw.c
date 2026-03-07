@@ -16,7 +16,7 @@ void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer, int c
 }
 
 
-void render_ceiling_and_floor(t_column_segment wall_column, size_t window_height, t_px_buffer *buffer, t_palette *palette)
+void render_ceiling_and_floor(t_column_segment wall_column, size_t window_height, t_px_buffer *buffer, const t_palette *palette)
 {
 	render_vertical_segment(
         (t_range){.start = 0, .end = wall_column.y_range.start},

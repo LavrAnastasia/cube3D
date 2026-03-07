@@ -40,7 +40,7 @@ t_wall_sample	build_wall_sample(t_ray_intersection ray_intersection, const t_tex
 int				clamp(int value, int min, int max);
 t_position		calc_hit_position(t_position player_pos, double ray_length, t_vector ray_direction);
 t_range			calc_wall_range_for_ray(double ray_length, double angle_diff, t_dimensions window_size, double scale);
-void			render_ceiling_and_floor(t_column_segment wall_column, size_t window_height, t_px_buffer *buffer, t_palette *palette);
+void			render_ceiling_and_floor(t_column_segment wall_column, size_t window_height, t_px_buffer *buffer, const t_palette *palette);
 void			render_wall(t_column_segment wall_column, t_wall_sample wall_sample, t_px_buffer *buffer, t_color fallback_color);
 void			render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer, int color);
 

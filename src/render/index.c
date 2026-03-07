@@ -1,10 +1,10 @@
 #include "scene.h"
 #include "render_internal.h"
 
-static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, t_scene *scene);
+static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, const t_scene *scene);
 static void 		render_missed_column(size_t window_height, size_t x, t_px_buffer *buffer, t_color color);
 
-void render_scene(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, const t_textures *textures)
+void render_scene(const t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, const t_textures *textures)
 {
 	size_t x;
 	t_column_ray ray;
@@ -17,7 +17,7 @@ void render_scene(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer,
 		ray = cast_column_ray(x, window_size, scene);
 		if (ray.intersection.ray_length == DBL_MAX)
 		{
-			render_missed_column(window_size.height, x, buffer, scene->palette.ceiling);
+			render_missed_column(x, window_size.height, buffer, scene->palette.ceiling);
 			x++;
 			continue;
 		}
@@ -32,7 +32,7 @@ void render_scene(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer,
 	}
 }
 
-static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, t_scene *scene)
+static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, const t_scene *scene)
 {
 	const double	scale = scene->camera.scale;
 	const double	camera_x = 2.0 * ((double)x + 0.5) / (double)window_size.width - 1.0;
@@ -44,7 +44,7 @@ static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, t_scene 
 	});
 }
 
-static void render_missed_column(size_t window_height, size_t x, t_px_buffer *buffer, t_color color)
+static void render_missed_column(size_t x, size_t window_height, t_px_buffer *buffer, t_color color)
 {
 	render_vertical_segment((t_range){.start = 0, .end = window_height}, x, buffer, color);
 	// TODO: warning
