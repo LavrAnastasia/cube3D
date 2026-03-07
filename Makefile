@@ -38,7 +38,8 @@ else
 endif
 
 CC := cc
-BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft -Isrc/textures
+BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
+	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 
