@@ -16,17 +16,17 @@ typedef struct s_range
 	size_t	end;
 }	t_range;
 
+typedef struct s_column_segment
+{
+	size_t	x;
+	t_range	y_range;
+} t_column_segment;
+
 typedef struct s_column_segments
 {
 	t_range	ceiling;
 	t_range	wall;
 	t_range	floor;
 }	t_column_segments;
-
-typedef struct s_wall_bounds
-{
-	size_t	top;
-	size_t	bottom;
-}	t_wall_bounds;
 
 #endif

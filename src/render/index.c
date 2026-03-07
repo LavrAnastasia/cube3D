@@ -22,7 +22,7 @@ static double correct_fisheye_distance(double ray_length, double angle_diff)
 	return (perp_distance);
 }
 
-static t_wall_bounds calc_wall_bounds(double distance, t_dimensions window_size, double scale)
+static t_range calc_wall_range(double distance, t_dimensions window_size, double scale)
 {
 	const double wall_height = (((double)window_size.width * 0.5) / scale) / distance;
 	double top;
@@ -34,7 +34,7 @@ static t_wall_bounds calc_wall_bounds(double distance, t_dimensions window_size,
 		top = 0;
 	if (bottom > (double)window_size.height)
 		bottom = window_size.height;
-	return (t_wall_bounds){.top = (size_t)top, .bottom = (size_t)bottom};
+	return (t_range){.start = (size_t)top, .end = (size_t)bottom};
 }
 
 static t_position calc_hit_position(t_position player_pos, double ray_length, t_vector ray_direction)
@@ -102,33 +102,38 @@ static int calc_texture_x(double position_along_wall, t_ray_intersection ray_int
 	return (clamp(texture_x, 0, texture->size.width - 1));
 }
 
-static void render_wall(int x, int texture_x, t_wall_bounds wall_bounds, const t_image_buffer *texture, t_px_buffer *buffer)
+static void render_wall(t_column_segment column, int texture_x, const t_image_buffer *texture, t_px_buffer *buffer)
 {
-	const double wall_height = wall_bounds.bottom - wall_bounds.top;	
-	double position_down_wall;
-	int texture_y;
-	size_t y;
+	const double	wall_height = column.y_range.end - column.y_range.start;	
+	double			position_down_wall;
+	int				texture_y;
+	size_t			y;
+	int				color;
 
-	y = wall_bounds.top;
-	while (y < wall_bounds.bottom)
+	y = column.y_range.start;
+	while (y < column.y_range.end)
 	{
-		position_down_wall = (double)(y - wall_bounds.top) / wall_height;
+		position_down_wall = (double)(y - column.y_range.start) / wall_height;
 		texture_y = (int)floor(position_down_wall * texture->size.height);
 
 		texture_y = clamp(texture_y, 0, texture->size.height - 1);
 
-		int color = pixels_get(&texture->px, texture_x, texture_y);
-		pixels_put(buffer, x, y, color);
+		color = pixels_get(&texture->px, texture_x, texture_y);
+		pixels_put(buffer, column.x, y, color);
 		y++;
 	}
 }
 
 // TODO: trigger a warning
-static void render_wall_fallback(int x, t_px_buffer *buffer, t_wall_bounds wall_bounds, t_color color)
+static void render_wall_fallback(size_t x, t_px_buffer *buffer, t_range range, t_color color)
 {
-	render_vertical_segment(
-		(t_range){.start = wall_bounds.top, .end = wall_bounds.bottom},
-		x, buffer, color);
+	render_vertical_segment(range, x, buffer, color);
+}
+
+static void render_ceiling_and_floor(t_column_segment ceiling, t_column_segment floor, t_px_buffer *buffer, t_palette *pallete)
+{
+	render_vertical_segment(ceiling.y_range, ceiling.x, buffer, pallete->ceiling);
+	render_vertical_segment(floor.y_range, floor.x, buffer, pallete->floor);
 }
 
 void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_textures *textures)
@@ -154,45 +159,43 @@ void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, t_tex
 			render_vertical_segment(
 				(t_range){.start = 0, .end = (size_t)window_size.height},
 				x, buffer, scene->palette.ceiling);
-			// TODO: trigger warning
 			x++;
 			continue;
 		}
 
 		double perp_distance = correct_fisheye_distance(ray_intersection.ray_length, ray_angle - scene->player.angle);
-		t_wall_bounds wall_bounds = calc_wall_bounds(perp_distance, window_size, scale);
-		
-		render_vertical_segment(
-			(t_range){.start = 0, .end = wall_bounds.top},
-			x, buffer, scene->palette.ceiling);
+		t_range wall_range = calc_wall_range(perp_distance, window_size, scale);
 
-		render_vertical_segment(
-			(t_range){.start = wall_bounds.bottom, .end = (size_t)window_size.height},
-			x, buffer, scene->palette.floor);
+		render_ceiling_and_floor(
+			(t_column_segment){.x = x, .y_range = (t_range){.start = 0, .end = wall_range.start}},
+			(t_column_segment){.x = x, .y_range = (t_range){.start = wall_range.end, .end = (size_t)window_size.height}},
+			buffer, &scene->palette
+		);
 
-		if (wall_bounds.bottom <= wall_bounds.top)
+		if (wall_range.end <= wall_range.start)
 		{
-			render_wall_fallback(x, buffer, wall_bounds, scene->palette.ceiling);
+			render_wall_fallback(x, buffer, wall_range, scene->palette.ceiling);
+			x++;
+			continue;
+		}
+
+		const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
+		
+		if (wall_texture == NULL)
+		{
+			render_wall_fallback(x, buffer, wall_range, scene->palette.ceiling);
 			x++;
 			continue;
 		}
 
 		const t_position hit_position = calc_hit_position(
 			scene->player.pos, ray_intersection.ray_length, ray_intersection.ray_direction);
-
 		const double position_along_wall = calc_position_along_wall(hit_position, ray_intersection.crossing);
-		const t_image_buffer *wall_texture = select_wall_texture(ray_intersection, textures);
-		
-		if (wall_texture == NULL)
-		{
-			render_wall_fallback(x, buffer, wall_bounds, scene->palette.ceiling);
-			x++;
-			continue;
-		}
-
 		const int texture_x = calc_texture_x(position_along_wall, ray_intersection, wall_texture);
 
-		render_wall(x, texture_x, wall_bounds, wall_texture, buffer);
+
+		t_column_segment column_segment = (t_column_segment){.x = x, .y_range = wall_range};
+		render_wall(column_segment, texture_x, wall_texture, buffer);
 
 		x++;
 	}
