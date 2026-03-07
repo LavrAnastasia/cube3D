@@ -30,6 +30,12 @@ typedef struct s_wall_sample
 	int						texture_x;
 }	t_wall_sample;
 
+typedef struct s_column_ray
+{
+	double				angle;
+	t_ray_intersection	intersection;
+}	t_column_ray;
+
 t_wall_sample	build_wall_sample(t_ray_intersection ray_intersection, const t_textures *textures, t_position player_pos);
 int				clamp(int value, int min, int max);
 t_position		calc_hit_position(t_position player_pos, double ray_length, t_vector ray_direction);
