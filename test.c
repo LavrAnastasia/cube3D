@@ -76,15 +76,19 @@ int	main(int argc, char **argv)
         return (1);
     }
 
-    // INIT GRAPHICS
-    game.graphics.tile_size = TILE_SIZE; 
-    if (!graphics_load(&game.graphics, game.engine.mlx_session)) {
-        // TODO: clean other sources
-        graphics_destroy(&game.graphics, game.engine.mlx_session);
+    // LOAD TEXTURES
+    const t_wall_texture_paths paths = (t_wall_texture_paths) {
+        .east =  "resources/ea.xpm",
+        .north = "resources/no.xpm",
+        .south = "resources/so.xpm", 
+        .west = "resources/we.xpm"
+    };
+
+    if (textures_load(&game.textures, game.engine.mlx_session, &paths) != TEX_OK) {
         engine_shutdown(&game.engine);
         return (1);
     }
-    render(&game.scene, game.engine.window_size, &game.engine.buffer.px);
+    render_scene(&game.scene, game.engine.window_size, &game.engine.buffer.px, &game.textures);
     mlx_put_image_to_window(game.engine.mlx_session,
                         game.engine.mlx_window,
                         game.engine.buffer.img,

@@ -1,74 +1,51 @@
-#include "render.h"
+#include "scene.h"
 #include "render_internal.h"
 
-static void render_vertical_segment(t_range range, size_t x, t_px_buffer *buffer, int color)
+static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, const t_scene *scene);
+static void 		render_missed_column(size_t window_height, size_t x, t_px_buffer *buffer, t_color color);
+
+void render_scene(const t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, const t_textures *textures)
 {
-	size_t y;
-
-	y = range.start;
-	while (y < range.end)
-	{
-		put_pixel(buffer, x, y, color);
-		y++;
-	}	
-}
-
-static double calc_distance(double ray_distance, double angle_diff)
-{
-	const double distance = ray_distance * cos(angle_diff);
-	
-	if (distance < EPS_DIST)
-		return (EPS_DIST);
-	return (distance);
-}
-
-static t_wall_bounds calc_wall_bounds(double distance, t_dimensions window_size, double scale)
-{
-	const double wall_height = (((double)window_size.width * 0.5) / scale) / distance;
-	double top;
-	double bottom;
-
-	top = (window_size.height / 2.0) - (wall_height / 2.0);
-	bottom = top + wall_height;
-	if (top < 0)
-		top = 0;
-	if (bottom > (double)window_size.height)
-		bottom = window_size.height;
-	return (t_wall_bounds){.top = (size_t)top, .bottom = (size_t)bottom};
-}
-
-void render(t_scene *scene, t_dimensions window_size, t_px_buffer *buffer)
-{
-	const double scale = scene->camera.scale;
-	double camera_x;
-	double ray_angle;
 	size_t x;
-	t_ray_intersection ray_intersection;
+	t_column_ray ray;
+	t_range wall_range;
+	t_column_segment wall_column;
 
 	x = 0;
 	while (x < (size_t)window_size.width)
-	{
-		camera_x = 2.0 * ((double)x + 0.5) / (double)window_size.width - 1.0;
-		ray_angle = normalize_angle(
-			scene->player.angle +  atan(camera_x * scale));
-		ray_intersection = ray_dda(ray_angle,
-			scene->player.pos,
-			scene->map,
-			scene->map_size
-		);
-
-		double distance = calc_distance(ray_intersection.distance, ray_angle - scene->player.angle);
-		t_wall_bounds wall_bounds = calc_wall_bounds(distance, window_size, scale);
-		
-		render_vertical_segment(
-			(t_range){.start = 0, .end = wall_bounds.top},
-			x, buffer, scene->palette.ceiling);
-
-		// TODO: RENDER WALL
-
-		render_vertical_segment(
-			(t_range){.start = wall_bounds.bottom, .end = (size_t)window_size.height},
-			x, buffer, scene->palette.floor);
-		x += 1;
+	{	
+		ray = cast_column_ray(x, window_size, scene);
+		if (ray.intersection.ray_length == DBL_MAX)
+		{
+			render_missed_column(x, window_size.height, buffer, scene->palette.ceiling);
+			x++;
+			continue;
+		}
+		wall_range = calc_wall_range_for_ray(ray.intersection.ray_length,
+			ray.angle - scene->player.angle, window_size, scene->camera.scale);
+		wall_column = (t_column_segment){ .x = x, .y_range = wall_range} ;
+		render_ceiling_and_floor(wall_column, (size_t)window_size.height, buffer, &scene->palette);
+		render_wall(wall_column,
+			build_wall_sample(ray.intersection, textures, scene->player.pos),
+			buffer, scene->palette.ceiling);
+		x++;
 	}
+}
+
+static t_column_ray cast_column_ray(size_t x, t_dimensions window_size, const t_scene *scene)
+{
+	const double	scale = scene->camera.scale;
+	const double	camera_x = 2.0 * ((double)x + 0.5) / (double)window_size.width - 1.0;
+	const double	angle = normalize_angle(scene->player.angle +  atan(camera_x * scale));
+
+	return ((t_column_ray){
+		.angle = angle,
+		.intersection = ray_dda(angle, scene->player.pos, scene->map, scene->map_size)
+	});
+}
+
+static void render_missed_column(size_t x, size_t window_height, t_px_buffer *buffer, t_color color)
+{
+	render_vertical_segment((t_range){.start = 0, .end = window_height}, x, buffer, color);
+	// TODO: warning
 }

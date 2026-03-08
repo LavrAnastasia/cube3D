@@ -25,7 +25,7 @@ static void	clean_mlx_session(t_engine *engine)
 static int	init_image_buffer(t_engine *engine)
 {
 	engine->buffer.img = mlx_new_image(
-		engine->mlx_session, engine->window_size.width, engine->window_size.height);
+		engine->mlx_session, engine->buffer.size.width, engine->buffer.size.height);
 	if (!engine->buffer.img)
 		return (0); // TODO: error
 	engine->buffer.px.data = mlx_get_data_addr(
@@ -66,6 +66,7 @@ static int	init_mlx(t_engine *engine, char *game_name)
 
 int	engine_init(t_engine *engine, char *game_name)
 {
+	engine->buffer.size = engine->window_size;
     if (!init_mlx(engine, game_name) || !init_image_buffer(engine))
     {
         engine_shutdown(engine);

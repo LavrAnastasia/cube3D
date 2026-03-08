@@ -2,12 +2,11 @@
 # define GAME_H
 
 # include "engine.h"
-# include "graphics.h"
+# include "textures.h"
 # include "scene.h"
 
 # define FOV 60
 # define GAME_TITLE  "CUB3D"
-# define TILE_SIZE 64
 
 # ifdef __linux__
 #  define MAX_WIN_WIDTH 2560
@@ -20,7 +19,7 @@
 typedef struct s_game
 {
 	t_engine		engine;
-	t_graphics		graphics;
+	t_textures		textures;
 	t_scene			scene;
 }	t_game;
 

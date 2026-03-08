@@ -3,19 +3,22 @@ NAME := cub3D
 DIR_SRC := src/
 
 SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
-SRC_GRAPHICS := $(addprefix $(DIR_SRC)graphics/, index.c \
-	load_utils.c)
+SRC_PIXELS := $(addprefix $(DIR_SRC)pixels/, index.c)
+SRC_TEXTURES := $(addprefix $(DIR_SRC)textures/, index.c \
+	textures_load.c textures_destroy.c)
 SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
-SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c )
+SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
+	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
 SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
+	$(SRC_PIXELS) \
 	$(SRC_RENDER) \
 	$(SRC_RAYCAST) \
-	$(SRC_GRAPHICS)
+	$(SRC_TEXTURES)
 
 OBJ := $(SRC_MANDATORY:.c=.o)
 
@@ -36,7 +39,8 @@ else
 endif
 
 CC := cc
-BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft
+BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
+	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 
