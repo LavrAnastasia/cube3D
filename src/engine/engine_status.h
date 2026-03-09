@@ -1,0 +1,13 @@
+#ifndef ENGINE_STATUS_H
+# define ENGINE_STATUS_H
+
+typedef enum e_engine_status
+{
+	ENGINE_OK = 0,
+	ENGINE_ERR_INIT_MLX,
+	ENGINE_ERR_CREATE_WINDOW,
+	ENGINE_ERR_CREATE_IMAGE,
+	ENGINE_ERR_GET_IMAGE_DATA
+}	t_engine_status;
+
+#endif

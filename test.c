@@ -71,7 +71,7 @@ int	main(int argc, char **argv)
         .width = MAX_WIN_WIDTH,
         .height = MAX_WIN_HEIGHT
     };
-    if (!engine_init(&game.engine, GAME_TITLE)) {
+    if (engine_init(&game.engine, GAME_TITLE) != ENGINE_OK) {
         // TODO: clean other sources
         return (1);
     }

@@ -2,7 +2,8 @@ NAME := cub3D
 
 DIR_SRC := src/
 
-SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
+SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c \
+	engine_hooks.c engine_mlx.c)
 SRC_PIXELS := $(addprefix $(DIR_SRC)pixels/, index.c)
 SRC_TEXTURES := $(addprefix $(DIR_SRC)textures/, index.c \
 	textures_load.c textures_destroy.c)
@@ -11,7 +12,7 @@ SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
 	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
-SRC_MANDATORY := index.c \
+SRC_MANDATORY := test.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
