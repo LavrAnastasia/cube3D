@@ -1,6 +1,7 @@
 #include "game.h"
 #include "libft.h"
 #include "render.h"
+#include "movement.h"
 // module engine
 #include "math_u.h" // TODO: prbl delete in future
 #include <mlx.h>
@@ -86,7 +87,7 @@ int game_on_tick(void *data)
 		return (0);
 	}
 
-	// calc angles and poses
+	update_player_movement(&game->scene, &game->controls_state);
 
 	render_scene(&game->scene, game->engine.window_size, &game->engine.buffer.px, &game->textures);
 	mlx_put_image_to_window(game->engine.mlx_session, game->engine.mlx_window,

@@ -1,6 +1,6 @@
 #include "raycast.h"
 #include "raycast_internal.h"
-#include "map.h" // TODO:  map[map_y][map_x] != TILE_WALL -- is_inbounds and is_wall shoul bw helpers
+#include "map_utils.h" // TODO:  think about it — is it stull needed
 
 static t_axis_direction	calc_axis_direction(double ray_direction_x, double ray_direction_y)
 {
@@ -27,19 +27,6 @@ static double ray_delta_distance(double ray_direction_value)
     if (fabs(ray_direction_value) < eps)
         return DBL_MAX;
     return fabs(1.0 / ray_direction_value);
-}
-
-static int	is_in_bounds(t_point point, t_dimensions size)
-{
-	return (
-		point.x >= 0 && point.x < size.width
-		&& point.y >= 0 && point.y < size.height
-	);
-}
-
-static int	is_wall(char tile)
-{
-    return (tile == TILE_WALL);
 }
 
 t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_dimensions map_size)
@@ -94,7 +81,7 @@ t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_di
     else if (axis_direction.y == Y_BOTTOM)
         step_y = 1;
 
-    while (is_in_bounds(point, map_size) && !is_wall(map[point.y][point.x])) 
+    while (is_in_bounds(point, map_size) && !is_wall(point, map)) 
     {
         if (step_y == 0 || (step_x != 0 && side_dist_x < side_dist_y))
         {
