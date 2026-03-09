@@ -21,9 +21,9 @@ int sign(double value)
     int sign;
 
     sign = 0;
-    if (value < 0)
+    if (value < -1e-6)
         sign = -1;
-    else if (value > 0)
+    else if (value > 1e-6)
         sign = 1;
     return (sign); 
 }
