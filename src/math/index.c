@@ -15,3 +15,15 @@ double normalize_angle(double angle)
         angle -= two_pi;
     return (angle);
 }
+
+int sign(double value)
+{
+    int sign;
+
+    sign = 0;
+    if (value < 0)
+        sign = -1;
+    else if (value > 0)
+        sign = 1;
+    return (sign); 
+}

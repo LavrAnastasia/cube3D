@@ -16,7 +16,7 @@ SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c )
 
 SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map_utils/, index.c )
 
-SRC_MANDATORY := test.c \
+SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
