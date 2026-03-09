@@ -4,6 +4,7 @@
 # include "engine.h"
 # include "textures.h"
 # include "scene.h"
+# include "controls_state.h"
 
 # define FOV 60
 # define GAME_TITLE  "CUB3D"
@@ -18,9 +19,10 @@
 
 typedef struct s_game
 {
-	t_engine		engine;
-	t_textures		textures;
-	t_scene			scene;
+	t_engine			engine;
+	t_textures			textures;
+	t_scene				scene;
+	t_controls_state 	controls_state;
 }	t_game;
 
 #endif

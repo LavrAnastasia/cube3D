@@ -5,38 +5,74 @@
 #include "math_u.h" // TODO: prbl delete in future
 #include <mlx.h>
 
+#include "keys.h" // TODO: place in GAME CONTROLS HANDLERS file
+
 #define SIZE 10 // TODO: delete
 
 
+// GAME LEVEL
 
-int handle_key_down(int keycode, void *data)
+// GAME CONTROLS HANDLERS
+int game_on_key_down(int keycode, void *data)
 {
-	(void) keycode;
-	(void) data;
+	t_game *game;
+
+	game = (t_game *)data;
+	if (keycode == KEY_ESC)
+		game->controls_state.quit_requested = true;
+	else if (keycode == KEY_W)
+		game->controls_state.move_forward = true;
+	else if (keycode == KEY_S)
+		game->controls_state.move_backward = true;
+	else if (keycode == KEY_A)
+		game->controls_state.move_left = true;
+	else if (keycode == KEY_D)
+		game->controls_state.move_right = true;
+	else if (keycode == KEY_LEFT)
+		game->controls_state.turn_left = true;
+	else if (keycode == KEY_RIGHT)
+		game->controls_state.turn_right = true;
 	return (0);
 }
 
-int handle_key_up(int keycode, void *data){
-	(void) keycode;
-	(void) data;
-	return (0);
-}
-
-
-int handle_close(void *data)
+int game_on_key_up(int keycode, void *data)
 {
-	(void) data;
-	exit(EXIT_SUCCESS);
+	t_game *game;
+
+	game = (t_game *)data;
+	if (keycode == KEY_ESC)
+		game->controls_state.quit_requested = true;
+	else if (keycode == KEY_W)
+		game->controls_state.move_forward = false;
+	else if (keycode == KEY_S)
+		game->controls_state.move_backward = false;
+	else if (keycode == KEY_A)
+		game->controls_state.move_left = false;
+	else if (keycode == KEY_D)
+		game->controls_state.move_right = false;
+	else if (keycode == KEY_LEFT)
+		game->controls_state.turn_left = false;
+	else if (keycode == KEY_RIGHT)
+		game->controls_state.turn_right = false;
 	return (0);
 }
 
-int handle_game_tick(void *data)
+int game_on_close(void *data)
+{
+	t_game *game;
+
+	game = (t_game *)data;
+	game->controls_state.quit_requested = true;
+	return (0);
+}
+
+int game_on_tick(void *data)
 {
 	(void) data;
 	return (0);
 }
 	
-
+// GAME STARTs
 int	main(int argc, char **argv)
 {
 	(void) argc;
@@ -106,11 +142,11 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	game.engine.events.data = NULL;
-	game.engine.events.on_close = handle_close;
-	game.engine.events.on_key_down = handle_key_down;
-	game.engine.events.on_key_up = handle_key_up;
-	game.engine.events.on_tick = handle_game_tick;
+	game.engine.events.data = &game;
+	game.engine.events.on_close = game_on_close;
+	game.engine.events.on_key_down = game_on_key_down;
+	game.engine.events.on_key_up = game_on_key_up;
+	game.engine.events.on_tick = game_on_tick;
 
 	// LOAD TEXTURES
 	const t_wall_texture_paths paths = (t_wall_texture_paths) {
