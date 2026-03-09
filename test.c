@@ -12,6 +12,17 @@
 
 // GAME LEVEL
 
+// GAME LIVECYCEL
+void game_shutdown(t_game *game)
+{
+
+	// TODO: DESTROY MAP and all memory objects
+	textures_destroy(&game->textures, game->engine.mlx_session);
+	engine_shutdown(&game->engine);
+	exit(EXIT_SUCCESS);
+}
+
+
 // GAME CONTROLS HANDLERS
 int game_on_key_down(int keycode, void *data)
 {
@@ -40,9 +51,7 @@ int game_on_key_up(int keycode, void *data)
 	t_game *game;
 
 	game = (t_game *)data;
-	if (keycode == KEY_ESC)
-		game->controls_state.quit_requested = true;
-	else if (keycode == KEY_W)
+	if (keycode == KEY_W)
 		game->controls_state.move_forward = false;
 	else if (keycode == KEY_S)
 		game->controls_state.move_backward = false;
@@ -68,7 +77,20 @@ int game_on_close(void *data)
 
 int game_on_tick(void *data)
 {
-	(void) data;
+	t_game *game;
+
+	game = (t_game *)data;
+	if (game->controls_state.quit_requested)
+	{
+		game_shutdown(game);
+		return (0);
+	}
+
+	// calc angles and poses
+
+	render_scene(&game->scene, game->engine.window_size, &game->engine.buffer.px, &game->textures);
+	mlx_put_image_to_window(game->engine.mlx_session, game->engine.mlx_window,
+						game->engine.buffer.img, 0, 0);
 	return (0);
 }
 	
@@ -77,15 +99,6 @@ int	main(int argc, char **argv)
 {
 	(void) argc;
 	(void) argv;
-
-	// Init Game
-	// Validate Input
-	// Validate Maps
-	// Parse Input & Init Game
-	// Init Graphics
-	// Render
-	// Hooks
-	// Mlx_loop
 
 	t_game	game;
 
@@ -160,11 +173,6 @@ int	main(int argc, char **argv)
 		engine_shutdown(&game.engine);
 		return (1);
 	}
-	render_scene(&game.scene, game.engine.window_size, &game.engine.buffer.px, &game.textures);
-	mlx_put_image_to_window(game.engine.mlx_session,
-						game.engine.mlx_window,
-						game.engine.buffer.img,
-						0, 0);
 	engine_run(&game.engine);
 
 	return (0);
