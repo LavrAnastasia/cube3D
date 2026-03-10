@@ -1,20 +1,28 @@
 #include "parsing.h"
 
-int parse_texture(char *raw, char **saved, const char *key_name)
+static bool fill_texture_path(char *line, char **path, t_direction_key key)
 {
-    char *path;
+    char *value;
     size_t len;
 
-    path = skip_spaces(raw);
-    if(!path || *path == '\0'|| *path == '\n')
-        return(print_error_key(key_name, NO_PATH));
-    *saved = ft_strdup(path);
-    if(!*saved)
-        return(print_error_msg(ERR_MALLOC));
-    len = ft_strlen(*saved);
-    if(len > 0 && (*saved)[len - 1] == '\n')
-        (*saved)[len - 1] = '\0';
-    return (0); 
+    value = skip_spaces(line);
+    if(!value || *value == '\0'|| *value == '\n')
+    {
+        print_error_key(map_key(key), NO_PATH);
+        return (false);
+    }
+        
+    *path = ft_strdup(value);
+    if(!*path)
+    {
+        print_error_msg(ERR_MALLOC);
+        return (false);
+    }
+        
+    len = ft_strlen(*path);
+    if(len > 0 && (*path)[len - 1] == '\n') //TODO added skip for space from end
+        (*path)[len - 1] = '\0';
+    return (true); 
 }
 int parse_color(char *raw, t_rgb *color, const char *key_name)
 {
@@ -33,20 +41,20 @@ int parse_color(char *raw, t_rgb *color, const char *key_name)
     return (0);
 }
 
-int handle_texture_key(char *trim, t_game *game)
+bool fill_texture_paths(char *line, t_game *game)
 {
-    if(is_direction_config(trim, 'N', 'O'))
-        return(parse_texture(trim + 2, &game->config.no_path, "NO"));
-    if(is_direction_config(trim, 'S', 'O'))
-        return(parse_texture(trim + 2, &game->config.so_path, "SO"));
-    if(is_direction_config(trim, 'W', 'E'))
-        return(parse_texture(trim + 2, &game->config.we_path, "WE"));
-    if(is_direction_config(trim, 'E', 'A'))
-        return(parse_texture(trim + 2, &game->config.ea_path, "EA"));
-    return(1);
+    if(is_direction_key(line, NO))
+        return(fill_texture_path(line + 2, &game->config.no_path, NO));
+    if(is_direction_key(line, SO))
+        return(fill_texture_path(line + 2, &game->config.so_path, SO));
+    if(is_direction_key(line, WE))
+        return(fill_texture_path(line + 2, &game->config.we_path, WE));
+    if(is_direction_key(line, EA))
+        return(fill_texture_path(line + 2, &game->config.ea_path, EA));
+    return(false);
 }
 
-int handle_color_key(char *trim, t_game *game)
+int fill_colors(char *trim, t_game *game)
 {
     char *path;
 
@@ -71,10 +79,9 @@ int parse_config_section(char *line, t_game *game)
     trim = skip_spaces(line);
     if(!trim || *trim == '\0' || *trim == '\n')
         return(0);
-    status = handle_texture_key(trim, game);
-    if(status != 1)
-        return(status);
-    status = handle_color_key(trim, game);
+    if (fill_texture_paths(trim, game)) // TODO: ya uhogu is lupu tak kak smogla zapolnit stroku
+        return 0;
+    status = fill_colors(trim, game);
     if(status != 1)
         return(status);
     return(1);

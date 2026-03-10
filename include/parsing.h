@@ -5,7 +5,7 @@
 #include <unistd.h> // close, read 
 #include <stdio.h> // printf, perror
 #include <stdlib.h> // free, malloc, exits
-
+#include <stdbool.h>
 
 #include "libft.h"
 #include "game.h" // TODO: delete
@@ -26,7 +26,21 @@
 
 #define SKIP_SIGN ' '
 
-#include <stdbool.h>
+#define NO_KEY "NO"
+#define SO_KEY "SO"
+#define WE_KEY "WE"
+#define EA_KEY "EA"
+
+typedef enum e_direction_key
+{
+	NO = 0,
+	SO,
+	WE,
+	EA
+}	t_direction_key;
+
+
+char *map_key(t_direction_key key);
 
 int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
@@ -35,12 +49,11 @@ int parse_config_section(char *line, t_game *game);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
-int is_direction_config(char *line, char a, char b);
+bool is_direction_key(char *line, t_direction_key key);
 int is_config(char *line, char a);
 
 void free_split(char **arr);
 int	print_error_key(const char *key, const char *msg);
-int parse_texture(char *raw, char **saved, const char *key_name);
 int parse_color(char *raw, t_rgb *color, const char *key_name);
 bool is_next_line_map(char *line);
 

@@ -31,15 +31,16 @@ int parse_settings(t_game *game, char **argv)
     {
         close(fd);
         return(1);
-
     }
     while(line)
     {
+        printf("line %s\n", line);
         status = parse_config_section(line, game);
         if(status == -1)
             return(parse_clean(fd, line));
         if(status == 1)
         {
+            printf("line %s\n", line);
             if(!is_next_line_map(line))
                 return(parse_clean(fd, line));
             first_map_line = line;
@@ -47,6 +48,7 @@ int parse_settings(t_game *game, char **argv)
             break;
         }
         free(line);
+       
         line = get_next_line(fd);
     }
     if(!first_map_line)
