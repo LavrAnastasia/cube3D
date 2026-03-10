@@ -2,7 +2,8 @@ NAME := cub3D
 
 DIR_SRC := src/
 
-SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c)
+SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c \
+	engine_hooks.c engine_mlx.c)
 SRC_PIXELS := $(addprefix $(DIR_SRC)pixels/, index.c)
 SRC_TEXTURES := $(addprefix $(DIR_SRC)textures/, index.c \
 	textures_load.c textures_destroy.c)
@@ -11,6 +12,10 @@ SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
 	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
+SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c )
+
+SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map_utils/, index.c )
+
 SRC_MANDATORY := index.c \
 	src/parsing/read_cube.c \
 	$(SRC_MATH) \
@@ -18,7 +23,9 @@ SRC_MANDATORY := index.c \
 	$(SRC_PIXELS) \
 	$(SRC_RENDER) \
 	$(SRC_RAYCAST) \
-	$(SRC_TEXTURES)
+	$(SRC_TEXTURES) \
+	$(SRC_MOVEMENT) \
+	$(SRC_MAP_UTILS)
 
 OBJ := $(SRC_MANDATORY:.c=.o)
 
@@ -40,7 +47,7 @@ endif
 
 CC := cc
 BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
-	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math
+	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map_utils
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 

@@ -1,5 +1,5 @@
 #include "textures_internal.h"
-#include "textures_errors.h"
+#include "textures_status.h"
 
 void	textures_destroy(t_textures *textures, void *mlx_session)
 {

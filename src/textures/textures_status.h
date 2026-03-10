@@ -1,5 +1,5 @@
-#ifndef TEXTURES_ERRORS_H
-# define TEXTURES_ERRORS_H
+#ifndef TEXTURES_STATUS_H
+# define TEXTURES_STATUS_H
 
 typedef enum e_textures_status
 {

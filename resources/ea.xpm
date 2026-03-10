@@ -5,7 +5,7 @@ static const char *output[] = {
 "  c gray14",
 ". c #D8D8D8",
 "X c white",
-"o c None",
+"o c black",
 /* pixels */
 "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
 "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
