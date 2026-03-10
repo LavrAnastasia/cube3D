@@ -1,15 +1,5 @@
 #include "parsing.h"
 
-void init_config(t_config *config)
-{
-    config->no_path = NULL;
-    config->so_path = NULL;
-    config->we_path = NULL;
-    config->ea_path = NULL;
-    config->floor = (t_rgb){0,0,0};
-    config->ceiling = (t_rgb){0,0,0};
-}
-
 int is_right_char(char c)
 {
     if(c == '0' || c == '1')

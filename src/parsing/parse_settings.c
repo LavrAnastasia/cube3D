@@ -25,7 +25,6 @@ int parse_settings(t_game *game, char **argv)
     fd = open(argv[1], O_RDONLY);
     if(fd < 0)
         return(print_error_msg(OPEN_FILE));
-    init_config(&game->config);
     first_map_line = NULL;
     line = get_next_line(fd);
     if(!line)
