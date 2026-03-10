@@ -2,7 +2,7 @@
 # define ENGINE_INTERNAL_H
 
 # include <mlx.h>
-# include <stddef.h>
+# include <stdlib.h>
 
 # include "engine_types.h"
 # include "engine_status.h"

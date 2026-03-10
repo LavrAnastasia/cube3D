@@ -5,5 +5,6 @@
 
 int	is_in_bounds(t_point point, t_dimensions size);
 int	is_wall(t_point point, char **map);
+int is_valid_char(char c);
 
 #endif
