@@ -29,8 +29,11 @@ int parse_settings(t_game *game, char **argv)
     first_map_line = NULL;
     line = get_next_line(fd);
     if(!line)
+    {
         close(fd);
         return(1);
+
+    }
     while(line)
     {
         status = parse_config_section(line, game);
@@ -38,6 +41,8 @@ int parse_settings(t_game *game, char **argv)
             return(parse_clean(fd, line));
         if(status == 1)
         {
+            if(!parse_before_map(line))
+                return(parse_clean(fd, line));
             first_map_line = line;
             // parse_map_section(line, fd, game)
             break;

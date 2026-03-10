@@ -38,6 +38,7 @@ void free_split(char **arr);
 int	print_error_key(const char *key, const char *msg);
 int parse_texture(char *raw, char **saved, const char *key_name);
 int parse_color(char *raw, t_rgb *color, const char *key_name);
+int parse_before_map(char *line);
 
 
 #endif
