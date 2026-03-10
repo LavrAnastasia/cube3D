@@ -2,20 +2,20 @@
 #include "map_utils.h"
 
 
-int parse_before_map(char *line)
+bool is_next_line_map(char *line)
 {
     size_t i;
 
     if(!line || !*line)
-        return(0);
+        return(false);
     i = 0;
     while(line[i] && line[i] != '\n')
     {
         if(!is_valid_char(line[i]) && (line[i] != SKIP_SIGN))
-            return(0);
+            return(false);
         i++;
     }
-    return (1);
+    return (true);
 }
 
 int is_direction_config(char *line, char a, char b)

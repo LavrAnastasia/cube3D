@@ -40,7 +40,7 @@ int parse_settings(t_game *game, char **argv)
             return(parse_clean(fd, line));
         if(status == 1)
         {
-            if(!parse_before_map(line))
+            if(!is_next_line_map(line))
                 return(parse_clean(fd, line));
             first_map_line = line;
             // parse_map_section(line, fd, game)

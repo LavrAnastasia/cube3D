@@ -5,8 +5,10 @@
 #include <unistd.h> // close, read 
 #include <stdio.h> // printf, perror
 #include <stdlib.h> // free, malloc, exits
+
+
 #include "libft.h"
-#include "game.h"
+#include "game.h" // TODO: delete
 #include "config.h"
 
 //error messages
@@ -24,6 +26,7 @@
 
 #define SKIP_SIGN ' '
 
+#include <stdbool.h>
 
 int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
@@ -39,7 +42,7 @@ void free_split(char **arr);
 int	print_error_key(const char *key, const char *msg);
 int parse_texture(char *raw, char **saved, const char *key_name);
 int parse_color(char *raw, t_rgb *color, const char *key_name);
-int parse_before_map(char *line);
+bool is_next_line_map(char *line);
 
 
 #endif
