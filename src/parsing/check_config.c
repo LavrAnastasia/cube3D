@@ -10,14 +10,6 @@ void init_config(t_config *config)
     config->ceiling = (t_rgb){0,0,0};
 }
 
-char *skip_spaces(char *s)
-{
-    if(!s)
-        return (NULL);
-    while (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\v' || *s == '\f')
-    s++;
-    return(s);
-}
 int is_right_char(char c)
 {
     if(c == '0' || c == '1')
@@ -50,7 +42,7 @@ int parse_before_map(char *line)
     return(is_map_char);
 }
 
-int recognize_direction_config(char *line, char a, char b)
+int is_direction_config(char *line, char a, char b)
 {
     if(!line)
         return (0);
@@ -62,15 +54,14 @@ int recognize_direction_config(char *line, char a, char b)
         return (0);
     return (1);
 }
-
-int parse_config_section(char *line, t_game *game)
+int is_config(char *line, char a)
 {
-    char *trim;
-
-    trim = skip_spaces(line);
-    if(!trim || *trim == '\0' || *trim == '\n')
+    if(!line)
         return(0);
-    
-    if(recognize_config(trim, 'N', '0'))
-        return(parse_no(trim + 2, game));
+    if(line[0] != a)
+        return(0);
+    if(!ft_isspace((unsigned char)line[1]))
+        return(0);
+    return(1);    
 }
+

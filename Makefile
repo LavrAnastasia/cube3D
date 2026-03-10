@@ -15,9 +15,8 @@ SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c )
 
 SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map_utils/, index.c )
-
-SRC_MANDATORY := index.c \
-	src/parsing/read_cube.c \
+	src/parsing/parse_settings.c src/parsing/parse_config.c \
+	src/parsing/check_config.c src/parsing/parsing_utils.c \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
 	$(SRC_PIXELS) \
