@@ -13,3 +13,10 @@ int	is_wall(t_point point, char **map)
 {
     return (map[point.y][point.x] == TILE_WALL);
 }
+
+int is_valid_char(char c)
+{
+    return (c == TILE_EMPTY || c == TILE_WALL
+		|| c == TILE_PLAYER_NORTH || c == TILE_PLAYER_EAST
+		|| c == TILE_PLAYER_SOURTH || c == TILE_PLAYER_WEST);
+}

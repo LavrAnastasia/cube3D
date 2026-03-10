@@ -1,35 +1,21 @@
 #include "parsing.h"
+#include "map_utils.h"
 
-int is_right_char(char c)
-{
-    if(c == '0' || c == '1')
-        return(1);
-    if(c == 'N' || c == 'S' || c == 'E' || c == 'W')
-        return (1);
-    if(c == ' ')
-        return (1);
-    return (0);
-}
 
 int parse_before_map(char *line)
 {
-    int i;
-    int is_map_char;
+    size_t i;
 
     if(!line || !*line)
         return(0);
     i = 0;
-    is_map_char = 0;
     while(line[i] && line[i] != '\n')
     {
-        if(!is_right_char(line[i]))
+        if(!is_valid_char(line[i]) && (line[i] != SKIP_SIGN))
             return(0);
-        if(line[i] == '0' || line[i] == '1' || line[i] == 'N' 
-            || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
-            is_map_char = 1;
         i++;
     }
-    return(is_map_char);
+    return (1);
 }
 
 int is_direction_config(char *line, char a, char b)

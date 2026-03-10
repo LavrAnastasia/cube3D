@@ -22,6 +22,8 @@
 #define ERR_RGB "Invalid RGB format"
 #define ERR_RGB_RANGE "RGB out of range"
 
+#define SKIP_SIGN ' '
+
 
 int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
