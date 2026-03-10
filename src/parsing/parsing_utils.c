@@ -4,8 +4,8 @@ char *skip_spaces(char *s)
 {
     if(!s)
         return (NULL);
-    while (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\v' || *s == '\f')
-    s++;
+    while (ft_isspace(*s))
+        s++;
     return(s);
 }
 int print_error_msg(char *msg)
