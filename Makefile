@@ -14,7 +14,7 @@ SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
 SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c \
-	movement_time.c)
+	movement_time.c movement_position.c movement_rotation.c)
 
 SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 	parse_config.c check_config.c parsing_utils.c)

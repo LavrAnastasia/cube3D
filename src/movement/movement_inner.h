@@ -14,5 +14,7 @@ double	get_frame_delta_seconds(
 	double current_time_seconds,
 	double last_update_time_seconds
 );
+void	update_player_angle(double frame_delta_seconds, t_scene *scene, const t_controls_state *controls);
+void	update_player_position(double frame_delta_seconds, t_scene *scene, const t_controls_state *controls);
 
 #endif
