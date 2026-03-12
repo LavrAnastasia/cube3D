@@ -1,32 +1,6 @@
-#include <sys/time.h>
 #include "movement_inner.h"
 #include "map_utils.h"
 #include "math_u.h"
-
-static double	get_current_time_seconds(void)
-{
-	struct timeval	current_time;
-
-	gettimeofday(&current_time, NULL);
-	return ((double)current_time.tv_sec + (double)current_time.tv_usec / 1000000.0);
-}
-
-static double	get_frame_delta_seconds(
-	double current_time_seconds,
-	double last_update_time_seconds
-)
-{
-	double	frame_delta_seconds;
-
-	if (last_update_time_seconds == 0.0)
-		return (0.0);
-	frame_delta_seconds = current_time_seconds - last_update_time_seconds;
-	if (frame_delta_seconds < 0.0)
-		return (0.0);
-	if (frame_delta_seconds > 0.1)
-		return (0.1);
-	return (frame_delta_seconds);
-}
 
 void	update_player_angle(double frame_delta_seconds, t_scene *scene, const t_controls_state *controls)
 {
@@ -129,12 +103,12 @@ void	update_player_position(double frame_delta_seconds, t_scene *scene, const t_
 {
 	const t_move_intent	move_intent = calc_move_intent(controls);
 	const t_vector		move_direction = calc_move_direction(scene->player.angle, move_intent);
-	const double		move_distance = 3 * frame_delta_seconds; // TODO: rename 3 constant
+	const double 		move_speed_per_second = 3;
+	const double		move_distance = move_speed_per_second * frame_delta_seconds;
 	t_position			next_position;
 
 	if (move_direction.x == 0.0 && move_direction.y == 0.0)
     	return;
-
 	next_position = scene->player.pos;
 	try_move_x(scene, &next_position, move_direction, move_distance);
 	try_move_y(scene, &next_position, move_direction, move_distance);

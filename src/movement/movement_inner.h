@@ -9,4 +9,10 @@ typedef struct s_move_intent {
 	int y;
 } t_move_intent;
 
+double	get_current_time_seconds(void);
+double	get_frame_delta_seconds(
+	double current_time_seconds,
+	double last_update_time_seconds
+);
+
 #endif
