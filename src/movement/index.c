@@ -30,7 +30,7 @@ static double	get_frame_delta_seconds(
 
 void	update_player_angle(double frame_delta_seconds, t_scene *scene, const t_controls_state *controls)
 {
-	const double	rotation_speed_per_second = 2.5;
+	const double	rotation_speed_per_second = 1.5;
 	const double	rotation_step = rotation_speed_per_second * frame_delta_seconds;
 	int				turn_step;
 
@@ -43,7 +43,7 @@ void	update_player_angle(double frame_delta_seconds, t_scene *scene, const t_con
 		scene->player.angle = normalize_angle(scene->player.angle + turn_step * rotation_step);
 }
 
-t_vector calc_move_direction(double angle, int x_step, int y_step)
+t_vector calc_move_direction(double angle, t_move_intent move_intent)
 {
 	const t_vector	y_direction = (t_vector){.x = cos(angle), .y = sin(angle)};
 	const t_vector	x_direction = (t_vector){.x = -sin(angle), .y = cos(angle)};
@@ -51,8 +51,8 @@ t_vector calc_move_direction(double angle, int x_step, int y_step)
 	t_vector		move_direction;
 	double			length;
 
-	move_direction.x = y_step * y_direction.x + x_step * x_direction.x;
-	move_direction.y = y_step * y_direction.y + x_step * x_direction.y;
+	move_direction.x = move_intent.y * y_direction.x + move_intent.x * x_direction.x;
+	move_direction.y = move_intent.y * y_direction.y + move_intent.x * x_direction.y;
 	length = sqrt(pow(move_direction.x, 2) + pow(move_direction.y, 2));
 	if (length > 0)
 	{
@@ -64,6 +64,23 @@ t_vector calc_move_direction(double angle, int x_step, int y_step)
 	if (fabs(move_direction.y) < eps)
 		move_direction.y = 0.0;
 	return (move_direction);
+}
+
+t_move_intent calc_move_intent(const t_controls_state *controls)
+{
+	t_move_intent move_intent;
+
+	move_intent.x = 0;
+	move_intent.y = 0;
+	if (controls->move_backward)
+		move_intent.y--; 
+	if (controls->move_forward)
+		move_intent.y++; 
+	if (controls->move_left)
+		move_intent.x--;
+	if (controls->move_right)
+		move_intent.x++;
+	return (move_intent);
 }
 
 
@@ -79,22 +96,8 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 
 	// TODO: FUNC POSITION
 	const double player_hit_radius = 0.25;
-	int x_step;
-	int y_step;
-
-	x_step = 0;
-	y_step = 0;
-  
-	if (controls->move_backward)
-		y_step--; 
-	if (controls->move_forward)
-		y_step++; 
-	if (controls->move_left)
-		x_step--;
-	if (controls->move_right)
-		x_step++; 
-
-	const t_vector move_direction = calc_move_direction(scene->player.angle, x_step, y_step);
+	const t_move_intent move_intent = calc_move_intent(controls);
+	const t_vector move_direction = calc_move_direction(scene->player.angle, move_intent);
 
 	if (move_direction.x == 0.0 && move_direction.y == 0.0)
     	return;
@@ -102,11 +105,8 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 
 	t_position next_position = scene->player.pos;
 
-	// TODO: ask ppl about collision 
-	// personally I prefer thi way
-	if (x_step != 0 && y_step != 0)
+	if (move_intent.x != 0 && move_intent.y != 0)
 	{
-
 		double x_position_candidate = scene->player.pos.x + move_direction.x * move_distance;
 		double x_probe = x_position_candidate + sign(move_direction.x) * player_hit_radius;
 		// TODO: RENAME -- Player hit box sides
