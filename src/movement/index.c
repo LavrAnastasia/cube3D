@@ -83,18 +83,8 @@ t_move_intent calc_move_intent(const t_controls_state *controls)
 	return (move_intent);
 }
 
-
-void	update_player_movement(t_scene *scene, const t_controls_state *controls)
+void	update_player_position(double frame_delta_seconds, t_scene *scene, const t_controls_state *controls)
 {
-	const double current_time_seconds = get_current_time_seconds();
-	const double frame_delta_seconds = get_frame_delta_seconds(
-		current_time_seconds,
-		scene->last_update_time_seconds
-	);
-	scene->last_update_time_seconds = current_time_seconds;
-	update_player_angle(frame_delta_seconds, scene, controls);
-
-	// TODO: FUNC POSITION
 	const double player_hit_radius = 0.25;
 	const t_move_intent move_intent = calc_move_intent(controls);
 	const t_vector move_direction = calc_move_direction(scene->player.angle, move_intent);
@@ -167,5 +157,18 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 	}
 
 	scene->player.pos = next_position;
-	
+}
+
+
+void	update_player_movement(t_scene *scene, const t_controls_state *controls)
+{
+	const double current_time_seconds = get_current_time_seconds();
+	const double frame_delta_seconds = get_frame_delta_seconds(
+		current_time_seconds,
+		scene->last_update_time_seconds
+	);
+
+	scene->last_update_time_seconds = current_time_seconds;
+	update_player_angle(frame_delta_seconds, scene, controls);
+	update_player_position(frame_delta_seconds, scene, controls);
 }
