@@ -10,6 +10,5 @@
 
 double	deg_to_rad(double deg);
 double	normalize_angle(double a);
-int		sign(double value);
 
 #endif
