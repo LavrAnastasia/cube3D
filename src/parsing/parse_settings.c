@@ -1,58 +1,91 @@
 #include "parsing.h"
 #include "get_next_line.h"
 
-int check_args(int argc, char **argv)
+static t_parse_result make_parse_error_result(t_parse_error_code code)
 {
-    char *dot;
-
-    if(argc < 2)
-        return(print_error_msg(NO_MAP));
-    if(argc > 2)
-        return(print_error_msg(MANY_ARG));
-    dot = ft_strrchr(argv[1], '.');
-    if(!dot || ft_strncmp(dot, ".cub", 5)!= 0)
-        return(print_error_msg(EXTENTION_MSG));
-    return(0);    
+    return (t_parse_result) {
+        .ok = false,
+        .error = (t_parse_error) {
+            .code = code,
+            .info = NULL
+        }
+    };
 }
 
-int parse_settings(t_game *game, char **argv)
+t_parse_result check_args(int argc, char **argv)
 {
-    int fd;
+    char *dot;
+    t_parse_result result;
+
+    result.ok = true;
+    if(argc < 2)
+        return(
+            make_parse_error_result(P_ERR_NO_MAP));
+    if(argc > 2)
+        return(make_parse_error_result(P_ERR_ARG));
+    dot = ft_strrchr(argv[1], '.');
+    if(!dot || ft_strncmp(dot, ".cub", 5)!= 0)
+        return(make_parse_error_result(P_ERR_EXTENSION));
+    return (result);    
+}
+
+t_parse_result read_config_until_map(int fd, t_game *game, char **first_map_line)
+{
     char *line;
-    int status;
-    char *first_map_line;
-    
-    fd = open(argv[1], O_RDONLY);
-    if(fd < 0)
-        return(print_error_msg(OPEN_FILE));
-    first_map_line = NULL;
+    t_parse_result  result;
+    t_parse_phase   phase;
+
+    *first_map_line = NULL;
     line = get_next_line(fd);
     if(!line)
-    {
-        close(fd);
-        return(1);
-    }
+        return make_parse_error_result(P_ERR_NO_MAP);
+    phase = P_TEXTURES;
     while(line)
     {
-        printf("line %s\n", line);
-        status = parse_config_section(line, game);
-        if(status == -1)
-            return(parse_clean(fd, line));
-        if(status == 1)
+        result = process_config_line(line, game, &phase); // TODO: SHOULD KEEP GOOING
+        if(!result.ok)
         {
-            printf("line %s\n", line);
-            if(!is_next_line_map(line))
-                return(parse_clean(fd, line));
-            first_map_line = line;
-            // parse_map_section(line, fd, game)
-            break;
+            free(line);
+            return (result);
+        }
+        if (phase != P_TEXTURES && phase != P_COLORS)
+        {
+            *first_map_line = line;
+            return(result); // TODO: check that it is safe
         }
         free(line);
-       
         line = get_next_line(fd);
     }
+    return (result); // TODO: check that it is safe
+}
+
+t_parse_result parse_settings(t_game *game, char **argv)
+{
+    int fd;
+    char *first_map_line;
+    t_parse_result result;
+
+    fd = open(argv[1], O_RDONLY);
+    if(fd < 0)
+        return (make_parse_error_result(P_ERR_OPEN_FILE));
+    result = read_config_until_map(fd, game, &first_map_line);
+    if (!result.ok)
+    {
+        close(fd);
+        return result;
+    }
     if(!first_map_line)
-        return(close(fd), print_error_msg(ERR_MAP));
-    close(fd);
-    return(0);
+    {
+        close(fd);
+        return make_parse_error_result(P_ERR_NO_MAP);
+    }
+        
+    /*
+        if(process_map_section(first_map_line, fd, game))
+        return(close(fd), 1);
+    */
+   free(first_map_line);
+   close(fd);
+   result.ok = true;
+   return(result);
 }

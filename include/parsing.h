@@ -12,17 +12,6 @@
 #include "config.h"
 
 //error messages
-# define NO_MAP "Please provide a .cub map file"
-# define ERR_MAP "Map section is missing"
-# define MANY_ARG "Too many arguments provided, required: program + map"
-# define EXTENTION_MSG "Map must have .cub extension"
-# define OPEN_FILE "Cannot open the file"
-
-#define NO_PATH "Texture path is missing"
-#define DUP "Duplicate texture key"
-#define ERR_MALLOC "Malloc failed"
-#define ERR_RGB "Invalid RGB format"
-#define ERR_RGB_RANGE "RGB out of range"
 
 #define SKIP_SIGN ' '
 
@@ -39,13 +28,42 @@ typedef enum e_direction_key
 	EA
 }	t_direction_key;
 
+typedef enum e_parse_phase
+{
+	P_TEXTURES = 0,
+	P_COLORS,
+	P_MAP
+} t_parse_phase;
+
+typedef enum e_parse_error_code
+{
+	P_ERR_MALLOC,
+	P_ERR_NO_MAP,
+	P_ERR_NO_PATH,
+	P_ERR_ARG,
+	P_ERR_EXTENSION,
+	P_ERR_OPEN_FILE,
+	P_ERR_RGB,
+	P_ERR_RGB_RANGE, 
+	P_ERR_DUP
+} t_parse_error_code;
+
+typedef struct s_parse_error {
+	t_parse_error_code code;
+	const char *info;
+} t_parse_error;
+
+typedef struct s_parse_result {
+	bool ok;
+	t_parse_error error;
+} t_parse_result;
 
 char *map_key(t_direction_key key);
 
-int parse_settings(t_game *game, char **argv);
-int check_args(int argc, char **argv);
-int print_error_msg(char *msg);
-int parse_config_section(char *line, t_game *game);
+t_parse_result parse_settings(t_game *game, char **argv);
+t_parse_result check_args(int argc, char **argv);
+void print_error_msg(const char *msg);
+t_parse_result process_config_line(char *line, t_game *game, t_parse_phase  *phase);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
@@ -53,9 +71,11 @@ bool is_direction_key(char *line, t_direction_key key);
 int is_config(char *line, char a);
 
 void free_split(char **arr);
-int	print_error_key(const char *key, const char *msg);
-int parse_color(char *raw, t_rgb *color, const char *key_name);
+void print_error_key(const char *key, const char *msg);
+t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name);
 bool is_next_line_map(char *line);
+
+void print_parse_error(t_parse_error error);
 
 
 #endif

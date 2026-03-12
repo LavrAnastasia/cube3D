@@ -117,24 +117,22 @@ int game_on_tick(void *data)
 int	main(int argc, char **argv)
 {
 	t_game	game;
+	t_parse_result parse_result;
 
 	ft_bzero(&game, sizeof(t_game));
 
-	// Init Game
-	// Validate Input
-	// Validate Maps
-	// Parse Input & Init Game
-	// Init Graphics
-	// Render
-	// Hooks
-	// Mlx_loop
-
-	if(check_args(argc, argv))
-		return(1);
-	if(parse_settings(&game, argv) != 0)
+	parse_result = check_args(argc, argv);
+	if (!parse_result.ok)
+	{
+		print_parse_error(parse_result.error);
 		return (1);
-
-   
+	}
+	parse_result = parse_settings(&game, argv);
+	if (!parse_result.ok)
+	{
+		print_parse_error(parse_result.error);
+		return (1);
+	}
 
 	static char *mock_map[SIZE] = {
 		"1111111111",
