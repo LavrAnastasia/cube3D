@@ -23,7 +23,7 @@ static t_parse_result fill_texture_path(char *line, char **path, t_direction_key
     char *value;
     size_t len;
 
-    if(path != NULL)
+    if(*path != NULL)
         return make_parse_error_result(P_ERR_DUP, map_key(key));
     value = skip_spaces(line);
     if(!value || *value == '\0'|| *value == '\n')
@@ -94,7 +94,7 @@ t_parse_result process_config_line(char *line, t_game *game, t_parse_phase *phas
     if (!trim || *trim == '\0' || *trim == '\n')
         return make_parse_succses_result();
     result = fill_texture_paths(trim, game, phase);
-    if (!result.ok || (result.ok && phase == P_TEXTURES))
+    if (!result.ok || (result.ok && *phase == P_TEXTURES))
         return (result);
     result = fill_colors(trim, game, phase);
     return (result);
