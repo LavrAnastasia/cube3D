@@ -5,20 +5,23 @@ static bool fill_texture_path(char *line, char **path, t_direction_key key)
     char *value;
     size_t len;
 
+    if(path != NULL)
+    {
+        print_error_key(map_key(key), ERR_DUP);
+        return(false);
+    }
     value = skip_spaces(line);
     if(!value || *value == '\0'|| *value == '\n')
     {
         print_error_key(map_key(key), NO_PATH);
         return (false);
-    }
-        
+    }  
     *path = ft_strdup(value);
     if(!*path)
     {
         print_error_msg(ERR_MALLOC);
         return (false);
     }
-        
     len = ft_strlen(*path);
     if(len > 0 && (*path)[len - 1] == '\n') // added skip for space from end
         (*path)[len - 1] = '\0';

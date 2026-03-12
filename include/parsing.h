@@ -23,6 +23,7 @@
 #define ERR_MALLOC "Malloc failed"
 #define ERR_RGB "Invalid RGB format"
 #define ERR_RGB_RANGE "RGB out of range"
+# define ERR_DUP "There can be only one key"
 
 #define SKIP_SIGN ' '
 
