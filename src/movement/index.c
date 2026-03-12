@@ -85,17 +85,16 @@ t_move_intent calc_move_intent(const t_controls_state *controls)
 
 void try_move_x(t_scene *scene, t_position *next_position, t_vector	move_direction, double move_distance)
 {
-	const double player_hit_radius = 0.25; // TODO: PUT INTO SCENE
-
+	const double hit_radius = scene->player.hit_radius;
 	const double x_position_candidate = scene->player.pos.x + move_direction.x * move_distance;
-	const double x = x_position_candidate + sign(move_direction.x) * player_hit_radius; // TODO: sign??
+	const double x = x_position_candidate + sign(move_direction.x) * hit_radius; // TODO: sign??
 	const t_point point_top = (t_point){
 		.x = (int)floor(x),
-		.y = (int)floor(next_position->y - player_hit_radius)
+		.y = (int)floor(next_position->y - hit_radius)
 	};
 	const t_point point_bottom = (t_point){
 		.x = (int)floor(x),
-		.y = (int)floor(next_position->y + player_hit_radius)
+		.y = (int)floor(next_position->y + hit_radius)
 	};
 
 	if (is_in_bounds(point_top, scene->map_size) && is_in_bounds(point_bottom, scene->map_size)
@@ -107,16 +106,15 @@ void try_move_x(t_scene *scene, t_position *next_position, t_vector	move_directi
 
 void try_move_y(t_scene *scene, t_position *next_position, t_vector	move_direction, double move_distance)
 {
-	const double player_hit_radius = 0.25; // TODO: PUT INTO SCENE
-
+	const double hit_radius = scene->player.hit_radius;
 	const double y_position_candidate = scene->player.pos.y + move_direction.y * move_distance;
-	const double y = y_position_candidate + sign(move_direction.y) * player_hit_radius;
-	t_point point_left = (t_point){
-		.x = (int)floor(next_position->x - player_hit_radius),
+	const double y = y_position_candidate + sign(move_direction.y) * hit_radius;
+	const t_point point_left = (t_point){
+		.x = (int)floor(next_position->x - hit_radius),
 		.y = (int)floor(y)
 	};
-	t_point point_right = (t_point){
-		.x = (int)floor(next_position->x + player_hit_radius),
+	const t_point point_right = (t_point){
+		.x = (int)floor(next_position->x + hit_radius),
 		.y = (int)floor(y)
 	};
 
