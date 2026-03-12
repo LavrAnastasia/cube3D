@@ -20,7 +20,7 @@ static bool fill_texture_path(char *line, char **path, t_direction_key key)
     }
         
     len = ft_strlen(*path);
-    if(len > 0 && (*path)[len - 1] == '\n') //TODO added skip for space from end
+    if(len > 0 && (*path)[len - 1] == '\n') // added skip for space from end
         (*path)[len - 1] = '\0';
     return (true); 
 }
@@ -71,20 +71,22 @@ int fill_colors(char *trim, t_game *game)
     return (1);
 }
 
-int parse_config_section(char *line, t_game *game)
+int process_config_line(char *line, t_game *game)
 {
     char *trim;
     int status;
 
     trim = skip_spaces(line);
-    if(!trim || *trim == '\0' || *trim == '\n')
-        return(0);
-    if (fill_texture_paths(trim, game)) // TODO: ya uhogu is lupu tak kak smogla zapolnit stroku
-        return 0;
+    if (!trim || *trim == '\0' || *trim == '\n')
+        return (PARSE_OK);
+    if (fill_texture_paths(trim, game))
+        return (PARSE_OK);
     status = fill_colors(trim, game);
-    if(status != 1)
-        return(status);
-    return(1);
+    if (status == 0)
+        return (PARSE_OK);
+    if (status == 1)
+        return(PARSE_MAP);
+    return(PARSE_ERR);
 }
 
 

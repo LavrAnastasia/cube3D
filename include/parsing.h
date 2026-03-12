@@ -39,13 +39,19 @@ typedef enum e_direction_key
 	EA
 }	t_direction_key;
 
+typedef enum e_parse_status
+{
+	PARSE_OK = 0,
+	PARSE_MAP,
+	PARSE_ERR
+} t_parse_status;
 
 char *map_key(t_direction_key key);
 
 int parse_settings(t_game *game, char **argv);
 int check_args(int argc, char **argv);
 int print_error_msg(char *msg);
-int parse_config_section(char *line, t_game *game);
+int process_config_line(char *line, t_game *game);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);

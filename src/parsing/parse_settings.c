@@ -15,44 +15,48 @@ int check_args(int argc, char **argv)
     return(0);    
 }
 
+int read_config_until_map(int fd, t_game *game, char **first_map_line)
+{
+    char *line;
+    int status;
+
+    *first_map_line = NULL;
+    line = get_next_line(fd);
+    if(!line)
+        return(print_error_msg(ERR_MAP));
+    while(line)
+    {
+        status = process_config_line(line, game);
+        if(status == PARSE_ERR)
+            return(free(line), 1);
+        if(status == PARSE_MAP)
+        {
+            *first_map_line = line;
+            return(0);
+        }
+        free(line);
+        line = get_next_line(fd);
+    }
+    return(0);
+}
+
 int parse_settings(t_game *game, char **argv)
 {
     int fd;
-    char *line;
-    int status;
     char *first_map_line;
-    
+
     fd = open(argv[1], O_RDONLY);
     if(fd < 0)
         return(print_error_msg(OPEN_FILE));
-    first_map_line = NULL;
-    line = get_next_line(fd);
-    if(!line)
-    {
-        close(fd);
-        return(1);
-    }
-    while(line)
-    {
-        printf("line %s\n", line);
-        status = parse_config_section(line, game);
-        if(status == -1)
-            return(parse_clean(fd, line));
-        if(status == 1)
-        {
-            printf("line %s\n", line);
-            if(!is_next_line_map(line))
-                return(parse_clean(fd, line));
-            first_map_line = line;
-            // parse_map_section(line, fd, game)
-            break;
-        }
-        free(line);
-       
-        line = get_next_line(fd);
-    }
+    if(read_config_until_map(fd, game, &first_map_line))
+        return(close(fd), 1); //проверить что именно тут корректно возвращать 
     if(!first_map_line)
-        return(close(fd), print_error_msg(ERR_MAP));
-    close(fd);
-    return(0);
+        return(close(fd), print_error_msg(ERR_MAP)); //и тут
+    /*
+        if(process_map_section(first_map_line, fd, game))
+        return(close(fd), 1);
+    */
+   free(first_map_line);
+   close(fd);
+   return(0);
 }
