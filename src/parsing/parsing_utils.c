@@ -8,14 +8,42 @@ char *skip_spaces(char *s)
         s++;
     return(s);
 }
-int print_error_msg(char *msg)
+//# define ERR_MAP "Map section is missing"  -- TODO: find this message
+
+const char	*err_parse_msg(int code)
+{
+	static const char	*map[] = {
+	[P_ERR_MALLOC] = "Malloc failed",
+	[P_ERR_NO_MAP] = "Please provide a .cub map file",
+	[P_ERR_NO_PATH] = "Texture path is missing",
+	[P_ERR_ARG] = "Too many arguments provided, required: program + map",
+	[P_ERR_EXTENSION] = "Map must have .cub extension",
+	[P_ERR_OPEN_FILE] = "Cannot open the file",
+	[P_ERR_RGB] = "Invalid RGB format",
+	[P_ERR_RGB_RANGE] = "RGB out of range",
+	[P_ERR_DUP] = "There can be only one key"};
+	const int			size = sizeof(map) / sizeof(*map);
+
+	if (code < 0 || code >= size)
+		return (NULL);
+	return (map[code]);
+}
+
+void print_parse_error(t_parse_error error)
+{   
+    if (error.info != NULL)
+        print_error_key(error.info, err_parse_msg(error.code));
+    else
+        print_error_msg(err_parse_msg(error.code));
+
+}
+void print_error_msg(const char *msg)
 {
     ft_putendl_fd("Error", STDERR_FILENO);
     ft_putendl_fd(msg, STDERR_FILENO);
-    return(1);
 }
 
-int	print_error_key(const char *key, const char *msg)
+void	print_error_key(const char *key, const char *msg)
 {
     ft_putendl_fd("Error", STDERR_FILENO);
     if(key && *key)
@@ -24,7 +52,6 @@ int	print_error_key(const char *key, const char *msg)
         ft_putstr_fd(":", STDERR_FILENO);
     }
     ft_putendl_fd(msg, STDERR_FILENO);
-    return(1);
 }
 
 int parse_clean(int fd, char *line)

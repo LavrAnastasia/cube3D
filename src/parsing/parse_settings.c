@@ -1,62 +1,89 @@
 #include "parsing.h"
 #include "get_next_line.h"
 
-int check_args(int argc, char **argv)
+static t_parse_result make_parse_error_result(t_parse_error_code code)
 {
-    char *dot;
-
-    if(argc < 2)
-        return(print_error_msg(NO_MAP));
-    if(argc > 2)
-        return(print_error_msg(MANY_ARG));
-    dot = ft_strrchr(argv[1], '.');
-    if(!dot || ft_strncmp(dot, ".cub", 5)!= 0)
-        return(print_error_msg(EXTENTION_MSG));
-    return(0);    
+    return (t_parse_result) {
+        .ok = false,
+        .error = (t_parse_error) {
+            .code = code,
+            .info = NULL
+        }
+    };
 }
 
-int read_config_until_map(int fd, t_game *game, char **first_map_line)
+t_parse_result check_args(int argc, char **argv)
+{
+    char *dot;
+    t_parse_result result;
+
+    result.ok = true;
+    if(argc < 2)
+        return(
+            make_parse_error_result(P_ERR_NO_MAP));
+    if(argc > 2)
+        return(make_parse_error_result(P_ERR_ARG));
+    dot = ft_strrchr(argv[1], '.');
+    if(!dot || ft_strncmp(dot, ".cub", 5)!= 0)
+        return(make_parse_error_result(P_ERR_EXTENSION));
+    return (result);    
+}
+
+t_parse_result read_config_until_map(int fd, t_game *game, char **first_map_line)
 {
     char *line;
-    int status;
+    t_parse_result result;
 
     *first_map_line = NULL;
     line = get_next_line(fd);
     if(!line)
-        return(print_error_msg(ERR_MAP));
+        return make_parse_error_result(P_ERR_NO_MAP);
     while(line)
     {
-        status = process_config_line(line, game);
-        if(status == PARSE_ERR)
-            return(free(line), 1);
-        if(status == PARSE_MAP)
+        result = process_config_line(line, game); // TODO: SHOULD KEEP GOOING
+        if(!result.ok)
         {
-            *first_map_line = line;
-            return(0);
+            free(line);
+            return (result);
         }
+        // if(status == PARSE_MAP)
+        // {
+        //     *first_map_line = line;
+        //     return(0);
+        // }
         free(line);
         line = get_next_line(fd);
     }
-    return(0);
+    return (result); // TODO: check that it is safe
 }
 
-int parse_settings(t_game *game, char **argv)
+t_parse_result parse_settings(t_game *game, char **argv)
 {
     int fd;
     char *first_map_line;
+    t_parse_result result;
 
     fd = open(argv[1], O_RDONLY);
     if(fd < 0)
-        return(print_error_msg(OPEN_FILE));
-    if(read_config_until_map(fd, game, &first_map_line))
-        return(close(fd), 1); //проверить что именно тут корректно возвращать 
+        return (make_parse_error_result(P_ERR_OPEN_FILE));
+    result = read_config_until_map(fd, game, &first_map_line);
+    if (!result.ok)
+    {
+        close(fd);
+        return result;
+    }
     if(!first_map_line)
-        return(close(fd), print_error_msg(ERR_MAP)); //и тут
+    {
+        close(fd);
+        return make_parse_error_result(P_ERR_NO_MAP);
+    }
+        
     /*
         if(process_map_section(first_map_line, fd, game))
         return(close(fd), 1);
     */
    free(first_map_line);
    close(fd);
-   return(0);
+   result.ok = true;
+   return(result);
 }
