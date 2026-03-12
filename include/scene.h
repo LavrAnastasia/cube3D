@@ -28,6 +28,7 @@ typedef struct s_scene
 	t_player		player;
 	t_camera		camera;
 	t_palette		palette; 
+	double			last_update_time_seconds;
 }	t_scene;
 
 #endif
