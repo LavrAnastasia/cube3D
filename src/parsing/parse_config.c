@@ -53,10 +53,8 @@ t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name)
     return make_parse_succses_result();
 }
 
-t_parse_result fill_texture_paths(char *line, t_game *game, bool *try_next_texture_line)
+t_parse_result fill_texture_paths(char *line, t_game *game, t_parse_phase *phase)
 {
-
-    *try_next_texture_line = true;
     if(is_direction_key(line, NO))
         return(fill_texture_path(line + 2, &game->config.no_path, NO));
     if(is_direction_key(line, SO))
@@ -65,11 +63,11 @@ t_parse_result fill_texture_paths(char *line, t_game *game, bool *try_next_textu
         return(fill_texture_path(line + 2, &game->config.we_path, WE));
     if(is_direction_key(line, EA))
         return(fill_texture_path(line + 2, &game->config.ea_path, EA));
-    *try_next_texture_line = false;
+    *phase = P_COLORS;
     return  make_parse_succses_result();
 }
 
-t_parse_result fill_colors(char *trim, t_game *game)
+t_parse_result fill_colors(char *trim, t_game *game,  t_parse_phase *phase)
 {
     char *path;
 
@@ -83,22 +81,22 @@ t_parse_result fill_colors(char *trim, t_game *game)
         path = skip_spaces(trim + 1);
         return(parse_color(path, &game->config.ceiling, "C"));
     }
+    *phase = P_MAP;
     return make_parse_succses_result();
 }
 
-t_parse_result process_config_line(char *line, t_game *game)
+t_parse_result process_config_line(char *line, t_game *game, t_parse_phase *phase)
 {
     char *trim;
-    bool try_next_texture_line;
     t_parse_result result;
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
         return make_parse_succses_result();
-    result = fill_texture_paths(trim, game, &try_next_texture_line);
-    if (!result.ok || (result.ok && try_next_texture_line))
+    result = fill_texture_paths(trim, game, phase);
+    if (!result.ok || (result.ok && phase == P_TEXTURES))
         return (result);
-    result = fill_colors(trim, game);
+    result = fill_colors(trim, game, phase);
     return (result);
 }
 

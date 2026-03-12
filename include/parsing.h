@@ -30,7 +30,7 @@ typedef enum e_direction_key
 
 typedef enum e_parse_phase
 {
-	P_CONFIG = 0,
+	P_TEXTURES = 0,
 	P_COLORS,
 	P_MAP
 } t_parse_phase;
@@ -63,7 +63,7 @@ char *map_key(t_direction_key key);
 t_parse_result parse_settings(t_game *game, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_game *game);
+t_parse_result process_config_line(char *line, t_game *game, t_parse_phase  *phase);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
