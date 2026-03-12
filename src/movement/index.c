@@ -43,6 +43,29 @@ void	update_player_angle(double frame_delta_seconds, t_scene *scene, const t_con
 		scene->player.angle = normalize_angle(scene->player.angle + turn_step * rotation_step);
 }
 
+t_vector calc_move_direction(double angle, int x_step, int y_step)
+{
+	const t_vector	y_direction = (t_vector){.x = cos(angle), .y = sin(angle)};
+	const t_vector	x_direction = (t_vector){.x = -sin(angle), .y = cos(angle)};
+	const double	eps = 1e-6;
+	t_vector		move_direction;
+	double			length;
+
+	move_direction.x = y_step * y_direction.x + x_step * x_direction.x;
+	move_direction.y = y_step * y_direction.y + x_step * x_direction.y;
+	length = sqrt(pow(move_direction.x, 2) + pow(move_direction.y, 2));
+	if (length > 0)
+	{
+		move_direction.x /= length; 
+		move_direction.y /= length;
+	}
+	if (fabs(move_direction.x) < eps)
+		move_direction.x = 0.0;
+	if (fabs(move_direction.y) < eps)
+		move_direction.y = 0.0;
+	return (move_direction);
+}
+
 
 void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 {
@@ -56,7 +79,6 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 
 	// TODO: FUNC POSITION
 	const double player_hit_radius = 0.25;
-	const double eps = 1e-6;
 	int x_step;
 	int y_step;
 
@@ -72,26 +94,9 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 	if (controls->move_right)
 		x_step++; 
 
-	const double angle = scene->player.angle;
-	const t_vector y_direction = (t_vector){.x = cos(angle), .y = sin(angle)};
-	const t_vector x_direction = (t_vector){.x = -sin(angle), .y = cos(angle)};
+	const t_vector move_direction = calc_move_direction(scene->player.angle, x_step, y_step);
 
-	double move_x = y_step * y_direction.x + x_step * x_direction.x;
-	double move_y = y_step * y_direction.y + x_step * x_direction.y;
-
-	const double length = sqrt(move_x * move_x + move_y * move_y);
-
-	if (length > 0)
-	{
-		move_x /= length;
-		move_y /= length;
-	}
-	if (fabs(move_x) < eps)
-		move_x = 0.0;
-	if (fabs(move_y) < eps)
-		move_y = 0.0;
-
-	if (move_x == 0.0 && move_y == 0.0)
+	if (move_direction.x == 0.0 && move_direction.y == 0.0)
     	return;
 	const double move_distance = 3 * frame_delta_seconds;
 
@@ -102,8 +107,8 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 	if (x_step != 0 && y_step != 0)
 	{
 
-		double x_position_candidate = scene->player.pos.x + move_x * move_distance;
-		double x_probe = x_position_candidate + sign(move_x) * player_hit_radius;
+		double x_position_candidate = scene->player.pos.x + move_direction.x * move_distance;
+		double x_probe = x_position_candidate + sign(move_direction.x) * player_hit_radius;
 		// TODO: RENAME -- Player hit box sides
 		t_point x_point_top = (t_point){
 			.x = (int)floor(x_probe),
@@ -121,8 +126,8 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 			next_position.x = x_position_candidate;
 		}
 
-		double y_position_candidate = scene->player.pos.y + move_y * move_distance;
-		double y_probe = y_position_candidate + sign(move_y) * player_hit_radius;
+		double y_position_candidate = scene->player.pos.y + move_direction.y * move_distance;
+		double y_probe = y_position_candidate + sign(move_direction.y) * player_hit_radius;
 		t_point y_point_left = (t_point){
 			.x = (int)floor(next_position.x - player_hit_radius),
 			.y = (int)floor(y_probe)
@@ -142,8 +147,8 @@ void	update_player_movement(t_scene *scene, const t_controls_state *controls)
 	}
 	else
 	{
-		double x_position_candidate = scene->player.pos.x + move_x * move_distance;
-		double y_position_candidate = scene->player.pos.y + move_y * move_distance;
+		double x_position_candidate = scene->player.pos.x + move_direction.x * move_distance;
+		double y_position_candidate = scene->player.pos.y + move_direction.y * move_distance;
 		// TODO: RENAME -- Player hit box sides
 		t_point x_point_top = (t_point){ .x = (int)floor(x_position_candidate - player_hit_radius), .y = (int)floor(y_position_candidate - player_hit_radius) };
 		t_point x_point_bottom = (t_point){ .x = (int)floor(x_position_candidate + player_hit_radius), .y = (int)floor(y_position_candidate - player_hit_radius) };
