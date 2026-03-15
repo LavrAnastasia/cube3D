@@ -52,3 +52,10 @@ int is_config(const char *line, const char a)
     return(1);    
 }
 
+int is_texture_path_missing(t_game *game)
+{
+    if (!game->config.paths.north || !game->config.paths.south || !game->config.paths.west || !game->config.paths.east)
+        return(1);
+    return (0);
+}
+

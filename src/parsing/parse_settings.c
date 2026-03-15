@@ -74,12 +74,17 @@ t_parse_result parse_settings(t_game *game, char **argv)
         close(fd);
         return result;
     }
+    if (is_texture_path_missing(game))
+    {
+        close(fd);
+        return make_parse_error_result(P_ERR_NO_PATH);
+    }
     if(!first_map_line)
     {
         close(fd);
         return make_parse_error_result(P_ERR_NO_MAP);
     }
-        
+    
     /*
         if(process_map_section(first_map_line, fd, game))
         return(close(fd), 1);

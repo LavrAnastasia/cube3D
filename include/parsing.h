@@ -83,6 +83,7 @@ bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
 t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
+int is_texture_path_missing(t_game *game);
 
 
 #endif
