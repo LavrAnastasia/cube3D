@@ -16,7 +16,7 @@ static t_parse_result make_parse_succses_result()
     };
 }
 
-bool xpm_extention(const char *value)
+bool xpm_extension(const char *value)
 {
     char *dot;
 
@@ -32,7 +32,7 @@ bool xpm_extention(const char *value)
 
 static t_parse_result validate_texture_token(char *value, t_direction_key key)
 {
-    if(!xpm_extention(value))
+    if(!xpm_extension(value))
         return (make_parse_error_result(P_ERR_TEXTURE_EXT, map_key(key)));
     return (make_parse_succses_result());
 }
