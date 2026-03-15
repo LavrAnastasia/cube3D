@@ -45,7 +45,10 @@ typedef enum e_parse_error_code
 	P_ERR_OPEN_FILE,
 	P_ERR_RGB,
 	P_ERR_RGB_RANGE, 
-	P_ERR_DUP
+	P_ERR_DUP,
+	P_ERR_TEXTURE_EXT,
+	P_ERR_TEXTURE_TRAILING
+
 } t_parse_error_code;
 
 typedef struct s_parse_error {
@@ -76,6 +79,7 @@ t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name);
 bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
+t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
 
 
 #endif

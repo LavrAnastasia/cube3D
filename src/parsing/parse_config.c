@@ -17,25 +17,6 @@ static t_parse_result make_parse_succses_result()
         .ok = true
     };
 }
-
-static t_parse_result fill_texture_path(char *line, char **path, t_direction_key key)
-{
-    char *value;
-    size_t len;
-
-    if(*path != NULL)
-        return make_parse_error_result(P_ERR_DUP, map_key(key));
-    value = skip_spaces(line);
-    if(!value || *value == '\0'|| *value == '\n')
-        return make_parse_error_result(P_ERR_NO_PATH, map_key(key)); 
-    *path = ft_strdup(value);
-    if(!*path)
-        return make_parse_error_result(P_ERR_MALLOC, NULL);
-    len = ft_strlen(*path);
-    if(len > 0 && (*path)[len - 1] == '\n') // added skip for space from end
-        (*path)[len - 1] = '\0';
-    return (make_parse_succses_result());
-}
 t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name)
 {
     char **rgb;

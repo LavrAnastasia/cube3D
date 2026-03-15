@@ -42,7 +42,7 @@ t_parse_result read_config_until_map(int fd, t_game *game, char **first_map_line
     phase = P_TEXTURES;
     while(line)
     {
-        result = process_config_line(line, game, &phase); // TODO: SHOULD KEEP GOOING
+        result = process_config_line(line, game, &phase); // SHOULD KEEP GOOING
         if(!result.ok)
         {
             free(line);
