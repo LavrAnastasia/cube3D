@@ -2,14 +2,11 @@
 #define CONFIG_H
 
 #include "colors.h"
+#include "textures_types.h"
 
 typedef struct s_config
 {
-    char *no_path;
-    char *so_path;
-    char *we_path;
-    char *ea_path;
-
+    t_wall_texture_paths paths;
     t_rgb floor;
     t_rgb ceiling;
 }t_config;

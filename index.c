@@ -20,6 +20,7 @@ int	main(int argc, char **argv)
 		print_parse_error(parse_result.error);
 		return (1);
 	}
+
 	parse_result = parse_settings(&game, argv);
 	if (!parse_result.ok)
 	{
@@ -55,6 +56,7 @@ int	main(int argc, char **argv)
 		game_shutdown(&game, EXIT_FAILURE);
 
 	//RUN LOOP	
+
 	engine_run(&game.engine);
 
 	return (0);

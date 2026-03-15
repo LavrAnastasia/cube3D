@@ -33,30 +33,29 @@ t_parse_result read_config_until_map(int fd, t_game *game, char **first_map_line
 {
     char *line;
     t_parse_result  result;
-    t_parse_phase   phase;
 
     *first_map_line = NULL;
     line = get_next_line(fd);
     if(!line)
         return make_parse_error_result(P_ERR_NO_MAP);
-    phase = P_TEXTURES;
+
     while(line)
     {
-        result = process_config_line(line, game, &phase); // SHOULD KEEP GOOING
+        result = process_config_line(line, game);
         if(!result.ok)
         {
             free(line);
             return (result);
         }
-        if (phase != P_TEXTURES && phase != P_COLORS)
+        if (result.parse_type == P_MAP)
         {
             *first_map_line = line;
-            return(result); // TODO: check that it is safe
+            return(result);
         }
         free(line);
         line = get_next_line(fd);
     }
-    return (result); // TODO: check that it is safe
+    return (result);
 }
 
 t_parse_result parse_settings(t_game *game, char **argv)
@@ -68,6 +67,7 @@ t_parse_result parse_settings(t_game *game, char **argv)
     fd = open(argv[1], O_RDONLY);
     if(fd < 0)
         return (make_parse_error_result(P_ERR_OPEN_FILE));
+
     result = read_config_until_map(fd, game, &first_map_line);
     if (!result.ok)
     {

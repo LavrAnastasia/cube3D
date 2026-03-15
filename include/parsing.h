@@ -28,12 +28,14 @@ typedef enum e_direction_key
 	EA
 }	t_direction_key;
 
-typedef enum e_parse_phase
+typedef enum e_parse_type
 {
-	P_TEXTURES = 0,
-	P_COLORS,
+	P_UNKNOWN = 0,
+	P_SPACES,
+	P_TEXTURE,
+	P_COLOR,
 	P_MAP
-} t_parse_phase;
+} t_parse_type;
 
 typedef enum e_parse_error_code
 {
@@ -58,6 +60,7 @@ typedef struct s_parse_error {
 
 typedef struct s_parse_result {
 	bool ok;
+	t_parse_type parse_type;
 	t_parse_error error;
 } t_parse_result;
 
@@ -66,12 +69,12 @@ char *map_key(t_direction_key key);
 t_parse_result parse_settings(t_game *game, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_game *game, t_parse_phase  *phase);
+t_parse_result process_config_line(char *line, t_game *game);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
-bool is_direction_key(char *line, t_direction_key key);
-int is_config(char *line, char a);
+bool is_direction_key(const char *line, t_direction_key key);
+int is_config(const char *line, const char a);
 
 void free_split(char **arr);
 void print_error_key(const char *key, const char *msg);

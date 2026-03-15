@@ -29,7 +29,7 @@ char *map_key(t_direction_key key)
     return "EA";  
 }
 
-bool is_direction_key(char *line, t_direction_key key)
+bool is_direction_key(const char *line, t_direction_key key)
 {
     const char *direction_key = map_key(key);
 
@@ -41,7 +41,7 @@ bool is_direction_key(char *line, t_direction_key key)
         return (false);
     return (true);
 }
-int is_config(char *line, char a)
+int is_config(const char *line, const char a)
 {
     if(!line)
         return(0);

@@ -7,8 +7,8 @@
 typedef struct s_wall_texture_paths {
 	char	*north;
 	char	*south;
-	char	*east;
 	char	*west;
+	char	*east;
 } t_wall_texture_paths;
 
 typedef struct s_px_buffer
