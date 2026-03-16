@@ -49,6 +49,7 @@ int	main(int argc, char **argv)
 		game_shutdown(&game, EXIT_FAILURE);
 
 	// LOAD TEXTURES
+	// TODO: clean CONFIG PATHES
 	if (!game_init_textures(&game.textures, &game.config, game.engine.mlx_session))
 		game_shutdown(&game, EXIT_FAILURE);
 	engine_run(&game.engine);

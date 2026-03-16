@@ -31,5 +31,6 @@ bool game_init_scene(t_scene *scene, t_config *config, char **map, t_dimensions 
 bool game_init_engine(t_game *game);
 void game_shutdown(t_game *game, int exit_status);
 bool game_init_textures(t_textures *textures, t_config *config, void *mlx_session);
+void game_destroy_map(char **map);
 
 #endif
