@@ -20,6 +20,8 @@
 #define WE_KEY "WE"
 #define EA_KEY "EA"
 
+#define M_PI 3.14159265358979323846
+
 typedef enum e_direction_key
 {
 	NO = 0,
@@ -49,7 +51,10 @@ typedef enum e_parse_error_code
 	P_ERR_RGB_RANGE, 
 	P_ERR_DUP,
 	P_ERR_TEXTURE_EXT,
-	P_ERR_TEXTURE_TRAILING
+	P_ERR_TEXTURE_TRAILING,
+	P_ERR_INVALID_SYMBOLS,
+	P_ERR_PLAYER_COUNT,
+	P_ERR_MAP_NOT_CLOSED
 
 } t_parse_error_code;
 
@@ -85,5 +90,13 @@ void print_parse_error(t_parse_error error);
 t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
 int is_texture_path_missing(t_game *game);
 
+t_parse_result parse_map(int fd, t_game *game, char *first_map_line);
+bool	is_valid_map_char(char *line);
+int	is_valid_map_chars(char **map);
+bool 	is_one_player(char **map);
+int row_len(char *s);
+void free_map(char **map, int rows);
+int check_path(char **map, int rows, int player_x, int player_y);
+int find_player_start(char **map, t_game *game);
 
 #endif

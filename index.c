@@ -28,6 +28,8 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
+	printf("Parse type: %d", parse_result.parse_type);
+
 	static char *mock_map[SIZE] = {
 		"1111111111",
 		"1000000001",
@@ -41,10 +43,12 @@ int	main(int argc, char **argv)
 		"1111111111"
 	};
 
+
 	// INIT_SCENE	
 	// TODO: clean Map
 	if (!game_init_scene(&game.scene, &game.config, mock_map, (t_dimensions){.height = SIZE, .width = SIZE}))
 		game_shutdown(&game, EXIT_FAILURE);
+
 
 	// INIT ENGINE
 	if (!game_init_engine(&game))
