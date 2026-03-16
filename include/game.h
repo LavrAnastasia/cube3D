@@ -27,4 +27,8 @@ typedef struct s_game
 	t_controls_state 	controls_state;
 }				t_game;
 
+bool game_init_scene(t_scene *scene, t_config *config, char **map, t_dimensions map_size);
+bool game_init_engine(t_game *game);
+void game_shutdown(t_game *game, int exit_status);
+
 #endif

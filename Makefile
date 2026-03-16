@@ -21,7 +21,11 @@ SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 
 SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map_utils/, index.c )
 
+SRC_GAME := $(addprefix game/, game_init_scene.c \
+	game_init_engine.c game_lifecycle.c)
+
 SRC_MANDATORY := index.c \
+	$(SRC_GAME) \
 	$(SRC_PARSING) \
 	$(SRC_MATH) \
 	$(SRC_ENGINE) \
