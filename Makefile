@@ -36,7 +36,9 @@ SRC_MANDATORY := index.c \
 	$(SRC_MOVEMENT) \
 	$(SRC_MAP_UTILS)
 
-OBJ := $(SRC_MANDATORY:.c=.o)
+OBJ_DIR := obj
+
+OBJ := $(addprefix $(OBJ_DIR)/, $(SRC_MANDATORY:.c=.o))
 
 LIBFLAGS := -L./libft -lft
 LIBFT := libft/libft.a
@@ -70,7 +72,8 @@ endif
 
 all: $(NAME)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT) $(MLX_LIB) $(OBJ)
@@ -89,7 +92,7 @@ $(LIBFT):
 	$(MAKE) -C libft
 
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 	$(MAKE) -C libft clean
 	@if [ -d $(MLX_DIR) ]; then \
 		$(MAKE) -C $(MLX_DIR) clean; \
