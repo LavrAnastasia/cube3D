@@ -5,25 +5,6 @@
 
 #define SIZE 10 // TODO: delete
 
-
-// DEBUG
-
-void debug_print(t_game *game)
-{
-	char *str = game->config.ea_path;
-	char *fake_str =  "resources/ea.xpm";
-
-	
-
-	if (ft_strcmp(str, fake_str) == 0)
-		printf("WE ARE EQ \n");
-	else 
-		printf("WE ARE NOT EQ \n");
-	
-	printf("STRING:%s_END\n", str);
-	printf("STRING:%s_END\n", fake_str);
-}
-
 // GAME LEVEL
 
 int	main(int argc, char **argv)
@@ -62,27 +43,14 @@ int	main(int argc, char **argv)
 	// INIT_SCENE	
 	if (!game_init_scene(&game.scene, &game.config, mock_map, (t_dimensions){.height = SIZE, .width = SIZE}))
 		game_shutdown(&game, EXIT_FAILURE);
-		
+
 	// INIT ENGINE
 	if (!game_init_engine(&game))
 		game_shutdown(&game, EXIT_FAILURE);
 
 	// LOAD TEXTURES
-
-	// TODO: check spaces after teh path 
-	// TODO: check what wrong with textures
-	debug_print(&game);
-	const t_wall_texture_paths paths = (t_wall_texture_paths) {
-		.east =  "resources/ea.xpm",
-        .north = "resources/no.xpm",
-        .south = "resources/so.xpm", 
-        .west = "resources/we.xpm"
-	};
-
-	if (textures_load(&game.textures, game.engine.mlx_session, &paths) != TEX_OK) {
-		engine_shutdown(&game.engine);
-		return (1);
-	}
+	if (!game_init_textures(&game.textures, &game.config, game.engine.mlx_session))
+		game_shutdown(&game, EXIT_FAILURE);
 	engine_run(&game.engine);
 
 	return (0);
