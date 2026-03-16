@@ -99,8 +99,9 @@ clean:
 	fi
 
 fclean:
+	rm -rf $(OBJ_DIR)
 	$(MAKE) -C libft fclean
-	rm -f $(OBJ) $(NAME)
+	rm -f $(NAME)
 	@if [ -d $(MLX_DIR) ]; then \
 		rm -rf $(MLX_DIR); \
 	fi
