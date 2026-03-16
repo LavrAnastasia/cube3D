@@ -41,6 +41,7 @@ int	main(int argc, char **argv)
 	};
 
 	// INIT_SCENE	
+	// TODO: clean Map
 	if (!game_init_scene(&game.scene, &game.config, mock_map, (t_dimensions){.height = SIZE, .width = SIZE}))
 		game_shutdown(&game, EXIT_FAILURE);
 
@@ -52,6 +53,8 @@ int	main(int argc, char **argv)
 	// TODO: clean CONFIG PATHES
 	if (!game_init_textures(&game.textures, &game.config, game.engine.mlx_session))
 		game_shutdown(&game, EXIT_FAILURE);
+
+	//RUN LOOP	
 	engine_run(&game.engine);
 
 	return (0);

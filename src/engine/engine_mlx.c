@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   engine_mlx.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/16 14:51:11 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/16 14:52:29 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "engine_internal.h"
 
 #ifdef __linux__
@@ -17,15 +29,13 @@ void	clean_mlx_session(t_engine *engine)
 
 t_engine_status	init_image_buffer(t_engine *engine)
 {
-	engine->buffer.img = mlx_new_image(
-		engine->mlx_session, engine->buffer.size.width, engine->buffer.size.height);
+	engine->buffer.img = mlx_new_image(engine->mlx_session,
+			engine->buffer.size.width, engine->buffer.size.height);
 	if (!engine->buffer.img)
 		return (ENGINE_ERR_CREATE_IMAGE);
-	engine->buffer.px.data = mlx_get_data_addr(
-		engine->buffer.img,
-		&engine->buffer.px.bpp,
-		&engine->buffer.px.line_len,
-		&engine->buffer.px.endian);
+	engine->buffer.px.data = mlx_get_data_addr(engine->buffer.img,
+			&engine->buffer.px.bpp, &engine->buffer.px.line_len,
+			&engine->buffer.px.endian);
 	if (!engine->buffer.px.data)
 		return (ENGINE_ERR_GET_IMAGE_DATA);
 	return (ENGINE_OK);
@@ -44,11 +54,8 @@ t_engine_status	init_mlx(t_engine *engine, char *game_name)
 	engine->mlx_session = mlx_init();
 	if (!engine->mlx_session)
 		return (ENGINE_ERR_INIT_MLX);
-	engine->mlx_window = mlx_new_window(
-			engine->mlx_session,
-			engine->window_size.width,
-			engine->window_size.height,
-			game_name);
+	engine->mlx_window = mlx_new_window(engine->mlx_session,
+			engine->window_size.width, engine->window_size.height, game_name);
 	if (!engine->mlx_window)
 		return (ENGINE_ERR_CREATE_WINDOW);
 	return (ENGINE_OK);
