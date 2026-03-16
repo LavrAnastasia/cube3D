@@ -7,12 +7,14 @@ SRC_ENGINE := $(addprefix $(DIR_SRC)engine/, index.c \
 SRC_PIXELS := $(addprefix $(DIR_SRC)pixels/, index.c)
 SRC_TEXTURES := $(addprefix $(DIR_SRC)textures/, index.c \
 	textures_load.c textures_destroy.c)
-SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c )
+SRC_RAYCAST:= $(addprefix $(DIR_SRC)raycast/, index.c \
+	raycast_prepare_dda.c raycast_prepare_ray.c raycast_intersection.c)
 SRC_RENDER := $(addprefix $(DIR_SRC)render/, index.c \
 	render_draw.c render_projection.c render_sampling.c render_utils.c)
 SRC_MATH := $(addprefix $(DIR_SRC)math/, index.c )
 
-SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c )
+SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c \
+	movement_time.c movement_position.c movement_rotation.c)
 
 SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 	parse_config.c check_config.c parsing_utils.c)

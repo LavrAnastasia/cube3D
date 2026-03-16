@@ -7,6 +7,7 @@ typedef struct s_player
 {
 	t_position	pos;
 	double		angle;
+	double		hit_radius;
 }	t_player;
 
 typedef struct s_camera
@@ -28,6 +29,7 @@ typedef struct s_scene
 	t_player		player;
 	t_camera		camera;
 	t_palette		palette; 
+	double			last_update_time_seconds;
 }	t_scene;
 
 #endif

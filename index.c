@@ -156,6 +156,7 @@ int	main(int argc, char **argv)
 	game.scene.player.pos.y = 2.0;
 
 	game.scene.player.angle = 0.0;
+    game.scene.player.hit_radius = 0.4;
 
 	game.scene.palette.ceiling = 0x202030;
 	game.scene.palette.floor = 0x151515;

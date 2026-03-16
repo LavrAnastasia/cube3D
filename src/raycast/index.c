@@ -1,117 +1,58 @@
-#include "raycast.h"
+#include <stdbool.h>
 #include "raycast_internal.h"
-#include "map_utils.h" // TODO:  think about it — is it stull needed
+#include "map_utils.h"
 
-static t_axis_direction	calc_axis_direction(double ray_direction_x, double ray_direction_y)
+static bool is_valid_ray(t_ray_info	ray);
+static bool is_valid_start_cell(t_point point, char **map, t_dimensions map_size);
+static bool should_take_x_step(t_dda_state state);
+
+t_ray_intersection ray_dda(
+	double angle,
+	t_position player_pos,
+	char **map,
+	t_dimensions map_size
+)
 {
-	const double eps = 1e-9;
-	t_axis_direction	direction;
-
-	direction.x = X_NONE;
-	direction.y = Y_NONE;
-	if (ray_direction_x < -eps)
-		direction.x = X_LEFT;
-	else if (ray_direction_x > eps)
-		direction.x = X_RIGHT;  
-	if (ray_direction_y < -eps)
-		direction.y = Y_TOP;
-	else if (ray_direction_y > eps)
-		direction.y = Y_BOTTOM; 
-	return (direction);
-}
-
-static double ray_delta_distance(double ray_direction_value)
-{
-	const double eps = 1e-9;
-
-	if (fabs(ray_direction_value) < eps)
-		return DBL_MAX;
-	return fabs(1.0 / ray_direction_value);
-}
-
-t_ray_intersection ray_dda(double angle, t_position player_pos, char **map, t_dimensions map_size)
-{
-	// TODO: setup ray
-	const t_vector ray_direction = (t_vector){.x = cos(angle), .y = sin(angle)};
-	const t_axis_direction axis_direction = calc_axis_direction(ray_direction.x, ray_direction.y);
-	const double delta_dist_x = ray_delta_distance(ray_direction.x);
-	const double delta_dist_y = ray_delta_distance(ray_direction.y);
-
-	int map_x = (int)floor(player_pos.x);
-	int map_y = (int)floor(player_pos.y);
-
-	double side_dist_x = DBL_MAX;
-	double side_dist_y = DBL_MAX;
-
-	if (axis_direction.x == X_RIGHT)
-		side_dist_x = (map_x + 1.0 - player_pos.x) * delta_dist_x;
-	else if (axis_direction.x == X_LEFT)
-		side_dist_x = (player_pos.x - map_x) * delta_dist_x;
-	if (axis_direction.y == Y_BOTTOM)
-		side_dist_y = (map_y + 1.0 - player_pos.y) * delta_dist_y;
-	else if (axis_direction.y == Y_TOP)
-		side_dist_y = (player_pos.y - map_y) * delta_dist_y;
-
-	// TODO: separate above and below
-
-	t_ray_crossing crossing = R_CROSS_VERTICAL; 
-	t_point point = (t_point){ .x = map_x, .y = map_y };
-	if (axis_direction.x == X_NONE && axis_direction.y == Y_NONE)
+	const t_ray_info	ray = make_ray_info(angle);
+	t_dda_state			state;
+	t_ray_crossing		current_crossing;
+	
+	if (!is_valid_ray(ray))
+		return (make_invalid_intersection());
+	state = make_initial_dda_state(ray, player_pos);
+	if (!is_valid_start_cell(state.current_cell, map, map_size))
+		return (make_invalid_intersection());
+	while (is_in_bounds(state.current_cell, map_size) && !is_wall(state.current_cell, map)) 
 	{
-		return (t_ray_intersection){
-			.point = point,
-			.crossing = R_CROSS_VERTICAL,
-			.ray_length = DBL_MAX,
-			.ray_direction = ray_direction,
-			.axis_direction = axis_direction
-		};
-	}
-	int step_x;
-	int step_y;
-
-	step_x = 0;
-	if (axis_direction.x == X_RIGHT)
-		step_x = 1;
-	else if (axis_direction.x == X_LEFT)
-		step_x = -1;
-
-	step_y = 0;
-	if (axis_direction.y == Y_TOP)
-		step_y = -1;
-	else if (axis_direction.y == Y_BOTTOM)
-		step_y = 1;
-
-	while (is_in_bounds(point, map_size) && !is_wall(point, map)) 
-	{
-		if (step_y == 0 || (step_x != 0 && side_dist_x < side_dist_y))
+		if (should_take_x_step(state))
 		{
-			crossing = R_CROSS_VERTICAL;
-			side_dist_x += delta_dist_x;
-			point.x += step_x;
+			current_crossing = R_CROSS_VERTICAL;
+			state.distance_to_next_crossing.x += state.one_step_distance.x;
+			state.current_cell.x += state.step.x;
 		}
 		else
 		{
-			crossing = R_CROSS_HORIZONTAL;
-			side_dist_y += delta_dist_y;
-			point.y += step_y;
+			current_crossing = R_CROSS_HORIZONTAL;
+			state.distance_to_next_crossing.y += state.one_step_distance.y;
+			state.current_cell.y += state.step.y;
 		}
 	}
+	return (make_ray_intersection(state, ray, current_crossing, map_size));
+}
 
-	double ray_length;
+static bool is_valid_ray(t_ray_info	ray)
+{
+	return (ray.axis_direction.x != X_NONE || ray.axis_direction.y != Y_NONE);
+}
 
-	if (!is_in_bounds(point, map_size))
-		ray_length = DBL_MAX;
-	else if (crossing == R_CROSS_VERTICAL)
-		ray_length = side_dist_x - delta_dist_x;
-	else
-		ray_length = side_dist_y - delta_dist_y;
+static bool is_valid_start_cell(t_point point, char **map, t_dimensions map_size)
+{
+	return (is_in_bounds(point, map_size) && !is_wall(point, map));
+}
 
-	// TODO: add ray direction
-	return (t_ray_intersection){
-		.point = point,
-		.crossing = crossing,
-		.ray_length = ray_length,
-		.ray_direction = ray_direction,
-		.axis_direction = axis_direction
-	};
+static bool should_take_x_step(t_dda_state state)
+{
+	return (state.step.y == 0
+		|| (state.step.x != 0
+			&& state.distance_to_next_crossing.x < state.distance_to_next_crossing.y));
 }
