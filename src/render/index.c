@@ -6,10 +6,9 @@ static void 		render_missed_column(size_t window_height, size_t x, t_px_buffer *
 
 void render_scene(const t_scene *scene, t_dimensions window_size, t_px_buffer *buffer, const t_textures *textures)
 {
-	size_t x;
-	t_column_ray ray;
-	t_range wall_range;
-	t_column_segment wall_column;
+	size_t					x;
+	t_column_ray			ray;
+	t_wall_column			wall_column;
 
 	x = 0;
 	while (x < (size_t)window_size.width)
@@ -21,13 +20,15 @@ void render_scene(const t_scene *scene, t_dimensions window_size, t_px_buffer *b
 			x++;
 			continue;
 		}
-		wall_range = calc_wall_range_for_ray(ray.intersection.ray_length,
-			ray.angle - scene->player.angle, window_size, scene->camera.scale);
-		wall_column = (t_column_segment){ .x = x, .y_range = wall_range} ;
+		wall_column = (t_wall_column){
+			.x = x,
+			.projection = build_wall_projection(ray.intersection.ray_length,
+					ray.angle - scene->player.angle, window_size, scene->camera.scale),
+			.sample = build_wall_sample(ray.intersection, textures, scene->player.pos),
+			.fallback_color = scene->palette.ceiling
+		};
 		render_ceiling_and_floor(wall_column, (size_t)window_size.height, buffer, &scene->palette);
-		render_wall(wall_column,
-			build_wall_sample(ray.intersection, textures, scene->player.pos),
-			buffer, scene->palette.ceiling);
+		render_wall(wall_column, buffer);
 		x++;
 	}
 }
