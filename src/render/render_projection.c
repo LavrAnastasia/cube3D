@@ -6,20 +6,11 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:34 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:35:47 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/16 12:44:34 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_internal.h"
-
-t_position	calc_hit_position(
-	t_position player_pos,
-	double ray_length,
-	t_vector ray_direction)
-{
-	return ((t_position){.x = player_pos.x + ray_length * ray_direction.x,
-		.y = player_pos.y + ray_length * ray_direction.y});
-}
 
 static double	correct_fisheye_distance(double ray_length, double angle_diff)
 {

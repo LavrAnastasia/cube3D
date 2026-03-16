@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:41 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:36:51 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/16 12:45:28 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ static int					calc_texture_x(
 								double position_along_wall,
 								t_ray_intersection ray_intersection,
 								const t_image_buffer *texture);
+static t_position			calc_hit_position(
+								t_position player_pos,
+								double ray_length,
+								t_vector ray_direction);
 
 t_wall_sample	build_wall_sample(
 	t_ray_intersection ray_intersection,
@@ -98,4 +102,13 @@ static const t_image_buffer	*select_wall_texture(
 			wall_texture = &textures->wall.south;
 	}
 	return (wall_texture);
+}
+
+static t_position	calc_hit_position(
+	t_position player_pos,
+	double ray_length,
+	t_vector ray_direction)
+{
+	return ((t_position){.x = player_pos.x + ray_length * ray_direction.x,
+		.y = player_pos.y + ray_length * ray_direction.y});
 }
