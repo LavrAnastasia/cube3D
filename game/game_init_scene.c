@@ -16,13 +16,9 @@ bool game_init_scene(t_scene *scene, t_config *config, char **map, t_dimensions 
     scene->player.hit_radius = 0.4;
 	scene->palette.ceiling = rgb_to_int(config->ceiling);
 	scene->palette.floor = rgb_to_int(config->floor);
-	// TODO: ERRO
+	// TODO: ERRO PRINt
 	if (!copy_map(scene, map))
-	{
-		game_destroy_map(scene->map);
-		scene->map = NULL;
 		return (false);
-	}	
 	scene->camera.fov = deg_to_rad(FOV);
 	scene->camera.scale = tan(scene->camera.fov / 2);
 	return (true);
@@ -56,7 +52,11 @@ static bool copy_map(t_scene *scene, char **map)
 	{
 		scene->map[i] = ft_strdup(map[i]);
 		if (!scene->map[i])
+		{
+			game_destroy_map(scene->map);
+			scene->map = NULL;
 			return (false);
+		}
 		i++;
 	}
 	scene->map[scene->map_size.height] = NULL;
