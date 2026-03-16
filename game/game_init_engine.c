@@ -17,12 +17,9 @@ bool game_init_engine(t_game *game)
 		.width = MAX_WIN_WIDTH,
 		.height = MAX_WIN_HEIGHT
 	};
-
-	if (engine_init(&game->engine, GAME_TITLE) != ENGINE_OK) {
-		// TODO: clean other sources
+    // TODO: print error
+	if (engine_init(&game->engine, GAME_TITLE) != ENGINE_OK)
 		return (false);
-	}
-
 	game->engine.events.data = game;
 	game->engine.events.on_close = game_on_close;
 	game->engine.events.on_key_down = game_on_key_down;
