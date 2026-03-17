@@ -102,11 +102,11 @@ int flood_fill(char **map, int rows, int x, int y)
     c = map[y][x];
     if(c == SKIP_SIGN)
         return 1;
-    if(c == TILE_WALL || c == VISISTED_SIGN)
+    if(c == TILE_WALL || c == VISITED_SIGN)
         return 0;
     if(!is_walkable(c))
         return 0;
-    map[y][x] = VISISTED_SIGN;
+    map[y][x] = VISITED_SIGN;
     if (flood_fill(map, rows, x - 1, y))
 		return (1);
 	if (flood_fill(map, rows, x + 1, y))
