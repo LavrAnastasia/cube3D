@@ -43,8 +43,8 @@ bool is_one_player(char **map)
         x = 0;
         while(map[y][x] && map[y][x] != '\n')
         {
-            if(map[y][x] == 'N' || map[y][x] == 'S' 
-                || map[y][x] == 'E' || map[y][x] == 'W')
+            if(map[y][x] == TILE_PLAYER_NORTH || map[y][x] == TILE_PLAYER_SOURTH 
+                || map[y][x] == TILE_PLAYER_EAST || map[y][x] == TILE_PLAYER_WEST)
                 count++;
             x++;
         }
@@ -57,7 +57,7 @@ bool is_one_player(char **map)
 
 int is_player_start(char c)
 {
-    return(c == 'N' || c == 'S' || c == 'E' || c == 'W');
+    return(c == TILE_PLAYER_NORTH || c == TILE_PLAYER_SOURTH || c == TILE_PLAYER_EAST || c == TILE_PLAYER_WEST);
 }
 
 int find_player_start(char **map, t_configuration *configuration)
@@ -91,7 +91,7 @@ int find_player_start(char **map, t_configuration *configuration)
 
 int is_walkable(char c)
 {
-    return(c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
+    return(c == '0' || c == TILE_PLAYER_NORTH || c == TILE_PLAYER_SOURTH || c == TILE_PLAYER_EAST || c == TILE_PLAYER_WEST);
 }
 int flood_fill(char **map, int rows, int x, int y)
 {
