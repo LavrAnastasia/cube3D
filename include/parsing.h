@@ -20,8 +20,6 @@
 #define WE_KEY "WE"
 #define EA_KEY "EA"
 
-#define M_PI 3.14159265358979323846
-
 typedef enum e_direction_key
 {
 	NO = 0,

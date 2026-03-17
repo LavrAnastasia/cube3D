@@ -10,9 +10,8 @@ static bool copy_map(t_scene *scene, char **map);
 bool game_init_scene(t_scene *scene, t_configuration *configuration)
 {
     scene->map_size = configuration->map_size;
-	scene->player.pos.x = 2.0;
-	scene->player.pos.y = 2.0;
-	scene->player.angle = player_tile_to_angle(TILE_PLAYER_EAST);
+	scene->player.pos = configuration->player_pos;
+	scene->player.angle = player_tile_to_angle(configuration->player_start);
     scene->player.hit_radius = 0.4;
 	scene->palette.ceiling = rgb_to_int(configuration->samples.ceiling);
 	scene->palette.floor = rgb_to_int(configuration->samples.floor);
