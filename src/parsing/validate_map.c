@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include "map.h"
 
 
 bool	is_valid_map_char(char *line)
@@ -43,8 +44,7 @@ bool is_one_player(char **map)
         x = 0;
         while(map[y][x] && map[y][x] != '\n')
         {
-            if(map[y][x] == TILE_PLAYER_NORTH || map[y][x] == TILE_PLAYER_SOURTH 
-                || map[y][x] == TILE_PLAYER_EAST || map[y][x] == TILE_PLAYER_WEST)
+            if(is_player_pos(map[y][x]))
                 count++;
             x++;
         }
@@ -55,10 +55,7 @@ bool is_one_player(char **map)
     return(1);
 }
 
-int is_player_start(char c)
-{
-    return(c == TILE_PLAYER_NORTH || c == TILE_PLAYER_SOURTH || c == TILE_PLAYER_EAST || c == TILE_PLAYER_WEST);
-}
+
 
 int find_player_start(char **map, t_configuration *configuration)
 {
@@ -75,7 +72,7 @@ int find_player_start(char **map, t_configuration *configuration)
         while(map[y][x] && map[y][x] != '\n')
         {
             current_char = map[y][x];
-            if(is_player_start(current_char))
+            if(is_player_pos(current_char))
             {
                 count++;
                 configuration->player_pos.x = x + 0.5;
@@ -91,7 +88,7 @@ int find_player_start(char **map, t_configuration *configuration)
 
 int is_walkable(char c)
 {
-    return(c == '0' || c == TILE_PLAYER_NORTH || c == TILE_PLAYER_SOURTH || c == TILE_PLAYER_EAST || c == TILE_PLAYER_WEST);
+    return(c == '0' || is_player_pos(c));
 }
 int flood_fill(char **map, int rows, int x, int y)
 {
