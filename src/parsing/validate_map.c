@@ -23,7 +23,7 @@ int	is_valid_map_chars(char **map)
 	i = 0;
 	while (map && map[i])
 	{
-		if (!is_valid_map_char(map[i]))
+		if (!is_valid_map_char(map[i])) // TODO: how to use is_valid_char && SKIP_SIGN && \n
 			return (0);
 		i++;
 	}
