@@ -1,40 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_projection.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/16 12:16:34 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/16 12:44:34 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render_internal.h"
 
-t_position calc_hit_position(t_position player_pos, double ray_length, t_vector ray_direction)
+static double	correct_fisheye_distance(double ray_length, double angle_diff)
 {
-	return (t_position){
-		.x = player_pos.x + ray_length * ray_direction.x,
-		.y = player_pos.y + ray_length * ray_direction.y
-	};
-}
+	const double	perp_distance = ray_length * cos(angle_diff);
 
-static double correct_fisheye_distance(double ray_length, double angle_diff)
-{
-	const double perp_distance = ray_length * cos(angle_diff);
-	
 	if (perp_distance < EPS_DIST)
 		return (EPS_DIST);
 	return (perp_distance);
 }
 
-static t_range calc_wall_range(double distance, t_dimensions window_size, double scale)
+static double	calc_wall_height(
+	double distance,
+	t_dimensions window_size,
+	double scale)
 {
-	const double wall_height = (((double)window_size.width * 0.5) / scale) / distance;
-	double top;
-	double bottom;
+	return ((((double)window_size.width * 0.5) / scale) / distance);
+}
 
-	top = (window_size.height / 2.0) - (wall_height / 2.0);
+static double	calc_wall_top(double wall_height, size_t window_height)
+{
+	return ((window_height / 2.0) - (wall_height / 2.0));
+}
+
+static t_range	calc_wall_range(double wall_height, t_dimensions window_size)
+{
+	double	top;
+	double	bottom;
+
+	top = calc_wall_top(wall_height, (size_t)window_size.height);
 	bottom = top + wall_height;
 	if (top < 0)
 		top = 0;
 	if (bottom > (double)window_size.height)
 		bottom = window_size.height;
-	return (t_range){.start = (size_t)top, .end = (size_t)bottom};
+	return ((t_range){.start = (size_t)top, .end = (size_t)bottom});
 }
 
-t_range calc_wall_range_for_ray(double ray_length, double angle_diff, t_dimensions window_size, double scale)
+t_wall_projection	build_wall_projection(
+	double ray_length,
+	double angle_diff,
+	t_dimensions window_size,
+	double scale)
 {
-    const double perp_distance = correct_fisheye_distance(ray_length, angle_diff);
+	const double	perp_distance = correct_fisheye_distance(ray_length,
+			angle_diff);
+	const double	wall_height = calc_wall_height(perp_distance, window_size,
+			scale);
 
-	return (calc_wall_range(perp_distance, window_size, scale));
+	return ((t_wall_projection){.range = calc_wall_range(wall_height,
+			window_size), .top = calc_wall_top(wall_height,
+			(size_t)window_size.height), .height = wall_height});
 }
