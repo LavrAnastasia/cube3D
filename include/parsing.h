@@ -8,8 +8,8 @@
 #include <stdbool.h>
 
 #include "libft.h"
-#include "game.h" // TODO: delete
 #include "config.h"
+#include "map.h"
 
 //error messages
 
@@ -71,10 +71,10 @@ typedef struct s_parse_result {
 
 char *map_key(t_direction_key key);
 
-t_parse_result parse_settings(t_game *game, char **argv);
+t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_game *game);
+t_parse_result process_config_line(char *line, t_configuration *configuration);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
@@ -88,15 +88,15 @@ bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
 t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
-int is_texture_path_missing(t_game *game);
+int is_texture_path_missing(t_configuration *configuration);
 
-t_parse_result parse_map(int fd, t_game *game, char *first_map_line);
+t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
 bool	is_valid_map_char(char *line);
 int	is_valid_map_chars(char **map);
 bool 	is_one_player(char **map);
 int row_len(char *s);
 void free_map(char **map, int rows);
 int check_path(char **map, int rows, int player_x, int player_y);
-int find_player_start(char **map, t_game *game);
+int find_player_start(char **map, t_configuration *configuration);
 
 #endif

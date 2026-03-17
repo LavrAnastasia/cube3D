@@ -60,17 +60,7 @@ int is_player_start(char c)
     return(c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-double player_start_angle(char c)
-{
-    if(c == 'N')
-        return(3.0 * M_PI / 2);
-    if(c == 'S')
-        return(M_PI / 2.0);
-    if(c == 'W')
-        return (M_PI);
-    return (0.0);
-}
-int find_player_start(char **map, t_game *game)
+int find_player_start(char **map, t_configuration *configuration)
 {
     int x;
     int y;
@@ -88,10 +78,9 @@ int find_player_start(char **map, t_game *game)
             if(is_player_start(current_char))
             {
                 count++;
-                game->scene.player.pos.x = x + 0.5;
-                game->scene.player.pos.y = y + 0.5;
-                game->scene.player.angle = player_start_angle(current_char);
-                // map[y][x] = '0'; // чтобы в карте не оставался N/S/E/W (оставить ли?)
+                configuration->player_pos.x = x + 0.5;
+                configuration->player_pos.y = y + 0.5;
+                configuration->player_start = current_char;
             }
             x++;
         }

@@ -44,7 +44,7 @@ int	map_width(char **map)
     return(col);
 }
 
-t_parse_result	validate_map(char **map, t_game *game)
+t_parse_result	validate_map(char **map, t_configuration *configuration)
 {
     int height;
 
@@ -53,10 +53,10 @@ t_parse_result	validate_map(char **map, t_game *game)
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
     if(!is_one_player(map))
         return make_parse_error_result(P_ERR_PLAYER_COUNT);
-    if (!find_player_start(map, game))
+    if (!find_player_start(map, configuration))
 	    return (make_parse_error_result(P_ERR_PLAYER_COUNT));
-	if (!check_path(map, height, (int)game->scene.player.pos.x,
-    (int)game->scene.player.pos.y))
+	if (!check_path(map, height, (int)configuration->player_pos.x,
+    (int)configuration->player_pos.y))
 	        return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
 	    return (make_parse_success_result(P_MAP));
 }
@@ -112,7 +112,7 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 	return (make_parse_success_result(P_MAP));
 }
 
-t_parse_result	parse_map(int fd, t_game *game, char *first_map_line)
+t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map_line)
 {
 	char			**map;
 	char			*map_in_one_line;
@@ -136,14 +136,14 @@ t_parse_result	parse_map(int fd, t_game *game, char *first_map_line)
 		free_split(map);
 		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
 	}
-	result = validate_map(map, game);
+	result = validate_map(map, configuration);
 	if (!result.ok)
 	{
 		free_split(map);
 		return (result);
 	}
-    game->scene.map = map;
-	game->scene.map_size.height = map_height(map);
-	game->scene.map_size.width = map_width(map);
+    configuration->map = map;
+	configuration->map_size.height = map_height(map);
+	configuration->map_size.width = map_width(map);
 	return (make_parse_success_result(P_MAP));
 }

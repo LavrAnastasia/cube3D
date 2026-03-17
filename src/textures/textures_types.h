@@ -3,7 +3,6 @@
 
 # include "types.h"
 
-
 typedef struct s_wall_texture_paths {
 	char	*north;
 	char	*south;
