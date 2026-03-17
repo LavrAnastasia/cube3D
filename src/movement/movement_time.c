@@ -1,4 +1,5 @@
 #include <sys/time.h>
+#include <stddef.h>
 
 double	get_current_time_seconds(void)
 {

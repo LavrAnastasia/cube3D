@@ -11,8 +11,10 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 	t_parse_result parse_result;
+	t_configuration configuration;
 
 	ft_bzero(&game, sizeof(t_game));
+	ft_bzero(&configuration, sizeof(t_configuration));
 
 	parse_result = check_args(argc, argv);
 	if (!parse_result.ok)
@@ -20,30 +22,22 @@ int	main(int argc, char **argv)
 		print_parse_error(parse_result.error);
 		return (1);
 	}
-	parse_result = parse_settings(&game, argv);
+
+	parse_result = parse_settings(&configuration, argv);
 	if (!parse_result.ok)
 	{
 		print_parse_error(parse_result.error);
 		return (1);
 	}
 
-	static char *mock_map[SIZE] = {
-		"1111111111",
-		"1000000001",
-		"1000000001",
-		"1000010001",
-		"1000010001",
-		"1000010001",
-		"1000010001",
-		"1000000001",
-		"1000000001",
-		"1111111111"
-	};
+	printf("Parse type: %d", parse_result.parse_type);
+
 
 	// INIT_SCENE	
 	// TODO: clean Map
-	if (!game_init_scene(&game.scene, &game.config, mock_map, (t_dimensions){.height = SIZE, .width = SIZE}))
+	if (!game_init_scene(&game.scene, &configuration))
 		game_shutdown(&game, EXIT_FAILURE);
+
 
 	// INIT ENGINE
 	if (!game_init_engine(&game))
@@ -51,10 +45,11 @@ int	main(int argc, char **argv)
 
 	// LOAD TEXTURES
 	// TODO: clean CONFIG PATHES
-	if (!game_init_textures(&game.textures, &game.config, game.engine.mlx_session))
+	if (!game_init_textures(&game.textures, &configuration, game.engine.mlx_session))
 		game_shutdown(&game, EXIT_FAILURE);
 
 	//RUN LOOP	
+
 	engine_run(&game.engine);
 
 	return (0);

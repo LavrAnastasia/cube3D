@@ -8,17 +8,23 @@
 #include <stdbool.h>
 
 #include "libft.h"
-#include "game.h" // TODO: delete
 #include "config.h"
+#include "map.h"
 
 //error messages
 
+#define FILE_EXT ".cub"
+#define IMG_EXT ".xpm"
+
 #define SKIP_SIGN ' '
+#define VISITED_SIGN '*'
 
 #define NO_KEY "NO"
 #define SO_KEY "SO"
 #define WE_KEY "WE"
 #define EA_KEY "EA"
+#define FLOOR_KEY "F"
+#define CEILING_KEY "C"
 
 typedef enum e_direction_key
 {
@@ -28,12 +34,20 @@ typedef enum e_direction_key
 	EA
 }	t_direction_key;
 
-typedef enum e_parse_phase
+typedef enum e_color_key
 {
-	P_TEXTURES = 0,
-	P_COLORS,
+	C_FLOOR = 'F',
+	C_CEILING = 'C'
+}	t_color_key;
+
+typedef enum e_parse_type
+{
+	P_UNKNOWN = 0,
+	P_SPACES,
+	P_TEXTURE,
+	P_COLOR,
 	P_MAP
-} t_parse_phase;
+} t_parse_type;
 
 typedef enum e_parse_error_code
 {
@@ -45,7 +59,13 @@ typedef enum e_parse_error_code
 	P_ERR_OPEN_FILE,
 	P_ERR_RGB,
 	P_ERR_RGB_RANGE, 
-	P_ERR_DUP
+	P_ERR_DUP,
+	P_ERR_TEXTURE_EXT,
+	P_ERR_TEXTURE_TRAILING,
+	P_ERR_INVALID_SYMBOLS,
+	P_ERR_PLAYER_COUNT,
+	P_ERR_MAP_NOT_CLOSED
+
 } t_parse_error_code;
 
 typedef struct s_parse_error {
@@ -55,27 +75,38 @@ typedef struct s_parse_error {
 
 typedef struct s_parse_result {
 	bool ok;
+	t_parse_type parse_type;
 	t_parse_error error;
 } t_parse_result;
 
 char *map_key(t_direction_key key);
 
-t_parse_result parse_settings(t_game *game, char **argv);
+t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_game *game, t_parse_phase  *phase);
+t_parse_result process_config_line(char *line, t_configuration *configuration);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
-bool is_direction_key(char *line, t_direction_key key);
-int is_config(char *line, char a);
+bool is_direction_key(const char *line, t_direction_key key);
+int is_config(const char *line, const char a);
 
 void free_split(char **arr);
 void print_error_key(const char *key, const char *msg);
-t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name);
+t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key);
 bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
+t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
+int is_texture_path_missing(t_configuration *configuration);
 
+t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
+bool	is_valid_map_char(char *line);
+int	is_valid_map_chars(char **map);
+bool 	is_one_player(char **map);
+int row_len(char *s);
+void free_map(char **map, int rows);
+int check_path(char **map, int rows, t_position position);
+void find_player_start(char **map, t_configuration *configuration);
 
 #endif

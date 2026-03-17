@@ -21,15 +21,15 @@ bool is_next_line_map(char *line)
 char *map_key(t_direction_key key)
 {
     if (key == NO)
-        return "NO";
+        return NO_KEY;
     if (key == SO)
-        return "SO";
+        return SO_KEY;
     if (key == WE)
-        return "WE";
-    return "EA";  
+        return WE_KEY;
+    return EA_KEY;  
 }
 
-bool is_direction_key(char *line, t_direction_key key)
+bool is_direction_key(const char *line, t_direction_key key)
 {
     const char *direction_key = map_key(key);
 
@@ -41,7 +41,7 @@ bool is_direction_key(char *line, t_direction_key key)
         return (false);
     return (true);
 }
-int is_config(char *line, char a)
+int is_config(const char *line, const char a)
 {
     if(!line)
         return(0);
@@ -50,5 +50,12 @@ int is_config(char *line, char a)
     if(!ft_isspace((unsigned char)line[1]))
         return(0);
     return(1);    
+}
+
+int is_texture_path_missing(t_configuration *configuration)
+{
+    if (!configuration->samples.paths.north || !configuration->samples.paths.south || !configuration->samples.paths.west || !configuration->samples.paths.east)
+        return(1);
+    return (0);
 }
 

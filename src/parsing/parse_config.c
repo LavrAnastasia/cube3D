@@ -11,32 +11,21 @@ static t_parse_result make_parse_error_result(t_parse_error_code code, const cha
     };
 }
 
-static t_parse_result make_parse_succses_result()
+static t_parse_result make_parse_success_result(t_parse_type p_type)
 {
     return (t_parse_result) {
-        .ok = true
+        .ok = true,
+        .parse_type = p_type
     };
 }
 
-static t_parse_result fill_texture_path(char *line, char **path, t_direction_key key)
+static char *map_color_key(t_color_key key)
 {
-    char *value;
-    size_t len;
-
-    if(*path != NULL)
-        return make_parse_error_result(P_ERR_DUP, map_key(key));
-    value = skip_spaces(line);
-    if(!value || *value == '\0'|| *value == '\n')
-        return make_parse_error_result(P_ERR_NO_PATH, map_key(key)); 
-    *path = ft_strdup(value);
-    if(!*path)
-        return make_parse_error_result(P_ERR_MALLOC, NULL);
-    len = ft_strlen(*path);
-    if(len > 0 && (*path)[len - 1] == '\n') // added skip for space from end
-        (*path)[len - 1] = '\0';
-    return (make_parse_succses_result());
+    if (key == C_FLOOR)
+        return FLOOR_KEY;
+    return CEILING_KEY;  
 }
-t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name)
+t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key)
 {
     char **rgb;
     
@@ -49,54 +38,56 @@ t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name)
     free_split(rgb);
     if(color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 ||
         color->b < 0 || color->b > 255)
-        return make_parse_error_result(P_ERR_RGB_RANGE, key_name);
-    return make_parse_succses_result();
+        return make_parse_error_result(P_ERR_RGB_RANGE, map_color_key(key));
+    return make_parse_success_result(P_COLOR);
 }
 
-t_parse_result fill_texture_paths(char *line, t_game *game, t_parse_phase *phase)
+t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
 {
     if(is_direction_key(line, NO))
-        return(fill_texture_path(line + 2, &game->config.no_path, NO));
+        return(fill_texture_path(line + 2, &configuration->samples.paths.north, NO));
     if(is_direction_key(line, SO))
-        return(fill_texture_path(line + 2, &game->config.so_path, SO));
+        return(fill_texture_path(line + 2, &configuration->samples.paths.south, SO));
     if(is_direction_key(line, WE))
-        return(fill_texture_path(line + 2, &game->config.we_path, WE));
+        return(fill_texture_path(line + 2, &configuration->samples.paths.west, WE));
     if(is_direction_key(line, EA))
-        return(fill_texture_path(line + 2, &game->config.ea_path, EA));
-    *phase = P_COLORS;
-    return  make_parse_succses_result();
+        return(fill_texture_path(line + 2, &configuration->samples.paths.east, EA));
+    return  make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result fill_colors(char *trim, t_game *game,  t_parse_phase *phase)
+t_parse_result fill_colors(char *trim, t_configuration *configuration)
 {
     char *path;
 
-    if(is_config(trim, 'F'))
+    if(is_config(trim, C_FLOOR))
     {
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &game->config.floor, "F"));
+        return(parse_color(path, &configuration->samples.floor, C_FLOOR));
     }
-    if(is_config(trim, 'C'))
+    if(is_config(trim, C_CEILING))
     {
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &game->config.ceiling, "C"));
+        return(parse_color(path, &configuration->samples.ceiling, C_CEILING));
     }
-    *phase = P_MAP;
-    return make_parse_succses_result();
+    return make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result process_config_line(char *line, t_game *game, t_parse_phase *phase)
+t_parse_result process_config_line(char *line, t_configuration *configuration)
 {
     char *trim;
     t_parse_result result;
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
-        return make_parse_succses_result();
-    result = fill_texture_paths(trim, game, phase);
-    if (!result.ok || (result.ok && *phase == P_TEXTURES))
+        return make_parse_success_result(P_SPACES);
+    result = fill_texture_paths(trim, configuration);
+    if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
-    result = fill_colors(trim, game, phase);
+    result = fill_colors(trim, configuration);
+    if (!result.ok)
+        return (result);
+    if (result.parse_type == P_UNKNOWN)
+        result.parse_type = P_MAP;
     return (result);
 }
 

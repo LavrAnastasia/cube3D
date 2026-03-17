@@ -9,7 +9,7 @@ void	textures_destroy(t_textures *textures, void *mlx_session)
 	texture_destroy(mlx_session, &textures->wall.west);
 }
 
-static void load_wall_textures(t_textures *textures, void *mlx_session, const t_wall_texture_paths *paths)
+static void load_wall_textures(t_textures *textures, void *mlx_session, t_wall_texture_paths *paths)
 {
 	textures->wall.north.img = load_xpm(mlx_session, paths->north, &textures->wall.north.size);
     textures->wall.south.img = load_xpm(mlx_session, paths->south, &textures->wall.south.size);
@@ -25,7 +25,7 @@ static void load_wall_pixels(t_textures *textures)
 	textures->wall.west.px.data = load_px_data(&textures->wall.west);
 }
 
-t_textures_status	textures_load(t_textures *textures, void *mlx_session, const t_wall_texture_paths *paths)
+t_textures_status	textures_load(t_textures *textures, void *mlx_session, t_wall_texture_paths *paths)
 {
     load_wall_textures(textures, mlx_session, paths);
     if (!textures->wall.north.img || !textures->wall.south.img

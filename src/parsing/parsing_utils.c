@@ -21,7 +21,11 @@ const char	*err_parse_msg(int code)
 	[P_ERR_OPEN_FILE] = "Cannot open the file",
 	[P_ERR_RGB] = "Invalid RGB format",
 	[P_ERR_RGB_RANGE] = "RGB out of range",
-	[P_ERR_DUP] = "There can be only one key"};
+	[P_ERR_DUP] = "There can be only one key",
+    [P_ERR_TEXTURE_TRAILING] = "Exture path contains extra data",
+    [P_ERR_TEXTURE_EXT] = "Texture file must have .xpm extension",
+    [P_ERR_INVALID_SYMBOLS] = "The map contains extraneous symbols",
+    [P_ERR_PLAYER_COUNT] = "Map must contain exactly one player start"};
 	const int			size = sizeof(map) / sizeof(*map);
 
 	if (code < 0 || code >= size)
