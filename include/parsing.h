@@ -14,6 +14,7 @@
 //error messages
 
 #define SKIP_SIGN ' '
+#define VISISTED_SIGN '*'
 
 #define NO_KEY "NO"
 #define SO_KEY "SO"

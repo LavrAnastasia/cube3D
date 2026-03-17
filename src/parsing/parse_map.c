@@ -76,8 +76,8 @@ static void	replace_spaces(char *s)
 	i = 0;
 	while (s && s[i])
 	{
-		if (s[i] == ' ')
-			s[i] = '0';
+		if (s[i] == SKIP_SIGN)
+			s[i] = TILE_EMPTY;
 		i++;
 	}
 }

@@ -1,5 +1,5 @@
 #include "parsing.h"
-#include "map.h"
+#include "map_utils.h"
 
 
 bool	is_valid_map_char(char *line)
@@ -88,7 +88,7 @@ int find_player_start(char **map, t_configuration *configuration)
 
 int is_walkable(char c)
 {
-    return(c == '0' || is_player_pos(c));
+    return(c == TILE_EMPTY || is_player_pos(c));
 }
 int flood_fill(char **map, int rows, int x, int y)
 {
@@ -101,13 +101,13 @@ int flood_fill(char **map, int rows, int x, int y)
     if(x >= len)
         return 1;
     c = map[y][x];
-    if(c == ' ')
+    if(c == SKIP_SIGN)
         return 1;
-    if(c == '1' || c == '*')
+    if(c == TILE_WALL || c == VISISTED_SIGN)
         return 0;
     if(!is_walkable(c))
         return 0;
-    map[y][x] = '*';
+    map[y][x] = VISISTED_SIGN;
     if (flood_fill(map, rows, x - 1, y))
 		return (1);
 	if (flood_fill(map, rows, x + 1, y))
