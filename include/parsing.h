@@ -13,6 +13,9 @@
 
 //error messages
 
+#define FILE_EXT ".cub"
+#define IMG_EXT ".xpm"
+
 #define SKIP_SIGN ' '
 #define VISITED_SIGN '*'
 
@@ -20,6 +23,8 @@
 #define SO_KEY "SO"
 #define WE_KEY "WE"
 #define EA_KEY "EA"
+#define FLOOR_KEY "F"
+#define CEILING_KEY "C"
 
 typedef enum e_direction_key
 {
@@ -28,6 +33,12 @@ typedef enum e_direction_key
 	WE,
 	EA
 }	t_direction_key;
+
+typedef enum e_color_key
+{
+	C_FLOOR = 'F',
+	C_CEILING = 'C'
+}	t_color_key;
 
 typedef enum e_parse_type
 {
@@ -82,7 +93,7 @@ int is_config(const char *line, const char a);
 
 void free_split(char **arr);
 void print_error_key(const char *key, const char *msg);
-t_parse_result parse_color(char *raw, t_rgb *color, const char *key_name);
+t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key);
 bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);

@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/17 18:40:29 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/17 20:24:50 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_parse_result	check_args(int argc, char **argv)
 	if (argc > 2)
 		return (make_parse_error_result(P_ERR_ARG));
 	dot = ft_strrchr(argv[1], '.');
-	if (!dot || ft_strncmp(dot, ".cub", 5) != 0)
+	if (!dot || ft_strncmp(dot, FILE_EXT, 5) != 0)
 		return (make_parse_error_result(P_ERR_EXTENSION));
 	return (result);
 }

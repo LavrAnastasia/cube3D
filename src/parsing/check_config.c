@@ -21,12 +21,12 @@ bool is_next_line_map(char *line)
 char *map_key(t_direction_key key)
 {
     if (key == NO)
-        return "NO";
+        return NO_KEY;
     if (key == SO)
-        return "SO";
+        return SO_KEY;
     if (key == WE)
-        return "WE";
-    return "EA";  
+        return WE_KEY;
+    return EA_KEY;  
 }
 
 bool is_direction_key(const char *line, t_direction_key key)
