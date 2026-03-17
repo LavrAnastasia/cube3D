@@ -42,14 +42,11 @@ t_parse_result	validate_map(char **map, t_configuration *configuration, int heig
 {
 	if (!is_valid_map_chars(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
-    if(!is_one_player(map))
-        return make_parse_error_result(P_ERR_PLAYER_COUNT);
-    if (!find_player_start(map, configuration))
-	    return (make_parse_error_result(P_ERR_PLAYER_COUNT));
-	if (!check_path(map, height, (int)configuration->player_pos.x,
-    (int)configuration->player_pos.y))
-	        return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
-	    return (make_parse_success_result(P_MAP));
+    if (!is_one_player(map))
+		return make_parse_error_result(P_ERR_PLAYER_COUNT);
+	if (!check_path(map, height, configuration->player_pos))
+	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
+	return (make_parse_success_result(P_MAP));
 }
 
 char	*join_lines(char *s1, char *s2)
@@ -135,6 +132,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		free_split(map);
 		return (result);
 	}
+	find_player_start(map, configuration);
     configuration->map = map;
 	configuration->map_size = map_size;
 	return (make_parse_success_result(P_MAP));

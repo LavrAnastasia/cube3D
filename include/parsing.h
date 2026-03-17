@@ -95,7 +95,7 @@ int	is_valid_map_chars(char **map);
 bool 	is_one_player(char **map);
 int row_len(char *s);
 void free_map(char **map, int rows);
-int check_path(char **map, int rows, int player_x, int player_y);
-int find_player_start(char **map, t_configuration *configuration);
+int check_path(char **map, int rows, t_position position);
+void find_player_start(char **map, t_configuration *configuration);
 
 #endif

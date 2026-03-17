@@ -45,26 +45,27 @@ bool is_one_player(char **map)
         while(map[y][x] && map[y][x] != '\n')
         {
             if(is_player_pos(map[y][x]))
+            {
+                if (count > 0)
+                    return (false);
                 count++;
+            }
+               
             x++;
         }
         y++;
     }
-    if(count != 1)
-       return(0);
-    return(1);
+    return (count == 1);
 }
 
 
 
-int find_player_start(char **map, t_configuration *configuration)
+void find_player_start(char **map, t_configuration *configuration)
 {
     int x;
     int y;
-    int count;
     char current_char;
 
-    count = 0;
     y = 0;
     while(map[y])
     {
@@ -74,7 +75,6 @@ int find_player_start(char **map, t_configuration *configuration)
             current_char = map[y][x];
             if(is_player_pos(current_char))
             {
-                count++;
                 configuration->player_pos.x = x + 0.5;
                 configuration->player_pos.y = y + 0.5;
                 configuration->player_start = current_char;
@@ -83,7 +83,6 @@ int find_player_start(char **map, t_configuration *configuration)
         }
         y++;
     }
-    return(count == 1);
 }
 
 int is_walkable(char c)
@@ -153,7 +152,7 @@ void free_map(char **map, int rows)
     }
     free(map);
 }
-int check_path(char **map, int rows, int player_x, int player_y)
+int check_path(char **map, int rows, t_position position)
 {
     char **copy;
     int leak;
@@ -161,7 +160,7 @@ int check_path(char **map, int rows, int player_x, int player_y)
     copy = copy_map(map, rows);
     if(!copy)
         return(0);
-    leak = flood_fill(copy, rows, player_x, player_y);
+    leak = flood_fill(copy, rows, position.x, position.y);
     free_map(copy, rows);
     return(leak == 0);
 }
