@@ -18,37 +18,28 @@ int row_len(char *s)
     return(i);
 }
 
-int	map_height(char **map)
-{
-	int	row;
+t_dimensions calc_map_size(char **map)
+{	
+	t_dimensions size;
 
-	row = 0;
-	while (map && map[row])
-		row++;
-	return (row);
+	size.width = 0;
+	size.height = 0;
+	int max_width;
+
+	if(!map)
+		return size;
+	while (map[size.height])
+	{
+		max_width = row_len(map[size.height]);
+        if(max_width > size.width)
+            size.width = max_width;
+		size.height++;
+	}
+	return (size);
 }
 
-int	map_width(char **map)
+t_parse_result	validate_map(char **map, t_configuration *configuration, int height)
 {
-    int row = 0;
-    int col = 0;
-    int len;
-
-    while(map && map[row])
-    {
-        len = row_len(map[row]);
-        if(len > col)
-            col = len;
-        row++;
-    }
-    return(col);
-}
-
-t_parse_result	validate_map(char **map, t_configuration *configuration)
-{
-    int height;
-
-    height = map_height(map);
 	if (!is_valid_map_chars(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
     if(!is_one_player(map))
@@ -117,6 +108,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	char			**map;
 	char			*map_in_one_line;
 	t_parse_result	result;
+	t_dimensions map_size;
 
 	if (!first_map_line)
 		return (make_parse_error_result(P_ERR_NO_MAP));
@@ -136,14 +128,14 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		free_split(map);
 		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
 	}
-	result = validate_map(map, configuration);
+	map_size = calc_map_size(map);
+	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
 		free_split(map);
 		return (result);
 	}
     configuration->map = map;
-	configuration->map_size.height = map_height(map);
-	configuration->map_size.width = map_width(map);
+	configuration->map_size = map_size;
 	return (make_parse_success_result(P_MAP));
 }
