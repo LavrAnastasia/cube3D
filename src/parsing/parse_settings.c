@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_settings.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/17 20:24:50 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/18 12:55:18 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_parse_result	read_config_until_map(
 {
 	char			*line;
 	t_parse_result	result;
+	t_parse_type type;
 
 	*first_map_line = NULL;
 	line = get_next_line(fd);
@@ -49,13 +50,13 @@ t_parse_result	read_config_until_map(
 		return (make_parse_error_result(P_ERR_NO_MAP));
 	while (line)
 	{
-		result = process_config_line(line, configuration);
+		result = process_config_line(line, configuration, &type);
 		if (!result.ok)
 		{
 			free(line);
 			return (result);
 		}
-		if (result.parse_type == P_MAP)
+		if (type == P_MAP)
 		{
 			*first_map_line = line;
 			return (result);

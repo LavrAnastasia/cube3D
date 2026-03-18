@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	printf("Parse type: %d", parse_result.parse_type);
+	// printf("Parse type: %d", parse_result.parse_type);
 
 
 	// INIT_SCENE	

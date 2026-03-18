@@ -6,9 +6,9 @@ static t_parse_result	make_parse_error_result(t_parse_error_code code)
 		.info = NULL}});
 }
 
-static t_parse_result	make_parse_success_result(t_parse_type p_type)
+static t_parse_result	make_parse_success_result(void)
 {
-	return ((t_parse_result){.ok = true, .parse_type = p_type});
+	return ((t_parse_result){.ok = true});
 }
 int row_len(char *s)
 {
@@ -46,7 +46,7 @@ t_parse_result	validate_map(char **map, t_configuration *configuration, int heig
 		return make_parse_error_result(P_ERR_PLAYER_COUNT);
 	if (!check_path(map, height, configuration->player_pos))
 	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
-	return (make_parse_success_result(P_MAP));
+	return (make_parse_success_result());
 }
 
 char	*join_lines(char *s1, char *s2)
@@ -97,7 +97,7 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 		*map_in_one_line = tmp;
 	}
     replace_spaces(*map_in_one_line);
-	return (make_parse_success_result(P_MAP));
+	return (make_parse_success_result());
 }
 
 t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map_line)
@@ -126,14 +126,14 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
 	}
 	map_size = calc_map_size(map);
+	find_player_start(map, configuration);
 	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
 		free_split(map);
 		return (result);
 	}
-	find_player_start(map, configuration);
     configuration->map = map;
 	configuration->map_size = map_size;
-	return (make_parse_success_result(P_MAP));
+	return (make_parse_success_result());
 }

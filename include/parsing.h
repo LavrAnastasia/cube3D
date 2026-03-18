@@ -75,7 +75,6 @@ typedef struct s_parse_error {
 
 typedef struct s_parse_result {
 	bool ok;
-	t_parse_type parse_type;
 	t_parse_error error;
 } t_parse_result;
 
@@ -84,7 +83,7 @@ char *map_key(t_direction_key key);
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_configuration *configuration);
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_parse_type *type);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);

@@ -11,11 +11,10 @@ static t_parse_result make_parse_error_result(t_parse_error_code code, const cha
     };
 }
 
-static t_parse_result make_parse_success_result(t_parse_type p_type)
+static t_parse_result make_parse_success_result(void)
 {
     return (t_parse_result) {
         .ok = true,
-        .parse_type = p_type
     };
 }
 
@@ -39,7 +38,7 @@ t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key)
     if(color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 ||
         color->b < 0 || color->b > 255)
         return make_parse_error_result(P_ERR_RGB_RANGE, map_color_key(key));
-    return make_parse_success_result(P_COLOR);
+    return make_parse_success_result();
 }
 
 t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
@@ -52,7 +51,7 @@ t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
         return(fill_texture_path(line + 2, &configuration->samples.paths.west, WE));
     if(is_direction_key(line, EA))
         return(fill_texture_path(line + 2, &configuration->samples.paths.east, EA));
-    return  make_parse_success_result(P_UNKNOWN);
+    return  make_parse_success_result();
 }
 
 t_parse_result fill_colors(char *trim, t_configuration *configuration)
@@ -69,26 +68,46 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration)
         path = skip_spaces(trim + 1);
         return(parse_color(path, &configuration->samples.ceiling, C_CEILING));
     }
-    return make_parse_success_result(P_UNKNOWN);
+    return make_parse_success_result();
 }
 
-t_parse_result process_config_line(char *line, t_configuration *configuration)
+int is_texture_line(char *trim)
+{
+    return(is_direction_key(trim, NO) || is_direction_key(trim, SO) 
+    || is_direction_key(trim, WE) || is_direction_key(trim, EA));
+}
+
+int is_color_line(char *trim)
+{
+    return(is_config(trim, C_FLOOR) || is_config(trim, C_CEILING));
+}
+
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_parse_type *type)
 {
     char *trim;
-    t_parse_result result;
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
-        return make_parse_success_result(P_SPACES);
-    result = fill_texture_paths(trim, configuration);
-    if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
-        return (result);
-    result = fill_colors(trim, configuration);
-    if (!result.ok)
-        return (result);
-    if (result.parse_type == P_UNKNOWN)
-        result.parse_type = P_MAP;
-    return (result);
+    {
+        if(type)
+           *type = P_SPACES;
+        return(make_parse_success_result());
+    }
+    if(is_texture_line(trim))
+    {
+        if(type)
+          *type = P_TEXTURE;
+        return(fill_texture_paths(trim, configuration));
+    }
+    if(is_color_line(trim))
+    {
+        if(type)
+          *type = P_COLOR;
+        return(fill_colors(trim, configuration));
+    }
+    if(type)
+        *type = P_MAP;
+    return(make_parse_success_result());
 }
 
 
