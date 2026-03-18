@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:51:00 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 20:54:56 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,19 @@
 
 #include "game.h"
 #include "keys.h"
-#include "render.h"
 #include "movement.h"
+#include "render.h"
 
-static int game_on_key_down(int keycode, void *data);
-static int game_on_key_up(int keycode, void *data);
-static int game_on_close(void *data);
-static int game_on_tick(void *data);
+static int	game_on_key_down(int keycode, void *data);
+static int	game_on_key_up(int keycode, void *data);
+static int	game_on_close(void *data);
+static int	game_on_tick(void *data);
 
-bool game_init_engine(t_game *game)
+bool	game_init_engine(t_game *game)
 {
-    game->engine.window_size = (t_dimensions){
-		.width = MAX_WIN_WIDTH,
-		.height = MAX_WIN_HEIGHT
-	};
-    // TODO: print error
+	game->engine.window_size = (t_dimensions){.width = MAX_WIN_WIDTH,
+		.height = MAX_WIN_HEIGHT};
+	// TODO: print error
 	if (engine_init(&game->engine, GAME_TITLE) != ENGINE_OK)
 		return (false);
 	game->engine.events.data = game;
@@ -37,13 +35,12 @@ bool game_init_engine(t_game *game)
 	game->engine.events.on_key_down = game_on_key_down;
 	game->engine.events.on_key_up = game_on_key_up;
 	game->engine.events.on_tick = game_on_tick;
-    return (true);
+	return (true);
 }
 
-
-static int game_on_key_down(int keycode, void *data)
+static int	game_on_key_down(int keycode, void *data)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = (t_game *)data;
 	if (keycode == KEY_ESC)
@@ -63,9 +60,9 @@ static int game_on_key_down(int keycode, void *data)
 	return (0);
 }
 
-static int game_on_key_up(int keycode, void *data)
+static int	game_on_key_up(int keycode, void *data)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = (t_game *)data;
 	if (keycode == KEY_W)
@@ -83,18 +80,18 @@ static int game_on_key_up(int keycode, void *data)
 	return (0);
 }
 
-static int game_on_close(void *data)
+static int	game_on_close(void *data)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = (t_game *)data;
 	game->controls_state.quit_requested = true;
 	return (0);
 }
 
-static int game_on_tick(void *data)
+static int	game_on_tick(void *data)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = (t_game *)data;
 	if (game->controls_state.quit_requested)
@@ -103,11 +100,9 @@ static int game_on_tick(void *data)
 		return (0);
 	}
 	update_player_movement(&game->scene, &game->controls_state);
-	render_scene(&game->scene, game->engine.window_size, &game->engine.buffer.px, &game->textures);
-	mlx_put_image_to_window(
-		game->engine.mlx_session,
-		game->engine.mlx_window,
-		game->engine.buffer.img,
-		0, 0);
+	render_scene(&game->scene, game->engine.window_size,
+		&game->engine.buffer.px, &game->textures);
+	mlx_put_image_to_window(game->engine.mlx_session, game->engine.mlx_window,
+		game->engine.buffer.img, 0, 0);
 	return (0);
 }
