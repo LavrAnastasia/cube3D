@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:58:19 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 22:22:55 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:18:32 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef enum e_player_tile
 {
 	TILE_PLAYER_NORTH = 'N',
 	TILE_PLAYER_WEST = 'W',
-	TILE_PLAYER_SOURTH = 'S',
+	TILE_PLAYER_SOUTH = 'S',
 	TILE_PLAYER_EAST = 'E'
 }	t_player_tile;
 

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:57:16 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 22:22:27 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:18:36 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	is_wall(t_point point, char **map)
 bool	is_player_pos(char c)
 {
 	return (c == TILE_PLAYER_NORTH
-		|| c == TILE_PLAYER_EAST || c == TILE_PLAYER_SOURTH
+		|| c == TILE_PLAYER_EAST || c == TILE_PLAYER_SOUTH
 		|| c == TILE_PLAYER_WEST);
 }
 
