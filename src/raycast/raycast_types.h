@@ -18,27 +18,28 @@
 typedef enum e_ray_crossing
 {
 	R_CROSS_VERTICAL,
-	R_CROSS_HORIZONTAL 
-}	t_ray_crossing;
+	R_CROSS_HORIZONTAL
+}						t_ray_crossing;
 
 typedef enum e_axis_x_direction
 {
 	X_LEFT,
 	X_RIGHT,
 	X_NONE
-}	t_axis_x_direction;
+}						t_axis_x_direction;
 
 typedef enum e_axis_y_direction
 {
 	Y_TOP,
 	Y_BOTTOM,
 	Y_NONE
-}	t_axis_y_direction;
+}						t_axis_y_direction;
 
-typedef struct s_axis_direction {
-	t_axis_x_direction x;
-	t_axis_y_direction y;
-} t_axis_direction;
+typedef struct s_axis_direction
+{
+	t_axis_x_direction	x;
+	t_axis_y_direction	y;
+}						t_axis_direction;
 
 typedef struct s_ray_intersection
 {
@@ -47,6 +48,6 @@ typedef struct s_ray_intersection
 	double				ray_length;
 	t_vector			ray_direction;
 	t_axis_direction	axis_direction;
-}   t_ray_intersection;
+}						t_ray_intersection;
 
 #endif
