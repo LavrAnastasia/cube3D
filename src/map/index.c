@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:57:16 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:35:00 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 20:39:37 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ bool	is_in_bounds(t_point point, char **map, t_dimensions size)
 		return (false);
 }
 
-int	is_wall(t_point point, char **map)
+bool	is_wall(t_point point, char **map)
 {
 	return (map[point.y][point.x] == TILE_WALL);
 }
 
-int is_player_pos(char c)
+bool is_player_pos(char c)
 {
 	return (c == TILE_PLAYER_NORTH
 		|| c == TILE_PLAYER_EAST || c == TILE_PLAYER_SOURTH
 		|| c == TILE_PLAYER_WEST);
 }
 
-int	is_valid_char(char c)
+bool	is_valid_char(char c)
 {
 	return (c == TILE_EMPTY || c == TILE_WALL || is_player_pos(c));
 }

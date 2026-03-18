@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:23 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:34:41 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 20:41:22 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static t_column_ray	cast_column_ray(
 						t_dimensions window_size,
 						const t_scene *scene);
 static void			render_missed_column(
-						size_t window_height,
 						size_t x,
+						size_t window_height,
 						t_px_buffer *buffer,
 						t_color color);
 
