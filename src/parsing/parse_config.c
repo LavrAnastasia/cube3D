@@ -25,21 +25,46 @@ static char *map_color_key(t_color_key key)
         return FLOOR_KEY;
     return CEILING_KEY;  
 }
+
+static int	parse_rgb_component(char **raw, int *out)
+{
+	char	*str;
+	int		val;
+
+	str = skip_spaces(*raw);
+	if (!ft_isdigit((unsigned char)*str))
+		return (0);
+	val = 0;
+	while (ft_isdigit((unsigned char)*str))
+	{
+		val = (val * 10) + (*str - '0');
+		if (val > 255)
+			return (0);
+        str++;
+	}
+	str = skip_spaces(str);
+	*raw = str;
+	*out = val;
+	return (1);
+}
+
 t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key)
 {
-    char **rgb;
-    
-    rgb = ft_split(raw, ',');
-    if(!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
-        return make_parse_error_result(P_ERR_RGB, NULL);
-    color->r = ft_atoi(rgb[0]);
-    color->g = ft_atoi(rgb[1]);
-    color->b = ft_atoi(rgb[2]);
-    free_split(rgb);
-    if(color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 ||
-        color->b < 0 || color->b > 255)
-        return make_parse_error_result(P_ERR_RGB_RANGE, map_color_key(key));
-    return make_parse_success_result(P_COLOR);
+	char	*str;
+
+	str = raw;
+	if (!parse_rgb_component(&str, &color->r) || *str != ',')
+		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+    str++;
+	if (!parse_rgb_component(&str, &color->g) || *str != ',')
+		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+    str++;
+	if (!parse_rgb_component(&str, &color->b))
+		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+    str = skip_spaces(str);
+	if (*str != '\0' && *str != '\n')
+		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+	return (make_parse_success_result(P_COLOR));
 }
 
 t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
