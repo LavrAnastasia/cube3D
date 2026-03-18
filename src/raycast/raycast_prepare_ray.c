@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast_prepare_ray.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/18 22:40:34 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/18 22:40:35 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast_internal.h"
 
 static t_axis_direction	calc_axis_direction(double ray_direction_x, double ray_direction_y);

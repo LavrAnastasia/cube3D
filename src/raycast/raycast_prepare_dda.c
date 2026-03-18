@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast_prepare_dda.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/18 22:40:30 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/18 22:40:31 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast_internal.h"
 
 static t_axis_distance calc_distance_to_first_crossing(
