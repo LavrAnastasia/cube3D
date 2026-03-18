@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_settings.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/17 20:24:50 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/18 18:49:16 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 		close(fd);
 		return (make_parse_error_result(P_ERR_NO_MAP));
 	}
+	if(!configuration->samples.seen_floor || !configuration->samples.seen_ceiling)
+		return(make_parse_error_result(P_ERR_NOT_COLOR));
 
     result = parse_map(fd, configuration, first_map_line);
 

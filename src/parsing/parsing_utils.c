@@ -25,7 +25,10 @@ const char	*err_parse_msg(int code)
     [P_ERR_TEXTURE_TRAILING] = "Exture path contains extra data",
     [P_ERR_TEXTURE_EXT] = "Texture file must have .xpm extension",
     [P_ERR_INVALID_SYMBOLS] = "The map contains extraneous symbols",
-    [P_ERR_PLAYER_COUNT] = "Map must contain exactly one player start"};
+    [P_ERR_PLAYER_COUNT] = "Map must contain exactly one player start",
+    [P_ERR_DUP_FLOOR] = "There can be only one floor color",
+    [P_ERR_DUP_CEILING] = "There can be only one ceiling color",
+    [P_ERR_NOT_COLOR] = "Colors not assigned"};
 	const int			size = sizeof(map) / sizeof(*map);
 
 	if (code < 0 || code >= size)

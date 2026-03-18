@@ -54,7 +54,8 @@ int is_config(const char *line, const char a)
 
 int is_texture_path_missing(t_configuration *configuration)
 {
-    if (!configuration->samples.paths.north || !configuration->samples.paths.south || !configuration->samples.paths.west || !configuration->samples.paths.east)
+    if (!configuration->samples.paths.north || !configuration->samples.paths.south 
+        || !configuration->samples.paths.west || !configuration->samples.paths.east)
         return(1);
     return (0);
 }

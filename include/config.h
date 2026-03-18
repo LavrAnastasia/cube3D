@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 23:00:49 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 23:03:45 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 16:50:51 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct s_config
 	t_wall_texture_paths	paths;
 	t_rgb					floor;
 	t_rgb					ceiling;
+	int seen_floor;
+	int seen_ceiling;
 }	t_config;
 
 typedef struct s_configuration

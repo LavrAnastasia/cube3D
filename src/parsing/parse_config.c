@@ -83,16 +83,29 @@ t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
 t_parse_result fill_colors(char *trim, t_configuration *configuration)
 {
     char *path;
+    t_parse_result res;
 
     if(is_config(trim, C_FLOOR))
     {
+        if(configuration->samples.seen_floor)
+            return(make_parse_error_result(P_ERR_DUP_FLOOR, FLOOR_KEY));
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &configuration->samples.floor, C_FLOOR));
+        res = parse_color(path, &configuration->samples.floor, C_FLOOR);
+        if(!res.ok)
+            return(res);
+        configuration->samples.seen_floor = 1;
+        return(res);
     }
     if(is_config(trim, C_CEILING))
     {
+        if(configuration->samples.seen_ceiling)
+            return(make_parse_error_result(P_ERR_DUP_CEILING, CEILING_KEY));
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &configuration->samples.ceiling, C_CEILING));
+        res = parse_color(path, &configuration->samples.ceiling, C_CEILING);
+        if(!res.ok)
+            return(res);
+        configuration->samples.seen_ceiling = 1;
+        return(res);
     }
     return make_parse_success_result(P_UNKNOWN);
 }
