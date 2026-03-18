@@ -100,6 +100,7 @@ int flood_fill(char **map, int rows, int x, int y)
     if(x >= len)
         return 1;
     c = map[y][x];
+
     if(c == SKIP_SIGN)
         return 1;
     if(c == TILE_WALL || c == VISITED_SIGN)

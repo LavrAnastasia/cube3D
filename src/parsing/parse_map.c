@@ -66,19 +66,6 @@ char	*join_lines(char *s1, char *s2)
 	return (joined_line);
 }
 
-static void	replace_spaces(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i])
-	{
-		if (s[i] == SKIP_SIGN)
-			s[i] = TILE_EMPTY;
-		i++;
-	}
-}
-
 t_parse_result	read_map(int fd, char **map_in_one_line)
 {
 	char	*line;
@@ -96,7 +83,6 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 			return (make_parse_error_result(P_ERR_MALLOC));
 		*map_in_one_line = tmp;
 	}
-    replace_spaces(*map_in_one_line);
 	return (make_parse_success_result(P_MAP));
 }
 
@@ -126,13 +112,13 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
 	}
 	map_size = calc_map_size(map);
+	find_player_start(map, configuration);
 	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
 		free_split(map);
 		return (result);
 	}
-	find_player_start(map, configuration);
     configuration->map = map;
 	configuration->map_size = map_size;
 	return (make_parse_success_result(P_MAP));
