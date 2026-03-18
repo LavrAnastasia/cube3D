@@ -1,9 +1,5 @@
 #include "parsing.h"
 #include "game.h"
-#include "libft.h"
-
-
-#define SIZE 10 // TODO: delete
 
 // GAME LEVEL
 

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 22:40:34 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 22:56:09 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 22:57:55 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_ray_info	make_ray_info(double angle)
 		.y = sin(angle)};
 
 	return ((t_ray_info){.direction = ray_direction,
-		.axis_direction = calc_axis_direction(ray_direction.x,
-			ray_direction.y)});
+		.axis_direction = calc_axis_direction(
+			ray_direction.x, ray_direction.y)});
 }
 
 static t_axis_direction	calc_axis_direction(
