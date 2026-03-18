@@ -17,12 +17,12 @@ t_ray_intersection make_ray_intersection(
 	t_dda_state state,
 	t_ray_info	ray,
 	t_ray_crossing current_crossing,
-	t_dimensions map_size
+	t_map map_ctx
 )
 {
 	double ray_length;
 
-	if (!is_in_bounds(state.current_cell, map_size))
+	if (!is_in_bounds(state.current_cell, map_ctx.map, map_ctx.map_size))
 		return (make_invalid_intersection());
 	else if (current_crossing == R_CROSS_VERTICAL)
 		ray_length = state.distance_to_next_crossing.x - state.one_step_distance.x;

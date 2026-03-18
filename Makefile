@@ -19,7 +19,7 @@ SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c \
 SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 	parse_config.c check_config.c parsing_utils.c parse_texures.c parse_map.c validate_map.c)
 
-SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map_utils/, index.c )
+SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map/, index.c )
 
 SRC_GAME := $(addprefix game/, game_init_scene.c \
 	game_init_engine.c game_shutdown.c game_init_textures.c)
@@ -58,7 +58,7 @@ endif
 
 CC := cc
 BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
-	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map_utils
+	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map
 DEBUG_FLAGS := -g
 SANITAZE_FLAGS := -fsanitize=address
 

@@ -79,7 +79,8 @@ static void try_move_x(t_scene *scene, t_position *next_position, t_vector	move_
 		x = x_position_candidate - hit_radius;
 	point_top = (t_point){.x = (int)floor(x), .y = (int)floor(next_position->y - hit_radius)};
 	point_bottom = (t_point){.x = (int)floor(x), .y = (int)floor(next_position->y + hit_radius)};
-	if (is_in_bounds(point_top, scene->map_size) && is_in_bounds(point_bottom, scene->map_size)
+	if (is_in_bounds(point_top, scene->map, scene->map_size)
+		&& is_in_bounds(point_bottom, scene->map, scene->map_size)
 		&& !is_wall(point_top, scene->map) && !is_wall(point_bottom, scene->map))
 		next_position->x = x_position_candidate;
 }
@@ -100,7 +101,8 @@ static void try_move_y(t_scene *scene, t_position *next_position, t_vector	move_
 		y = y_position_candidate - hit_radius;
 	point_left = (t_point){.x = (int)floor(next_position->x - hit_radius), .y = (int)floor(y)};
 	point_right = (t_point){.x = (int)floor(next_position->x + hit_radius), .y = (int)floor(y)};
-	if (is_in_bounds(point_left, scene->map_size) && is_in_bounds(point_right, scene->map_size)
+	if (is_in_bounds(point_left, scene->map, scene->map_size)
+		&& is_in_bounds(point_right, scene->map, scene->map_size)
 		&& !is_wall(point_left, scene->map) && !is_wall(point_right, scene->map))
 		next_position->y = y_position_candidate;
 }

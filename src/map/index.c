@@ -3,20 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   index.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:57:16 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/17 19:52:12 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/18 20:35:00 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+#include "map_utils_internal.h"
 #include "map.h"
-#include "types.h"
 
-int	is_in_bounds(t_point point, t_dimensions size)
+bool	is_in_bounds(t_point point, char **map, t_dimensions size)
 {
-	return (point.x >= 0 && point.x < size.width && point.y >= 0
-		&& point.y < size.height);
+	if (point.y >= 0 && point.y < size.height && point.x >= 0)
+	{
+		return (point.x < (int)ft_strlen(map[point.y]));
+	}
+	else
+		return (false);
 }
 
 int	is_wall(t_point point, char **map)

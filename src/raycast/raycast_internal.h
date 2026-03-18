@@ -28,6 +28,11 @@ typedef struct s_ray_info {
 	t_axis_direction axis_direction;
 } t_ray_info;
 
+typedef struct s_map {
+	char			**map;
+	t_dimensions	map_size;
+} t_map;
+
 t_ray_info			make_ray_info(double angle);
 t_dda_state			make_initial_dda_state(t_ray_info ray, t_position start_position);
 t_ray_intersection	make_invalid_intersection();
@@ -35,7 +40,7 @@ t_ray_intersection	make_ray_intersection(
 	t_dda_state state,
 	t_ray_info	ray,
 	t_ray_crossing current_crossing,
-	t_dimensions map_size
+	t_map map_ctx
 );
 
 #endif
