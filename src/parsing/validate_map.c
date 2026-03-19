@@ -23,12 +23,37 @@ int	is_valid_map_chars(char **map)
 	i = 0;
 	while (map && map[i])
 	{
-		if (!is_valid_map_char(map[i])) // TODO: how to use is_valid_char && SKIP_SIGN && \n
+		if (!is_valid_map_char(map[i])) // TODO: how to use is_valid_char && SKIP_SIGN && \n loook down
 			return (0);
 		i++;
 	}
 	return (1);
 }
+
+// int	is_valid_map_chars(char **map)
+// {
+// 	int	i;
+// 	int	j;
+// 	char	c;
+
+// 	if (!map || !map[0])
+// 		return (0);
+// 	i = 0;
+// 	while (map[i])
+// 	{
+// 		j = 0;
+// 		while (map[i][j])
+// 		{
+// 			c = map[i][j];
+// 			if (!is_valid_char(c) && c != SKIP_SIGN && c != '\n')
+// 				return (0);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
 
 
 bool is_one_player(char **map)
