@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:41 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:45:28 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 14:52:26 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,9 @@ static int	calc_texture_x(
 	if ((ray_intersection.crossing == R_CROSS_VERTICAL
 			&& ray_intersection.axis_direction.x == X_RIGHT)
 		|| (ray_intersection.crossing == R_CROSS_HORIZONTAL
-			&& ray_intersection.axis_direction.y == Y_BOTTOM))
+			&& ray_intersection.axis_direction.y == Y_TOP))
 	{
 		texture_x = texture->size.width - 1 - texture_x;
-			// TODO: check!!! flip moment
 	}
 	return (clamp(texture_x, 0, texture->size.width - 1));
 }
