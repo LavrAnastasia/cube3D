@@ -97,7 +97,7 @@ int is_config(const char *line, const char a);
 
 void free_split(char **arr);
 void print_error_key(const char *key, const char *msg);
-t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key);
+t_parse_result parse_color(char *raw, t_rgb *color);
 bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
