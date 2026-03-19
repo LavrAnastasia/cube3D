@@ -19,12 +19,6 @@ static t_parse_result make_parse_success_result(t_parse_type p_type)
     };
 }
 
-static char *map_color_key(t_color_key key)
-{
-    if (key == C_FLOOR)
-        return FLOOR_KEY;
-    return CEILING_KEY;  
-}
 
 static int	parse_rgb_component(char **raw, int *out)
 {
@@ -48,22 +42,22 @@ static int	parse_rgb_component(char **raw, int *out)
 	return (1);
 }
 
-t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key)
+t_parse_result parse_color(char *raw, t_rgb *color)
 {
 	char	*str;
 
 	str = raw;
 	if (!parse_rgb_component(&str, &color->r) || *str != ',')
-		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+		return (make_parse_error_result(P_ERR_RGB, NULL));
     str++;
 	if (!parse_rgb_component(&str, &color->g) || *str != ',')
-		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+		return (make_parse_error_result(P_ERR_RGB, NULL));
     str++;
 	if (!parse_rgb_component(&str, &color->b))
-		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+		return (make_parse_error_result(P_ERR_RGB, NULL));
     str = skip_spaces(str);
 	if (*str != '\0' && *str != '\n')
-		return (make_parse_error_result(P_ERR_RGB, map_color_key(key)));
+		return (make_parse_error_result(P_ERR_RGB, NULL));
 	return (make_parse_success_result(P_COLOR));
 }
 
@@ -90,7 +84,7 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration)
         if(configuration->samples.seen_floor)
             return(make_parse_error_result(P_ERR_DUP_FLOOR, FLOOR_KEY));
         path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.floor, C_FLOOR);
+        res = parse_color(path, &configuration->samples.floor);
         if(!res.ok)
             return(res);
         configuration->samples.seen_floor = 1;
@@ -101,7 +95,7 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration)
         if(configuration->samples.seen_ceiling)
             return(make_parse_error_result(P_ERR_DUP_CEILING, CEILING_KEY));
         path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.ceiling, C_CEILING);
+        res = parse_color(path, &configuration->samples.ceiling);
         if(!res.ok)
             return(res);
         configuration->samples.seen_ceiling = 1;
