@@ -66,6 +66,16 @@ char	*join_lines(char *s1, char *s2)
 	return (joined_line);
 }
 
+bool is_map_line(char *line)
+{
+	char *str;
+
+	str = skip_spaces(line);
+	if(!str || *str == '\0' || *str == '\n')
+		return (true);
+	return (false);
+}
+
 t_parse_result	read_map(int fd, char **map_in_one_line)
 {
 	char	*line;
@@ -73,15 +83,24 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 
 	if (fd < 0 || !map_in_one_line)
 		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
-	while (1)
+	line = get_next_line(fd);
+	while (line)
 	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
+		if(is_map_line(line))
+		{
+			free(line);
+			return(make_parse_error_result(P_ERR_INVALID_CHAR));
+		}
+		if(!is_valid_map_char(line))
+		{
+			free(line);
+			return(make_parse_error_result(P_ERR_INVALID_CHAR));
+		}
 		tmp = join_lines(*map_in_one_line, line);
 		if (!tmp)
 			return (make_parse_error_result(P_ERR_MALLOC));
 		*map_in_one_line = tmp;
+		line = get_next_line(fd);
 	}
 	return (make_parse_success_result(P_MAP));
 }

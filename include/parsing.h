@@ -67,7 +67,8 @@ typedef enum e_parse_error_code
 	P_ERR_MAP_NOT_CLOSED,
 	P_ERR_DUP_FLOOR,
 	P_ERR_DUP_CEILING,
-	P_ERR_NOT_COLOR
+	P_ERR_NOT_COLOR,
+	P_ERR_INVALID_CHAR
 
 } t_parse_error_code;
 
