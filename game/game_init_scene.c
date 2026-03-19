@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:51:03 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:56:04 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:38:06 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include "map.h"
 #include "math_u.h"
+#include "reporter.h"
+#include "scene_status.h"
 
 static int		rgb_to_int(t_rgb color);
 static double	player_tile_to_angle(t_player_tile player_direction);
@@ -27,9 +29,11 @@ bool	game_init_scene(t_scene *scene, t_configuration *configuration)
 	scene->player.hit_radius = 0.4;
 	scene->palette.ceiling = rgb_to_int(configuration->samples.ceiling);
 	scene->palette.floor = rgb_to_int(configuration->samples.floor);
-	// TODO: ERRO PRINt
 	if (!copy_map(scene, configuration->map))
+	{
+		report(D_SCENE, SC_ERR_MALLOC, SL_ERROR);
 		return (false);
+	}
 	scene->camera.fov = deg_to_rad(FOV);
 	scene->camera.scale = tan(scene->camera.fov / 2);
 	return (true);

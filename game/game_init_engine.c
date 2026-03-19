@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:54:56 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:35:02 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "keys.h"
 #include "movement.h"
 #include "render.h"
+#include "reporter.h"
 
 static int	game_on_key_down(int keycode, void *data);
 static int	game_on_key_up(int keycode, void *data);
@@ -25,11 +26,16 @@ static int	game_on_tick(void *data);
 
 bool	game_init_engine(t_game *game)
 {
+	t_engine_status	status;
+	
 	game->engine.window_size = (t_dimensions){.width = MAX_WIN_WIDTH,
 		.height = MAX_WIN_HEIGHT};
-	// TODO: print error
-	if (engine_init(&game->engine, GAME_TITLE) != ENGINE_OK)
+	status = engine_init(&game->engine, GAME_TITLE);
+	if (status != ENGINE_OK)
+	{
+		report(D_ENGINE, status, SL_ERROR);
 		return (false);
+	}
 	game->engine.events.data = game;
 	game->engine.events.on_close = game_on_close;
 	game->engine.events.on_key_down = game_on_key_down;

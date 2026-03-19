@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 22:40:26 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 22:43:58 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:43:10 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 t_ray_intersection	make_invalid_intersection(void)
 {
-	// TODO: make warning
 	return ((t_ray_intersection){.point = (t_point){.x = 0, .y = 0},
 		.crossing = R_CROSS_VERTICAL, .ray_length = DBL_MAX,
 		.ray_direction = (t_vector){.x = 0, .y = 0},

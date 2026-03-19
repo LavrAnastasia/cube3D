@@ -6,11 +6,13 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:30 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:37:40 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:51:42 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_internal.h"
+#include "reporter.h"
+#include "render_error.h"
 
 static void	render_wall_fallback(
 				size_t x,
@@ -72,13 +74,13 @@ void	render_wall(t_wall_column wall_column, t_px_buffer *buffer)
 	render_wall_segment(wall_column, buffer);
 }
 
-// TODO: trigger a warning
 static void	render_wall_fallback(
 	size_t x,
 	t_px_buffer *buffer,
 	t_range range,
 	t_color color)
 {
+	report(D_RENDER, RENDER_ERR_FALLBACK, SL_WARNING);
 	render_vertical_segment(range, x, buffer, color);
 }
 
