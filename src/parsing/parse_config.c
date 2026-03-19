@@ -125,7 +125,12 @@ t_parse_result process_config_line(char *line, t_configuration *configuration)
     if (!result.ok)
         return (result);
     if (result.parse_type == P_UNKNOWN)
+    {
+        if(is_map_line(trim))
         result.parse_type = P_MAP;
+        else
+            return(make_parse_error_result(P_ERR_INVALID_CHAR, NULL));
+    }
     return (result);
 }
 

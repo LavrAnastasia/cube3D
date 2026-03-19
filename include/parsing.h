@@ -112,5 +112,6 @@ int row_len(char *s);
 void free_map(char **map, int rows);
 int check_path(char **map, int rows, t_position position);
 void find_player_start(char **map, t_configuration *configuration);
+bool is_map_line(char *line);
 
 #endif
