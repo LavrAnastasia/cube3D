@@ -56,6 +56,7 @@ int	is_valid_map_chars(char **map)
 
 
 
+
 bool is_one_player(char **map)
 {
     int x;
