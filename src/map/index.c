@@ -3,35 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   index.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:57:16 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/17 19:52:12 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/18 23:18:36 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+#include "map_utils_internal.h"
 #include "map.h"
-#include "types.h"
 
-int	is_in_bounds(t_point point, t_dimensions size)
+bool	is_in_bounds(t_point point, char **map, t_dimensions size)
 {
-	return (point.x >= 0 && point.x < size.width && point.y >= 0
-		&& point.y < size.height);
+	if (point.y >= 0 && point.y < size.height && point.x >= 0)
+		return (point.x < (int)ft_strlen(map[point.y]));
+	else
+		return (false);
 }
 
-int	is_wall(t_point point, char **map)
+bool	is_wall(t_point point, char **map)
 {
 	return (map[point.y][point.x] == TILE_WALL);
 }
 
-int is_player_pos(char c)
+bool	is_player_pos(char c)
 {
 	return (c == TILE_PLAYER_NORTH
-		|| c == TILE_PLAYER_EAST || c == TILE_PLAYER_SOURTH
+		|| c == TILE_PLAYER_EAST || c == TILE_PLAYER_SOUTH
 		|| c == TILE_PLAYER_WEST);
 }
 
-int	is_valid_char(char c)
+bool	is_valid_char(char c)
 {
 	return (c == TILE_EMPTY || c == TILE_WALL || is_player_pos(c));
 }

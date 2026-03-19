@@ -6,20 +6,22 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:23 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:34:41 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:52:00 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_internal.h"
 #include "scene.h"
+#include "reporter.h"
+#include "render_error.h"
 
 static t_column_ray	cast_column_ray(
 						size_t x,
 						t_dimensions window_size,
 						const t_scene *scene);
 static void			render_missed_column(
-						size_t window_height,
 						size_t x,
+						size_t window_height,
 						t_px_buffer *buffer,
 						t_color color);
 
@@ -74,7 +76,7 @@ static t_column_ray	cast_column_ray(
 static void	render_missed_column(size_t x, size_t window_height,
 		t_px_buffer *buffer, t_color color)
 {
+	report(D_RENDER, RENDER_ERR_RAY_INTERSECTION, SL_WARNING);
 	render_vertical_segment((t_range){.start = 0, .end = window_height}, x,
 		buffer, color);
-	// TODO: warning
 }

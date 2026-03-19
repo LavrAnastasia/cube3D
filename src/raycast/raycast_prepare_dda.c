@@ -1,43 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast_prepare_dda.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/18 22:40:30 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/18 22:55:21 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycast_internal.h"
 
-static t_axis_distance calc_distance_to_first_crossing(
-	t_axis_direction axis_direction,
-	t_position start_position,
-	t_axis_distance step_distance
-);
-static double calc_one_step_distance(double ray_direction_value);
-static t_cell_step make_cell_step(t_ray_info ray);
+static t_axis_distance	calc_distance_to_first_crossing(
+							t_axis_direction axis_direction,
+							t_position start_position,
+							t_axis_distance step_distance);
+static double			calc_one_step_distance(double ray_direction_value);
+static t_cell_step		make_cell_step(t_ray_info ray);
 
-t_dda_state make_initial_dda_state(t_ray_info ray, t_position start_position)
+t_dda_state	make_initial_dda_state(t_ray_info ray, t_position start_position)
 {
-	const t_axis_distance one_step_distance = (t_axis_distance) {
+	const t_axis_distance	one_step_distance = (t_axis_distance){
 		.x = calc_one_step_distance(ray.direction.x),
-		.y = calc_one_step_distance(ray.direction.y)
-	};
-	const t_axis_distance distance_to_next_crossing = calc_distance_to_first_crossing(
-		ray.axis_direction,
-		start_position,
-		one_step_distance
-	);
+		.y = calc_one_step_distance(ray.direction.y)};
+	const t_axis_distance	distance_to_next_crossing
+		= calc_distance_to_first_crossing(
+			ray.axis_direction, start_position, one_step_distance);
+	const t_point			cell = (t_point){
+		.x = (int)floor(start_position.x),
+		.y = (int)floor(start_position.y)};
 
-	return (t_dda_state) {
-		.current_cell = (t_point){ .x = (int)floor(start_position.x), .y = (int)floor(start_position.y) },
+	return ((t_dda_state){
+		.current_cell = cell,
 		.distance_to_next_crossing = distance_to_next_crossing,
 		.one_step_distance = one_step_distance,
 		.step = make_cell_step(ray)
-	};
+	});
 }
 
-static t_axis_distance calc_distance_to_first_crossing(
+static t_axis_distance	calc_distance_to_first_crossing(
 	t_axis_direction axis_direction,
 	t_position start_position,
 	t_axis_distance step_distance
 )
 {
-	t_axis_distance distance;
-	t_point start_point = (t_point) {
+	t_axis_distance	distance;
+	const t_point	start_point = (t_point){
 		.x = (int)floor(start_position.x),
-		.y = (int)floor(start_position.y) };
+		.y = (int)floor(start_position.y)};
 
 	distance.x = DBL_MAX;
 	distance.y = DBL_MAX;
@@ -52,18 +63,18 @@ static t_axis_distance calc_distance_to_first_crossing(
 	return (distance);
 }
 
-static double calc_one_step_distance(double ray_direction_value)
+static double	calc_one_step_distance(double ray_direction_value)
 {
-	const double eps = 1e-9;
+	const double	eps = 1e-9;
 
 	if (fabs(ray_direction_value) < eps)
-		return DBL_MAX;
-	return fabs(1.0 / ray_direction_value);
+		return (DBL_MAX);
+	return (fabs(1.0 / ray_direction_value));
 }
 
-static t_cell_step make_cell_step(t_ray_info ray)
+static t_cell_step	make_cell_step(t_ray_info ray)
 {
-	t_cell_step step;
+	t_cell_step	step;
 
 	step.x = 0;
 	if (ray.axis_direction.x == X_RIGHT)

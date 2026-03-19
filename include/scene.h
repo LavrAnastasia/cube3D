@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scene.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/18 23:01:05 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/18 23:05:46 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SCENE_H
 # define SCENE_H
 
@@ -28,7 +40,7 @@ typedef struct s_scene
 	t_dimensions	map_size;
 	t_player		player;
 	t_camera		camera;
-	t_palette		palette; 
+	t_palette		palette;
 	double			last_update_time_seconds;
 }	t_scene;
 

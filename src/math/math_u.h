@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:58:55 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 14:58:56 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/18 22:24:12 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <math.h>
 
-// TODO: CHECK
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif

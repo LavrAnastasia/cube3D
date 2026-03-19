@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_shutdown.c                                    :+:      :+:    :+:   */
+/*   map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:52:26 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:56:36 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/18 20:58:19 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/18 23:18:32 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game.h"
-#include <stdlib.h>
+#ifndef MAP_H
+# define MAP_H
 
-void	game_shutdown(t_game *game, int exit_status)
+typedef enum e_tile
 {
-	game_destroy_map(game->scene.map);
-	game->scene.map = NULL;
-	textures_destroy(&game->textures, game->engine.mlx_session);
-	engine_shutdown(&game->engine);
-	exit(exit_status);
-}
+	TILE_EMPTY = '0',
+	TILE_WALL = '1'
+}	t_tile;
 
-void	game_destroy_map(char **map)
+typedef enum e_player_tile
 {
-	size_t	i;
+	TILE_PLAYER_NORTH = 'N',
+	TILE_PLAYER_WEST = 'W',
+	TILE_PLAYER_SOUTH = 'S',
+	TILE_PLAYER_EAST = 'E'
+}	t_player_tile;
 
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
+#endif

@@ -1,12 +1,12 @@
 C 0,0,1
-SO resources/so.xpm  
+SO resources/gost/ea.xpm  
 
-EA resources/ea.xpm
+EA resources/gost/ea.xpm
 F 255,255,255
 
-WE resources/we.xpm
+WE resources/gost/ea.xpm
 
-NO resources/no.xpm
+NO resources/gost/ea.xpm
 
 
 111111111111111111111

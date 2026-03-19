@@ -1,23 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game_init_scene.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/18 20:51:03 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/19 15:38:06 by audobnai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "game.h"
+#include "libft.h"
 #include "map.h"
 #include "math_u.h"
-#include "libft.h"
+#include "reporter.h"
+#include "scene_status.h"
 
-static int	rgb_to_int(t_rgb color);
+static int		rgb_to_int(t_rgb color);
 static double	player_tile_to_angle(t_player_tile player_direction);
-static bool copy_map(t_scene *scene, char **map);
+static bool		copy_map(t_scene *scene, char **map);
 
-bool game_init_scene(t_scene *scene, t_configuration *configuration)
+bool	game_init_scene(t_scene *scene, t_configuration *configuration)
 {
-    scene->map_size = configuration->map_size;
+	scene->map_size = configuration->map_size;
 	scene->player.pos = configuration->player_pos;
 	scene->player.angle = player_tile_to_angle(configuration->player_start);
-    scene->player.hit_radius = 0.4;
+	scene->player.hit_radius = 0.4;
 	scene->palette.ceiling = rgb_to_int(configuration->samples.ceiling);
 	scene->palette.floor = rgb_to_int(configuration->samples.floor);
-	// TODO: ERRO PRINt
 	if (!copy_map(scene, configuration->map))
+	{
+		report(D_SCENE, SC_ERR_MALLOC, SL_ERROR);
 		return (false);
+	}
 	scene->camera.fov = deg_to_rad(FOV);
 	scene->camera.scale = tan(scene->camera.fov / 2);
 	return (true);
@@ -39,9 +55,9 @@ static double	player_tile_to_angle(t_player_tile player_direction)
 	return (M_PI / 2);
 }
 
-static bool copy_map(t_scene *scene, char **map)
+static bool	copy_map(t_scene *scene, char **map)
 {
-	int i;
+	int	i;
 
 	scene->map = ft_calloc(scene->map_size.height + 1, sizeof(char *));
 	if (!scene->map)
