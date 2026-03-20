@@ -25,27 +25,8 @@ int	main(int argc, char **argv)
 		print_parse_error(parse_result.error);
 		return (1);
 	}
-
-	// printf("Parse type: %d", parse_result.parse_type);
-
-
-	// INIT_SCENE	
-	// TODO: clean Map
-	if (!game_init_scene(&game.scene, &configuration))
+	if (!game_init(&game, &configuration))
 		game_shutdown(&game, EXIT_FAILURE);
-
-
-	// INIT ENGINE
-	if (!game_init_engine(&game))
-		game_shutdown(&game, EXIT_FAILURE);
-
-	// LOAD TEXTURES
-	// TODO: clean CONFIG PATHS
-	if (!game_init_textures(&game.textures, &configuration, game.engine.mlx_session))
-		game_shutdown(&game, EXIT_FAILURE);
-
-	//RUN LOOP	
-
 	engine_run(&game.engine);
 
 	return (0);

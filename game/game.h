@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_init_textures.c                               :+:      :+:    :+:   */
+/*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 19:37:23 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/18 23:00:55 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:43:47 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game_internal.h"
+#ifndef GAME_H
+# define GAME_H
 
-bool	game_init_textures(
-	t_textures *textures,
-	t_configuration *configuration,
-	void *mlx_session
-)
-{
-	const t_textures_status	status = textures_init(textures, mlx_session,
-			&configuration->samples.paths);
+# include "game_types.h"
+# include "config.h"
 
-	if (status != TEX_OK)
-	{
-		report(D_TEXTURES, status, SL_ERROR);
-		return (false);
-	}
-	return (true);
-}
+bool	game_init(t_game *game, t_configuration *configuration);
+void	game_shutdown(t_game *game, int exit_status);
+
+#endif

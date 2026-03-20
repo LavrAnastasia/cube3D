@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_init_textures.c                               :+:      :+:    :+:   */
+/*   game_types.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 19:37:23 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:48:54 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:48:55 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game_internal.h"
+#ifndef GAME_TYPES_H
+# define GAME_TYPES_H
 
-bool	game_init_textures(
-	t_textures *textures,
-	t_configuration *configuration,
-	void *mlx_session
-)
+# include "engine.h"
+# include "controls_state.h"
+# include "textures.h"
+# include "scene.h"
+
+typedef struct s_game
 {
-	const t_textures_status	status = textures_init(textures, mlx_session,
-			&configuration->samples.paths);
+	t_engine			engine;
+	t_textures			textures;
+	t_scene				scene;
+	t_controls_state	controls_state;
+}	t_game;
 
-	if (status != TEX_OK)
-	{
-		report(D_TEXTURES, status, SL_ERROR);
-		return (false);
-	}
-	return (true);
-}
+#endif

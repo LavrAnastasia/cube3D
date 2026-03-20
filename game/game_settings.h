@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_init_textures.c                               :+:      :+:    :+:   */
+/*   game_settings.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 19:37:23 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:48:49 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:48:50 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game_internal.h"
+#ifndef GAME_SETTINGS_H
+# define GAME_SETTINGS_H
 
-bool	game_init_textures(
-	t_textures *textures,
-	t_configuration *configuration,
-	void *mlx_session
-)
-{
-	const t_textures_status	status = textures_init(textures, mlx_session,
-			&configuration->samples.paths);
+# define FOV 60
+# define GAME_TITLE "cub3D"
 
-	if (status != TEX_OK)
-	{
-		report(D_TEXTURES, status, SL_ERROR);
-		return (false);
-	}
-	return (true);
-}
+# ifdef __linux__
+#  define MAX_WIN_WIDTH 1920
+#  define MAX_WIN_HEIGHT 1080
+# else
+#  define MAX_WIN_WIDTH 1920
+#  define MAX_WIN_HEIGHT 1080
+# endif
+
+#endif

@@ -6,18 +6,18 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 17:18:40 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 19:44:24 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
 #include "mlx.h"
-#include "game.h"
+#include "game_internal.h"
+#include "game_settings.h"
 #include "keys.h"
 #include "movement.h"
 #include "render.h"
-#include "reporter.h"
 
 static int	game_on_key_down(int keycode, void *data);
 static int	game_on_key_up(int keycode, void *data);

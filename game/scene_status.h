@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_init_textures.c                               :+:      :+:    :+:   */
+/*   scene_status.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 19:37:23 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:49:00 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:49:01 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game_internal.h"
+#ifndef SCENE_STATUS_H
+# define SCENE_STATUS_H
 
-bool	game_init_textures(
-	t_textures *textures,
-	t_configuration *configuration,
-	void *mlx_session
-)
+typedef enum e_scene_status
 {
-	const t_textures_status	status = textures_init(textures, mlx_session,
-			&configuration->samples.paths);
+	SC_OK = 0,
+	SC_ERR_MALLOC
+}	t_scene_status;
 
-	if (status != TEX_OK)
-	{
-		report(D_TEXTURES, status, SL_ERROR);
-		return (false);
-	}
-	return (true);
-}
+#endif

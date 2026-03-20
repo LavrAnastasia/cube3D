@@ -1,38 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game_shutdown.c                                    :+:      :+:    :+:   */
+/*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 20:52:26 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 19:40:17 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:48:44 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:53:31 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "game_internal.h"
 
-void	game_shutdown(t_game *game, int exit_status)
+bool	game_init(t_game *game, t_configuration *configuration)
 {
-	game_destroy_map(game->scene.map);
-	game->scene.map = NULL;
-	textures_destroy(&game->textures, game->engine.mlx_session);
-	engine_shutdown(&game->engine);
-	exit(exit_status);
-}
-
-void	game_destroy_map(char **map)
-{
-	size_t	i;
-
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
+	if (!game_init_scene(&game->scene, configuration))
+		return (false);
+	if (!game_init_engine(game))
+		return (false);
+	if (!game_init_textures(&game->textures, configuration,
+			game->engine.mlx_session))
+		return (false);
+	return (true);
 }
