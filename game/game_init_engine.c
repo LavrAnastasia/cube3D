@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 15:42:15 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:18:40 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	game_on_tick(void *data);
 bool	game_init_engine(t_game *game)
 {
 	t_engine_status	status;
-	
+
 	game->engine.window_size = (t_dimensions){.width = MAX_WIN_WIDTH,
 		.height = MAX_WIN_HEIGHT};
 	status = engine_init(&game->engine, GAME_TITLE);
