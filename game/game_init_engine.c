@@ -6,13 +6,13 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 15:35:02 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:42:15 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
 #include <stdlib.h>
 
+#include "mlx.h"
 #include "game.h"
 #include "keys.h"
 #include "movement.h"

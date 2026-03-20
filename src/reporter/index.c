@@ -1,20 +1,14 @@
 #include <unistd.h>
-#include <stddef.h>
-
 #include "libft.h"
-#include "reporter_types.h"
 #include "reporter_internal.h"
-#include "engine_status.h"
-#include "textures_status.h"
-#include "scene_status.h"
 
 static const char	*engine_msg(int code)
 {
 	static const char	*map[] = {
-		[ENGINE_ERR_INIT_MLX] = "Mlx: could not be inited",
-		[ENGINE_ERR_CREATE_WINDOW] = "Mlx: could not create window",
-		[ENGINE_ERR_CREATE_IMAGE] = "Mlx: could not create iamge",
-		[ENGINE_ERR_GET_IMAGE_DATA] = "Mlx: could not get data from image"
+		[ENGINE_ERR_INIT_MLX] = "MLX: initialization failed",
+		[ENGINE_ERR_CREATE_WINDOW] = "MLX: could not create window",
+		[ENGINE_ERR_CREATE_IMAGE] = "MLX: could not create image",
+		[ENGINE_ERR_GET_IMAGE_DATA] = "MLX: could not get data from image"
 	};
 	const int			size = sizeof(map) / sizeof(*map);
 
@@ -26,8 +20,8 @@ static const char	*engine_msg(int code)
 static const char	*textures_msg(int code)
 {
 	static const char	*map[] = {
-		[TEX_ERR_LOAD_IMAGE] = "Mlx: could not load texture image",
-		[TEX_ERR_LOAD_PIXELS] = "Mlx: could not get data from texture image"
+		[TEX_ERR_LOAD_IMAGE] = "MLX: could not load texture image",
+		[TEX_ERR_LOAD_PIXELS] = "MLX: could not get data from texture image"
 	};
 	const int			size = sizeof(map) / sizeof(*map);
 

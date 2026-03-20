@@ -1,13 +1,11 @@
-#include <stddef.h>
 
-#include "render_error.h"
-
+#include "reporter_internal.h"
 
 const char	*render_msg(int code)
 {
 	static const char	*map[] = {
-		[RENDER_ERR_FALLBACK] = "Render: something went wrong",
-		[RENDER_ERR_RAY_INTERSECTION] = "Render: wrong ray"
+		[RENDER_ERR_FALLBACK] = "Render: using fallback wall color",
+		[RENDER_ERR_RAY_INTERSECTION] = "Render: ray intersection failed"
 	};
 	const int			size = sizeof(map) / sizeof(*map);
 

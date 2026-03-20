@@ -6,12 +6,11 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:46:43 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:46:44 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:41:36 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "textures_types.h"
-#include <mlx.h>
+#include "textures_internal.h"
 
 void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size)
 {

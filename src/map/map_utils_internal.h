@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:58:10 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 22:21:38 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:43:49 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 
+# include "map.h"
 # include "types.h"
 
 #endif
