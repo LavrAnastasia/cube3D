@@ -65,10 +65,10 @@ BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
 	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map \
 	-Isrc/reporter
 DEBUG_FLAGS := -g
-SANITAZE_FLAGS := -fsanitize=address
+SANITIZE_FLAGS := -fsanitize=address
 
 ifeq ($(MODE),debug)
-	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS) $(SANITAZE_FLAGS)
+	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS) $(SANITIZE_FLAGS)
 else ifeq ($(MODE),valgrind)
 	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS)
 else

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:21:29 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 17:25:01 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:27:53 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static const char	*textures_msg(int code)
 static const char	*scene_msg(int code)
 {
 	static const char	*map[] = {
-	[SC_ERR_MALLOC] = "Scene can not be created (not enough space)"
+	[SC_ERR_MALLOC] = "Scene cannot be created (not enough space)"
 	};
 	const int			size = sizeof(map) / sizeof(*map);
 
