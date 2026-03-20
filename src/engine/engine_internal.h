@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:51:09 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 15:35:09 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 void			init_hooks(t_engine *engine);
 void			destroy_image_buffer(t_engine *engine);
-void			clean_mlx_session(t_engine *engine);
+void			destroy_mlx_session(t_engine *engine);
 t_engine_status	init_image_buffer(t_engine *engine);
 t_engine_status	init_mlx(t_engine *engine, char *game_name);
 

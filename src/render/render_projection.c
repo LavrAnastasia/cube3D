@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:34 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:44:34 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:42:35 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_range	calc_wall_range(double wall_height, t_dimensions window_size)
 	return ((t_range){.start = (size_t)top, .end = (size_t)bottom});
 }
 
-t_wall_projection	build_wall_projection(
+t_wall_projection	make_wall_projection(
 	double ray_length,
 	double angle_diff,
 	t_dimensions window_size,

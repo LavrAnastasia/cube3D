@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:51:25 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 14:52:45 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	engine_shutdown(t_engine *engine)
 	}
 	if (engine->mlx_session)
 	{
-		clean_mlx_session(engine);
+		destroy_mlx_session(engine);
 		engine->mlx_session = NULL;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:23 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 15:52:00 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:42:17 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	render_scene(
 			continue ;
 		}
 		wall_column = (t_wall_column){.x = x, .projection
-			= build_wall_projection(ray.intersection.ray_length, ray.angle
+			= make_wall_projection(ray.intersection.ray_length, ray.angle
 				- scene->player.angle, window_size, scene->camera.scale),
-			.sample = build_wall_sample(ray.intersection, textures,
+			.sample = make_wall_sample(ray.intersection, textures,
 				scene->player.pos), .fallback_color = scene->palette.ceiling};
 		render_ceiling_and_floor(wall_column, (size_t)window_size.height,
 			buffer, &scene->palette);
