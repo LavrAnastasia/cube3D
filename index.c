@@ -9,8 +9,8 @@ int	main(int argc, char **argv)
 	t_parse_result parse_result;
 	t_configuration configuration;
 
-	ft_bzero(&game, sizeof(t_game));
-	ft_bzero(&configuration, sizeof(t_configuration));
+	game = (t_game){0};
+	configuration = (t_configuration){0};
 
 	parse_result = check_args(argc, argv);
 	if (!parse_result.ok)
