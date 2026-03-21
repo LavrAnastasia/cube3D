@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/21 17:16:41 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/21 19:12:42 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_parse_result	check_args(int argc, char **argv)
 t_parse_result	read_config_until_map(
 	int fd,
 	t_configuration *configuration,
-	char **first_map_line)
+	char **first_map_line,
+	t_config_state *st)
 {
 	char			*line;
 	t_parse_result	result;
@@ -49,7 +50,7 @@ t_parse_result	read_config_until_map(
 		return (make_parse_error_result(P_ERR_EMPTY_FILE));
 	while (line)
 	{
-		result = process_config_line(line, configuration);
+		result = process_config_line(line, configuration, st);
 		if (!result.ok)
 		{
 			free(line);
@@ -71,11 +72,14 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 	int				fd;
 	char			*first_map_line;
 	t_parse_result	result;
+	t_config_state st;
 
+	st.seen_floor = 0;
+	st.seen_ceiling = 0;
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (make_parse_error_result(P_ERR_OPEN_FILE));
-	result = read_config_until_map(fd, configuration, &first_map_line);
+	result = read_config_until_map(fd, configuration, &first_map_line, &st);
 	if (!result.ok)
 	{
 		close(fd);
@@ -91,7 +95,7 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 		close(fd);
 		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	}
-	if(!configuration->samples.seen_floor || !configuration->samples.seen_ceiling)
+	if(!st.seen_floor || !st.seen_ceiling)
 		return(make_parse_error_result(P_ERR_NOT_COLOR));
 
     result = parse_map(fd, configuration, first_map_line);

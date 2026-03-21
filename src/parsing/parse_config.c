@@ -74,40 +74,41 @@ t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
     return  make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result fill_colors(char *trim, t_configuration *configuration)
+t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_state *st)
 {
     char *path;
     t_parse_result res;
 
     if(is_config(trim, C_FLOOR))
     {
-        if(configuration->samples.seen_floor)
+        if(st->seen_floor)
             return(make_parse_error_result(P_ERR_DUP_FLOOR, FLOOR_KEY));
         path = skip_spaces(trim + 1);
         res = parse_color(path, &configuration->samples.floor);
         if(!res.ok)
             return(res);
-        configuration->samples.seen_floor = 1;
+        st->seen_floor = 1;
         return(res);
     }
     if(is_config(trim, C_CEILING))
     {
-        if(configuration->samples.seen_ceiling)
+        if(st->seen_ceiling)
             return(make_parse_error_result(P_ERR_DUP_CEILING, CEILING_KEY));
         path = skip_spaces(trim + 1);
         res = parse_color(path, &configuration->samples.ceiling);
         if(!res.ok)
             return(res);
-        configuration->samples.seen_ceiling = 1;
+        st->seen_ceiling = 1;
         return(res);
     }
     return make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result process_config_line(char *line, t_configuration *configuration)
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st)
 {
     char *trim;
     t_parse_result result;
+
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
@@ -115,7 +116,7 @@ t_parse_result process_config_line(char *line, t_configuration *configuration)
     result = fill_texture_paths(trim, configuration);
     if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
-    result = fill_colors(trim, configuration);
+    result = fill_colors(trim, configuration, st);
     if (!result.ok)
         return (result);
     if (result.parse_type == P_UNKNOWN)
