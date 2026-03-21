@@ -30,7 +30,7 @@ const char	*err_parse_msg(int code)
     [P_ERR_DUP_FLOOR] = "There can be only one floor color",
     [P_ERR_DUP_CEILING] = "There can be only one ceiling color",
     [P_ERR_NOT_COLOR] = "Colors not assigned",
-    [P_ERR_INVALID_CONFIG_LINE] = "Invalid .cub header line: expected NO/SO/WE/EA/F/C or map row",
+    [P_ERR_INVALID_CONFIG_LINE] = "Invalid .cub file line: expected NO/SO/WE/EA/F/C or map row",
     [P_ERR_MAP_NOT_CLOSED] = "Map is not closed leak to space or outside boundary",
     [P_ERR_EMPTY_MAP] = "Map section is missing or empty",
     [P_ERR_MAP_EMPTY_LINE] = "Empty line inside map is not allowed"};
