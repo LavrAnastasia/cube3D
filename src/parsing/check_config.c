@@ -2,20 +2,25 @@
 #include "map_utils.h"
 
 
-bool is_next_line_map(char *line)
+bool is_map_row(char *line)
 {
-    size_t i;
+    int i;
+    int has_map_char;
+    
 
     if(!line || !*line)
         return(false);
     i = 0;
+    has_map_char = 0;
     while(line[i] && line[i] != '\n')
     {
         if(!is_valid_char(line[i]) && (line[i] != SKIP_SIGN))
             return(false);
+        if(line[i] != SKIP_SIGN)
+            has_map_char = true;
         i++;
     }
-    return (true);
+    return (has_map_char);
 }
 
 char *map_key(t_direction_key key)

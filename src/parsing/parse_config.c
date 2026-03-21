@@ -120,10 +120,10 @@ t_parse_result process_config_line(char *line, t_configuration *configuration)
         return (result);
     if (result.parse_type == P_UNKNOWN)
     {
-        if(is_map_line(trim))
+        if(is_map_row(trim))
             result.parse_type = P_MAP;
         else
-            return(make_parse_error_result(P_ERR_INVALID_CHAR, NULL));
+            return(make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL)); //здесь я запрещаю все посторонние символы в файле 
     }
     return (result);
 }

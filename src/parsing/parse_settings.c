@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/18 18:49:16 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/21 17:16:41 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_parse_result	check_args(int argc, char **argv)
 
 	result.ok = true;
 	if (argc < 2)
-		return (make_parse_error_result(P_ERR_NO_MAP));
+		return (make_parse_error_result(P_ERR_NO_INPUT_FILE));
 	if (argc > 2)
 		return (make_parse_error_result(P_ERR_ARG));
 	dot = ft_strrchr(argv[1], '.');
@@ -46,7 +46,7 @@ t_parse_result	read_config_until_map(
 	*first_map_line = NULL;
 	line = get_next_line(fd);
 	if (!line)
-		return (make_parse_error_result(P_ERR_NO_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_FILE));
 	while (line)
 	{
 		result = process_config_line(line, configuration);
@@ -89,7 +89,7 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 	if (!first_map_line)
 	{
 		close(fd);
-		return (make_parse_error_result(P_ERR_NO_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	}
 	if(!configuration->samples.seen_floor || !configuration->samples.seen_ceiling)
 		return(make_parse_error_result(P_ERR_NOT_COLOR));

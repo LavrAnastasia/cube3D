@@ -52,7 +52,7 @@ typedef enum e_parse_type
 typedef enum e_parse_error_code
 {
 	P_ERR_MALLOC,
-	P_ERR_NO_MAP,
+	P_ERR_NO_INPUT_FILE,
 	P_ERR_NO_PATH,
 	P_ERR_ARG,
 	P_ERR_EXTENSION,
@@ -68,7 +68,10 @@ typedef enum e_parse_error_code
 	P_ERR_DUP_FLOOR,
 	P_ERR_DUP_CEILING,
 	P_ERR_NOT_COLOR,
-	P_ERR_INVALID_CHAR
+	P_ERR_INVALID_CONFIG_LINE,
+	P_ERR_EMPTY_MAP,
+	P_ERR_EMPTY_FILE,
+	P_ERR_MAP_EMPTY_LINE
 
 } t_parse_error_code;
 
@@ -98,20 +101,18 @@ int is_config(const char *line, const char a);
 void free_split(char **arr);
 void print_error_key(const char *key, const char *msg);
 t_parse_result parse_color(char *raw, t_rgb *color);
-bool is_next_line_map(char *line);
 
 void print_parse_error(t_parse_error error);
 t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
 int is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
-bool	is_valid_map_char(char *line);
-int	is_valid_map_chars(char **map);
+int	is_valid_map_char(char **map);
 bool 	is_one_player(char **map);
 int row_len(char *s);
 void free_map(char **map, int rows);
 int check_path(char **map, int rows, t_position position);
 void find_player_start(char **map, t_configuration *configuration);
-bool is_map_line(char *line);
+bool is_map_row(char *line);
 
 #endif

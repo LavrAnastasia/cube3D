@@ -40,7 +40,7 @@ t_dimensions calc_map_size(char **map)
 
 t_parse_result	validate_map(char **map, t_configuration *configuration, int height)
 {
-	if (!is_valid_map_chars(map))
+	if (!is_valid_map_char(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
     if (!is_one_player(map))
 		return make_parse_error_result(P_ERR_PLAYER_COUNT);
@@ -66,7 +66,7 @@ char	*join_lines(char *s1, char *s2)
 	return (joined_line);
 }
 
-bool is_map_line(char *line)
+bool is_empty_map_line(char *line)
 {
 	char *str;
 
@@ -82,19 +82,19 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 	char	*tmp;
 
 	if (fd < 0 || !map_in_one_line)
-		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
+		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	line = get_next_line(fd);
 	while (line)
 	{
-		if(is_map_line(line))
+		if(is_empty_map_line(line)) //после начала карты запрещаю пробелы и пустые строки
 		{
 			free(line);
-			return(make_parse_error_result(P_ERR_INVALID_CHAR));
+			return(make_parse_error_result(P_ERR_MAP_EMPTY_LINE));
 		}
-		if(!is_valid_map_char(line))
+		if(!is_map_row(line)) //запрещаю все что не мап строка
 		{
 			free(line);
-			return(make_parse_error_result(P_ERR_INVALID_CHAR));
+			return(make_parse_error_result(P_ERR_INVALID_SYMBOLS));
 		}
 		tmp = join_lines(*map_in_one_line, line);
 		if (!tmp)
@@ -113,7 +113,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	t_dimensions map_size;
 
 	if (!first_map_line)
-		return (make_parse_error_result(P_ERR_NO_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	map_in_one_line = ft_strdup(first_map_line);
 	if (!map_in_one_line)
 		return (make_parse_error_result(P_ERR_MALLOC));
@@ -128,7 +128,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	if (!map || !map[0])
 	{
 		free_split(map);
-		return (make_parse_error_result(P_ERR_NO_MAP)); // UPDATE ERROR
+		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	}
 	map_size = calc_map_size(map);
 	find_player_start(map, configuration);
