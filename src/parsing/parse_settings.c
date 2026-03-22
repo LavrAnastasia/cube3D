@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/22 21:48:18 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/22 21:54:27 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 	{
 		if (first_map_line)
 			free(first_map_line);
+		close(fd);
 		return(make_parse_error_result(P_ERR_NOT_COLOR));
 	}
     result = parse_map(fd, configuration, first_map_line);
