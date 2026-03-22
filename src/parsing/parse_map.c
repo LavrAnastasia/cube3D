@@ -98,7 +98,10 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 		}
 		tmp = join_lines(*map_in_one_line, line);
 		if (!tmp)
+		{
+			*map_in_one_line = NULL;
 			return (make_parse_error_result(P_ERR_MALLOC));
+		}
 		*map_in_one_line = tmp;
 		line = get_next_line(fd);
 	}
@@ -120,7 +123,8 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	result = read_map(fd, &map_in_one_line);
 	if (!result.ok)
 	{
-		free(map_in_one_line);
+		if(map_in_one_line)
+			free(map_in_one_line);
 		return (result);
 	}
 	map = ft_split(map_in_one_line, '\n');

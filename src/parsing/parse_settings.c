@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/21 19:12:42 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/22 21:48:18 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,22 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 
 	st.seen_floor = 0;
 	st.seen_ceiling = 0;
+	first_map_line = NULL;
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (make_parse_error_result(P_ERR_OPEN_FILE));
 	result = read_config_until_map(fd, configuration, &first_map_line, &st);
 	if (!result.ok)
 	{
+		if (first_map_line)
+			free(first_map_line);
 		close(fd);
 		return (result);
 	}
 	if (is_texture_path_missing(configuration))
 	{
+		if (first_map_line)
+			free(first_map_line);
 		close(fd);
 		return (make_parse_error_result(P_ERR_NO_PATH));
 	}
@@ -96,10 +101,12 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	}
 	if(!st.seen_floor || !st.seen_ceiling)
+	{
+		if (first_map_line)
+			free(first_map_line);
 		return(make_parse_error_result(P_ERR_NOT_COLOR));
-
+	}
     result = parse_map(fd, configuration, first_map_line);
-
 	free(first_map_line);
 	close(fd);
 	return (result);
