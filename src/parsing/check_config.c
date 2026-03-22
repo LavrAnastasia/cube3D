@@ -46,7 +46,7 @@ bool is_direction_key(const char *line, t_direction_key key)
         return (false);
     return (true);
 }
-int is_config(const char *line, const char a)
+int is_color_key(const char *line, const char a)
 {
     if(!line)
         return(0);

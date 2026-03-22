@@ -73,7 +73,7 @@ int parse_clean(int fd, char *line)
     return(1);
 }
 
-void free_split(char **arr)
+void free_str_array(char **arr)
 {
     int i;
 

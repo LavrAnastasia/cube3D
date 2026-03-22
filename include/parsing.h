@@ -96,9 +96,9 @@ int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
 bool is_direction_key(const char *line, t_direction_key key);
-int is_config(const char *line, const char a);
+int is_color_key(const char *line, const char a);
 
-void free_split(char **arr);
+void free_str_array(char **arr);
 void print_error_key(const char *key, const char *msg);
 t_parse_result parse_color(char *raw, t_rgb *color);
 

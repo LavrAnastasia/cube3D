@@ -127,7 +127,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	free(map_in_one_line);
 	if (!map || !map[0])
 	{
-		free_split(map);
+		free_str_array(map);
 		return (make_parse_error_result(P_ERR_EMPTY_MAP));
 	}
 	map_size = calc_map_size(map);
@@ -135,7 +135,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
-		free_split(map);
+		free_str_array(map);
 		return (result);
 	}
     configuration->map = map;

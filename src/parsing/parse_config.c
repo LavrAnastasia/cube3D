@@ -79,7 +79,7 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_
     char *path;
     t_parse_result res;
 
-    if(is_config(trim, C_FLOOR))
+    if(is_color_key(trim, C_FLOOR))
     {
         if(st->seen_floor)
             return(make_parse_error_result(P_ERR_DUP_FLOOR, NULL));
@@ -90,7 +90,7 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_
         st->seen_floor = 1;
         return(res);
     }
-    if(is_config(trim, C_CEILING))
+    if(is_color_key(trim, C_CEILING))
     {
         if(st->seen_ceiling)
             return(make_parse_error_result(P_ERR_DUP_CEILING, NULL));
