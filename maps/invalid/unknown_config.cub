@@ -1,17 +1,11 @@
 
-
-C 0,0,1
-
-SO resources/gost/ea.xpm  
-
-EA resources/gost/ea.xpm
-F 255,255,255
-
-
-
-WE resources/gost/ea.xpm
-
 NO resources/gost/ea.xpm
+SO resources/gost/ea.xpm  
+EA resources/gost/ea.xpm
+
+XX 0,255,255
+C 0,0,1
+WE resources/gost/ea.xpm
 
 
 111111111111111111111

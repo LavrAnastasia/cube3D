@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 23:00:49 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 23:03:45 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/21 18:59:18 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ typedef struct s_config
 	t_rgb					floor;
 	t_rgb					ceiling;
 }	t_config;
+
+typedef struct s_config_state
+{
+	int	seen_floor;
+	int	seen_ceiling;
+}	t_config_state;
+
 
 typedef struct s_configuration
 {

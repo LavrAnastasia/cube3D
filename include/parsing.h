@@ -52,7 +52,7 @@ typedef enum e_parse_type
 typedef enum e_parse_error_code
 {
 	P_ERR_MALLOC,
-	P_ERR_NO_MAP,
+	P_ERR_NO_INPUT_FILE,
 	P_ERR_NO_PATH,
 	P_ERR_ARG,
 	P_ERR_EXTENSION,
@@ -64,7 +64,14 @@ typedef enum e_parse_error_code
 	P_ERR_TEXTURE_TRAILING,
 	P_ERR_INVALID_SYMBOLS,
 	P_ERR_PLAYER_COUNT,
-	P_ERR_MAP_NOT_CLOSED
+	P_ERR_MAP_NOT_CLOSED,
+	P_ERR_DUP_FLOOR,
+	P_ERR_DUP_CEILING,
+	P_ERR_NOT_COLOR,
+	P_ERR_INVALID_CONFIG_LINE,
+	P_ERR_EMPTY_MAP,
+	P_ERR_EMPTY_FILE,
+	P_ERR_MAP_EMPTY_LINE
 
 } t_parse_error_code;
 
@@ -84,29 +91,28 @@ char *map_key(t_direction_key key);
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_configuration *configuration);
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st);
 int parse_clean(int fd, char *line);
 
 char *skip_spaces(char *s);
 bool is_direction_key(const char *line, t_direction_key key);
-int is_config(const char *line, const char a);
+int is_color_key(const char *line, const char a);
 
-void free_split(char **arr);
+void free_str_array(char **arr);
 void print_error_key(const char *key, const char *msg);
-t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key);
-bool is_next_line_map(char *line);
+t_parse_result parse_color(char *raw, t_rgb *color);
 
 void print_parse_error(t_parse_error error);
 t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
-int is_texture_path_missing(t_configuration *configuration);
+t_parse_result is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
-bool	is_valid_map_char(char *line);
-int	is_valid_map_chars(char **map);
+int	is_valid_map_rows(char **map);
 bool 	is_one_player(char **map);
 int row_len(char *s);
 void free_map(char **map, int rows);
 int check_path(char **map, int rows, t_position position);
 void find_player_start(char **map, t_configuration *configuration);
+bool is_map_row(char *line);
 
 #endif

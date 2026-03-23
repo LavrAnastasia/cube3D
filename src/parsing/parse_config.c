@@ -19,27 +19,64 @@ static t_parse_result make_parse_success_result(t_parse_type p_type)
     };
 }
 
-static char *map_color_key(t_color_key key)
+
+t_parse_result	parse_rgb_component(char **raw, int *out)
 {
-    if (key == C_FLOOR)
-        return FLOOR_KEY;
-    return CEILING_KEY;  
+	char	*str;
+	int		val;
+
+	str = skip_spaces(*raw);
+	if (str == NULL)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (*str == '\0' || *str == '\n')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (ft_isdigit((unsigned char)*str) == 0)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	val = 0;
+	while (ft_isdigit((unsigned char)*str))
+	{
+		val = (val * 10) + (*str - '0');
+		if (val > 255)
+			return (make_parse_error_result(P_ERR_RGB_RANGE, NULL));
+        str++;
+	}
+	str = skip_spaces(str);
+	*raw = str;
+	*out = val;
+	return (make_parse_success_result(P_COLOR));
 }
-t_parse_result parse_color(char *raw, t_rgb *color, t_color_key key)
+
+t_parse_result parse_color(char *raw, t_rgb *color)
 {
-    char **rgb;
-    
-    rgb = ft_split(raw, ',');
-    if(!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
-        return make_parse_error_result(P_ERR_RGB, NULL);
-    color->r = ft_atoi(rgb[0]);
-    color->g = ft_atoi(rgb[1]);
-    color->b = ft_atoi(rgb[2]);
-    free_split(rgb);
-    if(color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 ||
-        color->b < 0 || color->b > 255)
-        return make_parse_error_result(P_ERR_RGB_RANGE, map_color_key(key));
-    return make_parse_success_result(P_COLOR);
+	char	*str;
+    t_parse_result res;
+
+	str = raw;
+	res = parse_rgb_component(&str, &color->r);
+	if (res.ok == false)
+		return (res);
+	if (*str != ',')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	str++;
+
+	res = parse_rgb_component(&str, &color->g);
+	if (res.ok == false)
+		return (res);
+	if (*str != ',')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	str++;
+
+	res = parse_rgb_component(&str, &color->b);
+	if (res.ok == false)
+		return (res);
+
+	str = skip_spaces(str);
+	if (*str != '\0')
+	{
+		if (*str != '\n')
+			return (make_parse_error_result(P_ERR_RGB, NULL));
+	}
+	return (make_parse_success_result(P_COLOR));
 }
 
 t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
@@ -55,27 +92,41 @@ t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
     return  make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result fill_colors(char *trim, t_configuration *configuration)
+t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_state *st)
 {
     char *path;
+    t_parse_result res;
 
-    if(is_config(trim, C_FLOOR))
+    if(is_color_key(trim, C_FLOOR))
     {
+        if(st->seen_floor)
+            return(make_parse_error_result(P_ERR_DUP_FLOOR, NULL));
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &configuration->samples.floor, C_FLOOR));
+        res = parse_color(path, &configuration->samples.floor);
+        if(!res.ok)
+            return(res);
+        st->seen_floor = 1;
+        return(res);
     }
-    if(is_config(trim, C_CEILING))
+    if(is_color_key(trim, C_CEILING))
     {
+        if(st->seen_ceiling)
+            return(make_parse_error_result(P_ERR_DUP_CEILING, NULL));
         path = skip_spaces(trim + 1);
-        return(parse_color(path, &configuration->samples.ceiling, C_CEILING));
+        res = parse_color(path, &configuration->samples.ceiling);
+        if(!res.ok)
+            return(res);
+        st->seen_ceiling = 1;
+        return(res);
     }
     return make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result process_config_line(char *line, t_configuration *configuration)
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st)
 {
     char *trim;
     t_parse_result result;
+
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
@@ -83,11 +134,16 @@ t_parse_result process_config_line(char *line, t_configuration *configuration)
     result = fill_texture_paths(trim, configuration);
     if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
-    result = fill_colors(trim, configuration);
+    result = fill_colors(trim, configuration, st);
     if (!result.ok)
         return (result);
     if (result.parse_type == P_UNKNOWN)
-        result.parse_type = P_MAP;
+    {
+        if(is_map_row(trim))
+            result.parse_type = P_MAP;
+        else
+            return(make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL)); //здесь я запрещаю все посторонние символы в файле 
+    }
     return (result);
 }
 

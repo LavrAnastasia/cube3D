@@ -1,29 +1,14 @@
 #include "parsing.h"
 #include "map_utils.h"
 
-
-bool	is_valid_map_char(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_strchr("01NSEW \n", line[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	is_valid_map_chars(char **map)
+int	is_valid_map_rows(char **map)
 {
 	int	i;
 
 	i = 0;
 	while (map && map[i])
 	{
-		if (!is_valid_map_char(map[i])) // TODO: how to use is_valid_char && SKIP_SIGN && \n
+		if (!is_map_row(map[i]))
 			return (0);
 		i++;
 	}
@@ -100,6 +85,7 @@ int flood_fill(char **map, int rows, int x, int y)
     if(x >= len)
         return 1;
     c = map[y][x];
+
     if(c == SKIP_SIGN)
         return 1;
     if(c == TILE_WALL || c == VISITED_SIGN)

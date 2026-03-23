@@ -1,21 +1,43 @@
 #include "parsing.h"
 #include "map_utils.h"
 
-
-bool is_next_line_map(char *line)
+static t_parse_result make_parse_error_result(t_parse_error_code code, const char *info)
 {
-    size_t i;
+    return (t_parse_result) {
+        .ok = false,
+        .error = (t_parse_error) {
+            .code = code,
+            .info = info
+        }
+    };
+}
+
+static t_parse_result make_parse_success_result()
+{
+    return (t_parse_result) {
+        .ok = true
+    };
+}
+
+bool is_map_row(char *line)
+{
+    int i;
+    int has_map_char;
+    
 
     if(!line || !*line)
         return(false);
     i = 0;
+    has_map_char = 0;
     while(line[i] && line[i] != '\n')
     {
         if(!is_valid_char(line[i]) && (line[i] != SKIP_SIGN))
             return(false);
+        if(line[i] != SKIP_SIGN)
+            has_map_char = true;
         i++;
     }
-    return (true);
+    return (has_map_char);
 }
 
 char *map_key(t_direction_key key)
@@ -33,6 +55,8 @@ bool is_direction_key(const char *line, t_direction_key key)
 {
     const char *direction_key = map_key(key);
 
+    if(!line || !line[0] || !line[1] || !line[2])
+        return false;
     if(line[0] != direction_key[0])
         return(false);
     if(line[1] != direction_key[1])
@@ -41,9 +65,9 @@ bool is_direction_key(const char *line, t_direction_key key)
         return (false);
     return (true);
 }
-int is_config(const char *line, const char a)
+int is_color_key(const char *line, const char a)
 {
-    if(!line)
+    if(!line || !line[0] || !line[1])
         return(0);
     if(line[0] != a)
         return(0);
@@ -52,10 +76,18 @@ int is_config(const char *line, const char a)
     return(1);    
 }
 
-int is_texture_path_missing(t_configuration *configuration)
+t_parse_result is_texture_path_missing(t_configuration *configuration)
 {
-    if (!configuration->samples.paths.north || !configuration->samples.paths.south || !configuration->samples.paths.west || !configuration->samples.paths.east)
-        return(1);
-    return (0);
+    const int err_code = P_ERR_NO_PATH;
+    
+    if (!configuration->samples.paths.north)
+        return(make_parse_error_result(err_code ,NO_KEY));
+    if (!configuration->samples.paths.south)
+        return(make_parse_error_result(err_code ,SO_KEY));
+    if (!configuration->samples.paths.west)
+        return(make_parse_error_result(err_code ,WE_KEY));
+    if (!configuration->samples.paths.east)
+        return(make_parse_error_result(err_code ,EA_KEY));
+    return (make_parse_success_result());
 }
 
