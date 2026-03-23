@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 14:03:01 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/22 15:52:34 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/23 13:31:50 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*ft_strndup(const char *s, size_t n)
 	return (ptr);
 }
 
-static void	ft_free_str_array(char **arr, size_t count)
+static void	ft_free_split(char **arr, size_t count)
 {
 	size_t	i;
 
@@ -75,7 +75,7 @@ char	**ft_split_fill(char **result, char const *s, char c)
 				str_size++;
 			result[j] = ft_strndup(s + i, str_size);
 			if (!result[j])
-				return (ft_free_str_array(result, j), NULL);
+				return (ft_free_split(result, j), NULL);
 			j++;
 			i += str_size;
 		}
