@@ -20,44 +20,62 @@ static t_parse_result make_parse_success_result(t_parse_type p_type)
 }
 
 
-static int	parse_rgb_component(char **raw, int *out)
+t_parse_result	parse_rgb_component(char **raw, int *out)
 {
 	char	*str;
 	int		val;
 
 	str = skip_spaces(*raw);
-	if (!ft_isdigit((unsigned char)*str))
-		return (0);
+	if (str == NULL)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (*str == '\0' || *str == '\n')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (ft_isdigit((unsigned char)*str) == 0)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
 	val = 0;
 	while (ft_isdigit((unsigned char)*str))
 	{
 		val = (val * 10) + (*str - '0');
 		if (val > 255)
-			return (0);
+			return (make_parse_error_result(P_ERR_RGB_RANGE, NULL));
         str++;
 	}
 	str = skip_spaces(str);
 	*raw = str;
 	*out = val;
-	return (1);
+	return (make_parse_success_result(P_COLOR));
 }
 
 t_parse_result parse_color(char *raw, t_rgb *color)
 {
 	char	*str;
+    t_parse_result res;
 
 	str = raw;
-	if (!parse_rgb_component(&str, &color->r) || *str != ',')
+	res = parse_rgb_component(&str, &color->r);
+	if (res.ok == false)
+		return (res);
+	if (*str != ',')
 		return (make_parse_error_result(P_ERR_RGB, NULL));
-    str++;
-	if (!parse_rgb_component(&str, &color->g) || *str != ',')
+	str++;
+
+	res = parse_rgb_component(&str, &color->g);
+	if (res.ok == false)
+		return (res);
+	if (*str != ',')
 		return (make_parse_error_result(P_ERR_RGB, NULL));
-    str++;
-	if (!parse_rgb_component(&str, &color->b))
-		return (make_parse_error_result(P_ERR_RGB, NULL));
-    str = skip_spaces(str);
-	if (*str != '\0' && *str != '\n')
-		return (make_parse_error_result(P_ERR_RGB, NULL));
+	str++;
+
+	res = parse_rgb_component(&str, &color->b);
+	if (res.ok == false)
+		return (res);
+
+	str = skip_spaces(str);
+	if (*str != '\0')
+	{
+		if (*str != '\n')
+			return (make_parse_error_result(P_ERR_RGB, NULL));
+	}
 	return (make_parse_success_result(P_COLOR));
 }
 
