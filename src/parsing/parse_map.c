@@ -40,7 +40,7 @@ t_dimensions calc_map_size(char **map)
 
 t_parse_result	validate_map(char **map, t_configuration *configuration, int height)
 {
-	if (!is_valid_map_char(map))
+	if (!is_valid_map_rows(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
     if (!is_one_player(map))
 		return make_parse_error_result(P_ERR_PLAYER_COUNT);

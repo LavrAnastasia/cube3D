@@ -107,7 +107,7 @@ t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
 int is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
-int	is_valid_map_char(char **map);
+int	is_valid_map_rows(char **map);
 bool 	is_one_player(char **map);
 int row_len(char *s);
 void free_map(char **map, int rows);

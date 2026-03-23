@@ -48,7 +48,7 @@ bool is_direction_key(const char *line, t_direction_key key)
 }
 int is_color_key(const char *line, const char a)
 {
-    if(!line)
+    if(!line || !line[0] || !line[1])
         return(0);
     if(line[0] != a)
         return(0);

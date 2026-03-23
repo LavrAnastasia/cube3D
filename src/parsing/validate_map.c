@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include "map_utils.h"
 
-int	is_valid_map_char(char **map)
+int	is_valid_map_rows(char **map)
 {
 	int	i;
 
