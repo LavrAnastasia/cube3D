@@ -1,6 +1,23 @@
 #include "parsing.h"
 #include "map_utils.h"
 
+static t_parse_result make_parse_error_result(t_parse_error_code code, const char *info)
+{
+    return (t_parse_result) {
+        .ok = false,
+        .error = (t_parse_error) {
+            .code = code,
+            .info = info
+        }
+    };
+}
+
+static t_parse_result make_parse_success_result()
+{
+    return (t_parse_result) {
+        .ok = true
+    };
+}
 
 bool is_map_row(char *line)
 {
@@ -59,11 +76,18 @@ int is_color_key(const char *line, const char a)
     return(1);    
 }
 
-int is_texture_path_missing(t_configuration *configuration)
+t_parse_result is_texture_path_missing(t_configuration *configuration)
 {
-    if (!configuration->samples.paths.north || !configuration->samples.paths.south 
-        || !configuration->samples.paths.west || !configuration->samples.paths.east)
-        return(1);
-    return (0);
+    const int err_code = P_ERR_NO_PATH;
+    
+    if (!configuration->samples.paths.north)
+        return(make_parse_error_result(err_code ,NO_KEY));
+    if (!configuration->samples.paths.south)
+        return(make_parse_error_result(err_code ,SO_KEY));
+    if (!configuration->samples.paths.west)
+        return(make_parse_error_result(err_code ,WE_KEY));
+    if (!configuration->samples.paths.east)
+        return(make_parse_error_result(err_code ,EA_KEY));
+    return (make_parse_success_result());
 }
 

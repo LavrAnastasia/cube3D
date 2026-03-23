@@ -6,7 +6,7 @@
 /*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/22 21:54:27 by timlive          ###   ########.fr       */
+/*   Updated: 2026/03/23 18:14:29 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,13 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 		close(fd);
 		return (result);
 	}
-	if (is_texture_path_missing(configuration))
+	result = is_texture_path_missing(configuration);
+	if(!result.ok)
 	{
 		if (first_map_line)
 			free(first_map_line);
 		close(fd);
-		return (make_parse_error_result(P_ERR_NO_PATH));
+		return (result);
 	}
 	if (!first_map_line)
 	{
