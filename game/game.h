@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine_internal.h                                  :+:      :+:    :+:   */
+/*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/16 14:51:09 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/18 23:00:55 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:43:47 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENGINE_INTERNAL_H
-# define ENGINE_INTERNAL_H
+#ifndef GAME_H
+# define GAME_H
 
-# include <stdlib.h>
+# include "game_types.h"
+# include "config.h"
 
-# include "engine_status.h"
-# include "engine_types.h"
-# include "mlx.h"
-
-void			init_hooks(t_engine *engine);
-void			destroy_image_buffer(t_engine *engine);
-void			destroy_mlx_session(t_engine *engine);
-t_engine_status	init_image_buffer(t_engine *engine);
-t_engine_status	init_mlx(t_engine *engine, char *game_name);
+bool	game_init(t_game *game, t_configuration *configuration);
+void	game_shutdown(t_game *game, int exit_status);
 
 #endif

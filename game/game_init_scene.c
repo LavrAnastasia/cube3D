@@ -6,15 +6,15 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:51:03 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 15:38:06 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 19:44:04 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game.h"
 #include "libft.h"
+#include "game_internal.h"
+#include "game_settings.h"
 #include "map.h"
 #include "math_u.h"
-#include "reporter.h"
 #include "scene_status.h"
 
 static int		rgb_to_int(t_rgb color);

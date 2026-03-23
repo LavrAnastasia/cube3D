@@ -6,13 +6,11 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 15:39:56 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 19:37:23 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config.h"
-#include "game.h"
-#include "reporter.h"
+#include "game_internal.h"
 
 bool	game_init_textures(
 	t_textures *textures,
@@ -20,9 +18,9 @@ bool	game_init_textures(
 	void *mlx_session
 )
 {
-	const t_textures_status status = textures_load(textures, mlx_session,
+	const t_textures_status	status = textures_init(textures, mlx_session,
 			&configuration->samples.paths);
-			
+
 	if (status != TEX_OK)
 	{
 		report(D_TEXTURES, status, SL_ERROR);

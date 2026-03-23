@@ -6,18 +6,18 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:50:59 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 15:35:02 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 19:44:24 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
 #include <stdlib.h>
 
-#include "game.h"
+#include "mlx.h"
+#include "game_internal.h"
+#include "game_settings.h"
 #include "keys.h"
 #include "movement.h"
 #include "render.h"
-#include "reporter.h"
 
 static int	game_on_key_down(int keycode, void *data);
 static int	game_on_key_up(int keycode, void *data);
@@ -27,7 +27,7 @@ static int	game_on_tick(void *data);
 bool	game_init_engine(t_game *game)
 {
 	t_engine_status	status;
-	
+
 	game->engine.window_size = (t_dimensions){.width = MAX_WIN_WIDTH,
 		.height = MAX_WIN_HEIGHT};
 	status = engine_init(&game->engine, GAME_TITLE);

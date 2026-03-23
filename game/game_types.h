@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine_internal.h                                  :+:      :+:    :+:   */
+/*   game_types.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/16 14:51:09 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:48:54 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:48:55 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENGINE_INTERNAL_H
-# define ENGINE_INTERNAL_H
+#ifndef GAME_TYPES_H
+# define GAME_TYPES_H
 
-# include <stdlib.h>
+# include "engine.h"
+# include "controls_state.h"
+# include "textures.h"
+# include "scene.h"
 
-# include "engine_status.h"
-# include "engine_types.h"
-# include "mlx.h"
-
-void			init_hooks(t_engine *engine);
-void			destroy_image_buffer(t_engine *engine);
-void			destroy_mlx_session(t_engine *engine);
-t_engine_status	init_image_buffer(t_engine *engine);
-t_engine_status	init_mlx(t_engine *engine, char *game_name);
+typedef struct s_game
+{
+	t_engine			engine;
+	t_textures			textures;
+	t_scene				scene;
+	t_controls_state	controls_state;
+}	t_game;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:32 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 12:48:00 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:42:28 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ typedef struct s_column_ray
 	t_ray_intersection		intersection;
 }							t_column_ray;
 
-t_wall_sample				build_wall_sample(
+t_wall_sample				make_wall_sample(
 								t_ray_intersection ray_intersection,
 								const t_textures *textures,
 								t_position player_pos);
 int							clamp(int value, int min, int max);
-t_wall_projection			build_wall_projection(
+t_wall_projection			make_wall_projection(
 								double ray_length,
 								double angle_diff,
 								t_dimensions window_size,

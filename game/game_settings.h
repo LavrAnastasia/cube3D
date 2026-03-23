@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine_internal.h                                  :+:      :+:    :+:   */
+/*   game_settings.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/16 14:51:09 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
+/*   Created: 2026/03/20 19:48:49 by audobnai          #+#    #+#             */
+/*   Updated: 2026/03/20 19:48:50 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENGINE_INTERNAL_H
-# define ENGINE_INTERNAL_H
+#ifndef GAME_SETTINGS_H
+# define GAME_SETTINGS_H
 
-# include <stdlib.h>
+# define FOV 60
+# define GAME_TITLE "cub3D"
 
-# include "engine_status.h"
-# include "engine_types.h"
-# include "mlx.h"
-
-void			init_hooks(t_engine *engine);
-void			destroy_image_buffer(t_engine *engine);
-void			destroy_mlx_session(t_engine *engine);
-t_engine_status	init_image_buffer(t_engine *engine);
-t_engine_status	init_mlx(t_engine *engine, char *game_name);
+# ifdef __linux__
+#  define MAX_WIN_WIDTH 1920
+#  define MAX_WIN_HEIGHT 1080
+# else
+#  define MAX_WIN_WIDTH 1920
+#  define MAX_WIN_HEIGHT 1080
+# endif
 
 #endif

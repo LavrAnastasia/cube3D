@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:46:35 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:50:00 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:47:08 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	load_wall_pixels(t_textures *textures)
 	textures->wall.west.px.data = load_px_data(&textures->wall.west);
 }
 
-t_textures_status	textures_load(
+t_textures_status	textures_init(
 	t_textures *textures,
 	void *mlx_session,
 	t_wall_texture_paths *paths

@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:51:11 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/16 14:52:29 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:45:56 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 #ifdef __linux__
 
-void	clean_mlx_session(t_engine *engine)
+void	destroy_mlx_session(t_engine *engine)
 {
 	mlx_destroy_display(engine->mlx_session);
 	free(engine->mlx_session);
 }
 #else
 
-void	clean_mlx_session(t_engine *engine)
+void	destroy_mlx_session(t_engine *engine)
 {
 	(void)(engine);
 }

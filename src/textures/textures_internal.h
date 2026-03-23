@@ -6,16 +6,17 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:46:41 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:46:42 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:41:02 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TEXTURES_INTERNAL_H
 # define TEXTURES_INTERNAL_H
 
-# include "textures_types.h"
-# include <mlx.h>
 # include <stddef.h>
+
+# include "textures_types.h"
+# include "mlx.h"
 
 void	*load_xpm(void *mlx_session, const char *path, t_dimensions *size);
 char	*load_px_data(t_image_buffer *buffer);

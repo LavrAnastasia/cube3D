@@ -6,7 +6,7 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 12:16:41 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/19 14:52:26 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:42:49 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_position			calc_hit_position(
 								double ray_length,
 								t_vector ray_direction);
 
-t_wall_sample	build_wall_sample(
+t_wall_sample	make_wall_sample(
 	t_ray_intersection ray_intersection,
 	const t_textures *textures,
 	t_position player_pos)

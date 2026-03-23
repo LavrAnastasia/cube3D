@@ -25,7 +25,7 @@ SRC_REPORTER := $(addprefix $(DIR_SRC)reporter/, index.c \
 	reporter_warning.c)
 
 SRC_GAME := $(addprefix game/, game_init_scene.c \
-	game_init_engine.c game_shutdown.c game_init_textures.c)
+	game_init.c game_init_engine.c game_shutdown.c game_init_textures.c)
 
 SRC_MANDATORY := index.c \
 	$(SRC_GAME) \
@@ -63,12 +63,12 @@ endif
 CC := cc
 BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
 	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map \
-	-Isrc/reporter
+	-Isrc/reporter -Igame
 DEBUG_FLAGS := -g
-SANITAZE_FLAGS := -fsanitize=address
+SANITIZE_FLAGS := -fsanitize=address
 
 ifeq ($(MODE),debug)
-	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS) $(SANITAZE_FLAGS)
+	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS) $(SANITIZE_FLAGS)
 else ifeq ($(MODE),valgrind)
 	CFLAGS = $(BASE_FLAGS) $(DEBUG_FLAGS)
 else

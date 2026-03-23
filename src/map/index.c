@@ -6,13 +6,12 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:57:16 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 23:18:36 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:43:43 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "map_utils_internal.h"
-#include "map.h"
 
 bool	is_in_bounds(t_point point, char **map, t_dimensions size)
 {

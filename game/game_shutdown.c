@@ -6,12 +6,12 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 20:52:26 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/18 20:56:36 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/03/20 19:40:17 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game.h"
 #include <stdlib.h>
+#include "game_internal.h"
 
 void	game_shutdown(t_game *game, int exit_status)
 {
