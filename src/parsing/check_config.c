@@ -38,6 +38,8 @@ bool is_direction_key(const char *line, t_direction_key key)
 {
     const char *direction_key = map_key(key);
 
+    if(!line || !line[0] || !line[1] || !line[2])
+        return false;
     if(line[0] != direction_key[0])
         return(false);
     if(line[1] != direction_key[1])
