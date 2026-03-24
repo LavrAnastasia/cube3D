@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include "parsing_internal.h"
 
-bool xpm_extension(const char *value)
+bool is_xpm_extension(const char *value)
 {
     char *dot;
 
@@ -17,7 +17,7 @@ bool xpm_extension(const char *value)
 
 static t_parse_result validate_texture_token(char *value, t_direction_key key)
 {
-    if(!xpm_extension(value))
+    if(!is_xpm_extension(value))
         return (make_parse_error_result(P_ERR_TEXTURE_EXT, map_key(key)));
     return (make_parse_success_result(P_TEXTURE));
 }
