@@ -34,8 +34,7 @@ typedef struct s_parse_error {
 
 typedef enum e_parse_type
 {
-	P_UNKNOWN = 0,
-	P_SPACES,
+	P_NONE = 0,
 	P_TEXTURE,
 	P_COLOR,
 	P_MAP

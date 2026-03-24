@@ -70,7 +70,7 @@ t_parse_result parse_texture_paths(char *line,t_configuration *configuration)
         return(parse_texture_path(line + 2, &configuration->samples.paths.west, WE));
     if(is_direction_key(line, EA))
         return(parse_texture_path(line + 2, &configuration->samples.paths.east, EA));
-    return  make_parse_success_result(P_UNKNOWN);
+    return  make_parse_success_result(P_NONE);
 }
 
 t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config_state *st)
@@ -100,7 +100,7 @@ t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config
         st->seen_ceiling = 1;
         return(res);
     }
-    return make_parse_success_result(P_UNKNOWN);
+    return make_parse_success_result(P_NONE);
 }
 static bool looks_like_map_line(const char *s)
 {
@@ -119,14 +119,14 @@ t_parse_result process_config_line(char *line, t_configuration *configuration, t
 
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
-        return make_parse_success_result(P_SPACES);
+        return make_parse_success_result(P_NONE);
     result = parse_texture_paths(trim, configuration);
     if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
     result = parse_colors(trim, configuration, st);
     if (!result.ok)
         return (result);
-    if (result.parse_type == P_UNKNOWN)
+    if (result.parse_type == P_NONE)
     {
         if (is_map_row(trim))
             result.parse_type = P_MAP;
