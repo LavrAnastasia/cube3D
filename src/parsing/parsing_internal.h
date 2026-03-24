@@ -30,7 +30,12 @@ t_parse_result process_config_line(char *line, t_configuration *configuration, t
 char *map_key(t_direction_key key);
 void print_error_key(const char *key, const char *msg);
 void print_error_msg(const char *msg);
-
+const char	*err_parse_msg(int code);
+t_parse_result	read_config_until_map(
+	int fd,
+	t_configuration *configuration,
+	char **first_map_line,
+	t_config_state *st);
 
 
 #endif

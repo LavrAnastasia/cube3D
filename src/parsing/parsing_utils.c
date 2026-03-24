@@ -42,14 +42,6 @@ const char	*err_parse_msg(int code)
 	return (map[code]);
 }
 
-void print_parse_error(t_parse_error error)
-{   
-	if (error.info != NULL)
-		print_error_key(error.info, err_parse_msg(error.code));
-	else
-		print_error_msg(err_parse_msg(error.code));
-
-}
 void print_error_msg(const char *msg)
 {
 	ft_putendl_fd("Error", STDERR_FILENO);

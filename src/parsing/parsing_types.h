@@ -1,6 +1,8 @@
 #ifndef PARSING_TYPES_H
 #define PARSING_TYPES_H
 
+#include <stdbool.h>
+
 typedef enum e_parse_error_code
 {
 	P_ERR_MALLOC,

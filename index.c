@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "parsing.h"
 #include "game.h"
 
