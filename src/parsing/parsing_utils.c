@@ -66,11 +66,11 @@ void	print_error_key(const char *key, const char *msg)
     ft_putendl_fd(msg, STDERR_FILENO);
 }
 
-int parse_clean(int fd, char *line)
+void cleanup_parse_resource(int fd, char *line)
 {
-    free(line);
+    if(line)
+        free(line);
     close(fd);
-    return(1);
 }
 
 void free_str_array(char **arr)

@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/24 14:42:14 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:35:10 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,33 +78,26 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 	result = read_config_until_map(fd, configuration, &first_map_line, &st);
 	if (!result.ok)
 	{
-		if (first_map_line)
-			free(first_map_line);
-		close(fd);
+		cleanup_parse_resource(fd, first_map_line);
 		return (result);
 	}
 	result = is_texture_path_missing(configuration);
 	if(!result.ok)
 	{
-		if (first_map_line)
-			free(first_map_line);
-		close(fd);
+		cleanup_parse_resource(fd, first_map_line);
 		return (result);
 	}
 	if (!first_map_line)
 	{
-		close(fd);
+		cleanup_parse_resource(fd, first_map_line);
 		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	}
 	if(!st.seen_floor || !st.seen_ceiling)
 	{
-		if (first_map_line)
-			free(first_map_line);
-		close(fd);
+		cleanup_parse_resource(fd, first_map_line);
 		return(make_parse_error_result(P_ERR_NOT_COLOR, NULL));
 	}
     result = parse_map(fd, configuration, first_map_line);
-	free(first_map_line);
-	close(fd);
+	cleanup_parse_resource(fd, first_map_line);
 	return (result);
 }
