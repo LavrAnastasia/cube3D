@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/24 18:15:34 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/24 18:45:39 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,14 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 	int				fd;
 	char			*first_map_line;
 	t_parse_result	result;
-	t_config_state st;
+	t_config_state state;
 
-	st.seen_floor = 0;
-	st.seen_ceiling = 0;
+	state = (t_config_state){0};
 	first_map_line = NULL;
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (make_parse_error_result(P_ERR_OPEN_FILE, NULL));
-	result = read_config_until_map(fd, configuration, &first_map_line, &st);
+	result = read_config_until_map(fd, configuration, &first_map_line, &state);
 	if (!result.ok)
 	{
 		cleanup_parse_resource(fd, first_map_line);
@@ -94,7 +93,7 @@ t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 		cleanup_parse_resource(fd, first_map_line);
 		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	}
-	if(!st.seen_floor || !st.seen_ceiling)
+	if(!state.seen_floor || !state.seen_ceiling)
 	{
 		cleanup_parse_resource(fd, first_map_line);
 		return(make_parse_error_result(P_ERR_NOT_COLOR, NULL));
