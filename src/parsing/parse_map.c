@@ -44,7 +44,7 @@ t_parse_result	validate_map(char **map, t_configuration *configuration, int heig
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
     if (!is_one_player(map))
 		return make_parse_error_result(P_ERR_PLAYER_COUNT);
-	if (!check_path(map, height, configuration->player_pos))
+	if (!is_map_closed(map, height, configuration->player_pos))
 	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
 	return (make_parse_success_result(P_MAP));
 }
