@@ -16,7 +16,7 @@ int	is_valid_map_rows(char **map)
 }
 
 
-bool is_one_player(char **map)
+bool validate_payer_pos(char **map, t_configuration *config)
 {
     int x;
     int y;
@@ -31,6 +31,9 @@ bool is_one_player(char **map)
         {
             if(is_player_pos(map[y][x]))
             {
+                config->player_pos.x = x + 0.5;
+                config->player_pos.y = y + 0.5;
+                config->player_start = map[y][x];
                 if (count > 0)
                     return (false);
                 count++;
@@ -41,33 +44,6 @@ bool is_one_player(char **map)
         y++;
     }
     return (count == 1);
-}
-
-
-
-void find_player_start(char **map, t_configuration *configuration)
-{
-    int x;
-    int y;
-    char current_char;
-
-    y = 0;
-    while(map[y])
-    {
-        x = 0;
-        while(map[y][x] && map[y][x] != '\n')
-        {
-            current_char = map[y][x];
-            if(is_player_pos(current_char))
-            {
-                configuration->player_pos.x = x + 0.5;
-                configuration->player_pos.y = y + 0.5;
-                configuration->player_start = current_char;
-            }
-            x++;
-        }
-        y++;
-    }
 }
 
 int is_walkable(char c)

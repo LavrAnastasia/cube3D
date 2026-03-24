@@ -70,11 +70,10 @@ t_parse_result is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
 int	is_valid_map_rows(char **map);
-bool 	is_one_player(char **map);
+bool 	validate_payer_pos(char **map, t_configuration *configuration);
 int row_len(char *s);
 void free_map(char **map, int rows);
 int is_map_closed(char **map, int rows, t_position position);
-void find_player_start(char **map, t_configuration *configuration);
 bool is_map_row(char *line);
 
 #endif

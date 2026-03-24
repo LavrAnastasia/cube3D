@@ -33,7 +33,7 @@ t_parse_result	validate_map(char **map, t_configuration *configuration, int heig
 {
 	if (!is_valid_map_rows(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL);
-    if (!is_one_player(map))
+    if (!validate_payer_pos(map, configuration))
 		return make_parse_error_result(P_ERR_PLAYER_COUNT, NULL);
 	if (!is_map_closed(map, height, configuration->player_pos))
 	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
@@ -126,7 +126,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	}
 	map_size = calc_map_size(map);
-	find_player_start(map, configuration);
+
 	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
