@@ -79,20 +79,20 @@ t_parse_result parse_color(char *raw, t_rgb *color)
 	return (make_parse_success_result(P_COLOR));
 }
 
-t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
+t_parse_result parse_texture_paths(char *line,t_configuration *configuration)
 {
     if(is_direction_key(line, NO))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.north, NO));
+        return(parse_texture_path(line + 2, &configuration->samples.paths.north, NO));
     if(is_direction_key(line, SO))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.south, SO));
+        return(parse_texture_path(line + 2, &configuration->samples.paths.south, SO));
     if(is_direction_key(line, WE))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.west, WE));
+        return(parse_texture_path(line + 2, &configuration->samples.paths.west, WE));
     if(is_direction_key(line, EA))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.east, EA));
+        return(parse_texture_path(line + 2, &configuration->samples.paths.east, EA));
     return  make_parse_success_result(P_UNKNOWN);
 }
 
-t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_state *st)
+t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config_state *st)
 {
     char *path;
     t_parse_result res;
@@ -139,10 +139,10 @@ t_parse_result process_config_line(char *line, t_configuration *configuration, t
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
         return make_parse_success_result(P_SPACES);
-    result = fill_texture_paths(trim, configuration);
+    result = parse_texture_paths(trim, configuration);
     if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
-    result = fill_colors(trim, configuration, st);
+    result = parse_colors(trim, configuration, st);
     if (!result.ok)
         return (result);
     if (result.parse_type == P_UNKNOWN)

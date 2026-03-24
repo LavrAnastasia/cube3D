@@ -103,7 +103,7 @@ void print_error_key(const char *key, const char *msg);
 t_parse_result parse_color(char *raw, t_rgb *color);
 
 void print_parse_error(t_parse_error error);
-t_parse_result fill_texture_path(char *line, char **path, t_direction_key key);
+t_parse_result parse_texture_path(char *line, char **path, t_direction_key key);
 t_parse_result is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);

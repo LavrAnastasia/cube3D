@@ -85,7 +85,7 @@ static t_parse_result	validate_texture_path_parts(char *value, char *end, t_dire
 	return (make_parse_success_result(P_TEXTURE));
 }
 
-t_parse_result	fill_texture_path(char *line, char **path, t_direction_key key)
+t_parse_result	parse_texture_path(char *line, char **path, t_direction_key key)
 {
 	char			*start;
 	char			*end;
