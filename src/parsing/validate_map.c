@@ -1,4 +1,4 @@
-#include "parsing.h"
+#include "parsing_internal.h"
 #include "map_utils.h"
 
 int	is_valid_map_rows(char **map)

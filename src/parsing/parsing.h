@@ -17,8 +17,7 @@
 #define FILE_EXT ".cub"
 #define IMG_EXT ".xpm"
 
-#define SKIP_SIGN ' '
-#define VISITED_SIGN '*'
+
 
 #define NO_KEY "NO"
 #define SO_KEY "SO"
@@ -44,7 +43,7 @@ typedef enum e_color_key
 
 
 
-
+void destroy_parsing_config(t_configuration *configuration);
 
 
 
@@ -60,7 +59,6 @@ char *skip_spaces(char *s);
 bool is_direction_key(const char *line, t_direction_key key);
 int is_color_key(const char *line, const char a);
 
-void free_str_array(char **arr);
 void print_error_key(const char *key, const char *msg);
 t_parse_result parse_color_line(char *raw, t_rgb *color);
 
@@ -71,8 +69,8 @@ t_parse_result is_texture_path_missing(t_configuration *configuration);
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
 int	is_valid_map_rows(char **map);
 bool 	validate_payer_pos(char **map, t_configuration *configuration);
-int row_len(char *s);
+
 int is_map_closed(char **map, int rows, t_position position);
-bool is_map_row(char *line);
+
 
 #endif

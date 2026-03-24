@@ -2,12 +2,19 @@
 #define PARSING_INTERNAL_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
+#include "libft.h"
 #include "parsing_types.h"
+#include "parsing_settings.h"
+#include "config.h"
 
 t_parse_result	make_parse_success_result(t_parse_type p_type);
 t_parse_result	make_parse_error_result(t_parse_error_code code, const char *info);
 
 void cleanup_parse_resource(int fd, char *line);
+void free_str_array(char **arr);
+bool is_map_row(char *line);
+int row_len(char *s);
 
 #endif
