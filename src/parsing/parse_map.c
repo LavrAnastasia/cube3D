@@ -1,4 +1,3 @@
-#include "parsing.h"
 #include "parsing_internal.h"
 
 int row_len(char *s)
@@ -75,12 +74,12 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 	line = get_next_line(fd);
 	while (line)
 	{
-		if(is_empty_map_line(line)) //после начала карты запрещаю пробелы и пустые строки
+		if(is_empty_map_line(line))
 		{
 			free(line);
 			return(make_parse_error_result(P_ERR_MAP_EMPTY_LINE, NULL));
 		}
-		if(!is_map_row(line)) //запрещаю все что не мап строка
+		if(!is_map_row(line))
 		{
 			free(line);
 			return(make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));

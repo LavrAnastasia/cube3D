@@ -51,10 +51,10 @@ void print_parse_error(t_parse_error error);
 t_parse_result is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
-int	is_valid_map_rows(char **map);
-bool 	validate_payer_pos(char **map, t_configuration *configuration);
 
-t_parse_result is_map_closed(char **map, int rows, t_position position);
+
+
+
 
 
 #endif
