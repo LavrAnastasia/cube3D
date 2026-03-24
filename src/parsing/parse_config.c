@@ -27,7 +27,7 @@ t_parse_result	parse_rgb_component(char **raw, int *out)
 	return (make_parse_success_result(P_COLOR));
 }
 
-t_parse_result parse_color(char *raw, t_rgb *color)
+t_parse_result parse_color_line(char *raw, t_rgb *color)
 {
 	char	*str;
     t_parse_result res;
@@ -60,20 +60,20 @@ t_parse_result parse_color(char *raw, t_rgb *color)
 	return (make_parse_success_result(P_COLOR));
 }
 
-t_parse_result parse_texture_paths(char *line,t_configuration *configuration)
+t_parse_result parse_texture(char *line,t_configuration *configuration)
 {
     if(is_direction_key(line, NO))
-        return(parse_texture_path(line + 2, &configuration->samples.paths.north, NO));
+        return(parse_texture_line(line + 2, &configuration->samples.paths.north, NO));
     if(is_direction_key(line, SO))
-        return(parse_texture_path(line + 2, &configuration->samples.paths.south, SO));
+        return(parse_texture_line(line + 2, &configuration->samples.paths.south, SO));
     if(is_direction_key(line, WE))
-        return(parse_texture_path(line + 2, &configuration->samples.paths.west, WE));
+        return(parse_texture_line(line + 2, &configuration->samples.paths.west, WE));
     if(is_direction_key(line, EA))
-        return(parse_texture_path(line + 2, &configuration->samples.paths.east, EA));
+        return(parse_texture_line(line + 2, &configuration->samples.paths.east, EA));
     return  make_parse_success_result(P_NONE);
 }
 
-t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config_state *st)
+t_parse_result parse_color(char *trim, t_configuration *configuration, t_config_state *st)
 {
     char *path;
     t_parse_result res;
@@ -83,7 +83,7 @@ t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config
         if(st->seen_floor)
             return(make_parse_error_result(P_ERR_DUP_FLOOR, NULL));
         path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.floor);
+        res = parse_color_line(path, &configuration->samples.floor);
         if(!res.ok)
             return(res);
         st->seen_floor = 1;
@@ -94,7 +94,7 @@ t_parse_result parse_colors(char *trim, t_configuration *configuration, t_config
         if(st->seen_ceiling)
             return(make_parse_error_result(P_ERR_DUP_CEILING, NULL));
         path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.ceiling);
+        res = parse_color_line(path, &configuration->samples.ceiling);
         if(!res.ok)
             return(res);
         st->seen_ceiling = 1;
@@ -120,10 +120,10 @@ t_parse_result process_config_line(char *line, t_configuration *configuration, t
     trim = skip_spaces(line);
     if (!trim || *trim == '\0' || *trim == '\n')
         return make_parse_success_result(P_NONE);
-    result = parse_texture_paths(trim, configuration);
+    result = parse_texture(trim, configuration);
     if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
         return (result);
-    result = parse_colors(trim, configuration, st);
+    result = parse_color(trim, configuration, st);
     if (!result.ok)
         return (result);
     if (result.parse_type == P_NONE)
