@@ -11,4 +11,7 @@
 #define FLOOR_KEY "F"
 #define CEILING_KEY "C"
 
+#define FILE_EXT ".cub"
+#define IMG_EXT ".xpm"
+
 #endif

@@ -6,12 +6,10 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/24 18:48:19 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/24 19:30:41 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "parsing.h"
 #include "parsing_internal.h"
 
 t_parse_result	check_args(int argc, char **argv)

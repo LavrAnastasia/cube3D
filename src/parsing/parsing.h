@@ -1,7 +1,7 @@
 #ifndef PARSING_H
 #define PARSING_H
 
-#include <fcntl.h> //open
+
 #include <unistd.h> // close, read 
 #include <stdio.h> // printf, perror
 #include <stdlib.h> // free, malloc, exits
@@ -14,8 +14,7 @@
 
 //error messages
 
-#define FILE_EXT ".cub"
-#define IMG_EXT ".xpm"
+
 
 
 
@@ -37,7 +36,7 @@ char *map_key(t_direction_key key);
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
 void print_error_msg(const char *msg);
-t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st);
+
 
 
 
@@ -48,9 +47,8 @@ t_parse_result parse_color_line(char *raw, t_rgb *color);
 
 void print_parse_error(t_parse_error error);
 
-t_parse_result is_texture_path_missing(t_configuration *configuration);
 
-t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
+
 
 
 
