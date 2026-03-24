@@ -1,4 +1,3 @@
-#include "parsing.h"
 #include "parsing_internal.h"
 #include "map_utils.h"
 
@@ -48,15 +47,15 @@ bool is_direction_key(const char *line, t_direction_key key)
 		return (false);
 	return (true);
 }
-int is_color_key(const char *line, const char a)
+bool is_color_key(const char *line, const char a)
 {
 	if(!line || !line[0] || !line[1])
-		return(0);
+		return(false);
 	if(line[0] != a)
-		return(0);
+		return(false);
 	if(!ft_isspace((unsigned char)line[1]))
-		return(0);
-	return(1);    
+		return(false);
+	return(true);    
 }
 
 t_parse_result is_texture_path_missing(t_configuration *configuration)

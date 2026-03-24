@@ -47,4 +47,19 @@ typedef struct s_parse_result {
 	t_parse_error error;
 } t_parse_result;
 
+typedef enum e_direction_key
+{
+	NO = 0,
+	SO,
+	WE,
+	EA
+}	t_direction_key;
+
+typedef enum e_color_key
+{
+	C_FLOOR = 'F',
+	C_CEILING = 'C'
+}	t_color_key;
+
+
 #endif

@@ -16,5 +16,10 @@ void cleanup_parse_resource(int fd, char *line);
 void free_str_array(char **arr);
 bool is_map_row(char *line);
 int row_len(char *s);
+t_parse_result parse_texture_line(char *line, char **path, t_direction_key key);
+char *skip_spaces(char *s);
+bool is_color_key(const char *line, const char a);
+bool is_direction_key(const char *line, t_direction_key key);
+
 
 #endif

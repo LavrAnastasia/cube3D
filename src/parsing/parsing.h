@@ -19,26 +19,11 @@
 
 
 
-#define NO_KEY "NO"
-#define SO_KEY "SO"
-#define WE_KEY "WE"
-#define EA_KEY "EA"
-#define FLOOR_KEY "F"
-#define CEILING_KEY "C"
 
-typedef enum e_direction_key
-{
-	NO = 0,
-	SO,
-	WE,
-	EA
-}	t_direction_key;
 
-typedef enum e_color_key
-{
-	C_FLOOR = 'F',
-	C_CEILING = 'C'
-}	t_color_key;
+
+
+
 
 
 
@@ -55,15 +40,14 @@ void print_error_msg(const char *msg);
 t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st);
 
 
-char *skip_spaces(char *s);
-bool is_direction_key(const char *line, t_direction_key key);
-int is_color_key(const char *line, const char a);
+
+
 
 void print_error_key(const char *key, const char *msg);
 t_parse_result parse_color_line(char *raw, t_rgb *color);
 
 void print_parse_error(t_parse_error error);
-t_parse_result parse_texture_line(char *line, char **path, t_direction_key key);
+
 t_parse_result is_texture_path_missing(t_configuration *configuration);
 
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
