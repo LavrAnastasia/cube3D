@@ -1,23 +1,6 @@
 #include "parsing.h"
+#include "parsing_internal.h"
 #include "map_utils.h"
-
-static t_parse_result make_parse_error_result(t_parse_error_code code, const char *info)
-{
-    return (t_parse_result) {
-        .ok = false,
-        .error = (t_parse_error) {
-            .code = code,
-            .info = info
-        }
-    };
-}
-
-static t_parse_result make_parse_success_result()
-{
-    return (t_parse_result) {
-        .ok = true
-    };
-}
 
 bool is_map_row(char *line)
 {
@@ -88,6 +71,6 @@ t_parse_result is_texture_path_missing(t_configuration *configuration)
         return(make_parse_error_result(err_code ,WE_KEY));
     if (!configuration->samples.paths.east)
         return(make_parse_error_result(err_code ,EA_KEY));
-    return (make_parse_success_result());
+    return (make_parse_success_result(P_UNKNOWN));
 }
 

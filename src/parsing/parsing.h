@@ -10,6 +10,7 @@
 #include "libft.h"
 #include "config.h"
 #include "map.h"
+#include "parsing_types.h"
 
 //error messages
 
@@ -40,51 +41,12 @@ typedef enum e_color_key
 	C_CEILING = 'C'
 }	t_color_key;
 
-typedef enum e_parse_type
-{
-	P_UNKNOWN = 0,
-	P_SPACES,
-	P_TEXTURE,
-	P_COLOR,
-	P_MAP
-} t_parse_type;
 
-typedef enum e_parse_error_code
-{
-	P_ERR_MALLOC,
-	P_ERR_NO_INPUT_FILE,
-	P_ERR_NO_PATH,
-	P_ERR_ARG,
-	P_ERR_EXTENSION,
-	P_ERR_OPEN_FILE,
-	P_ERR_RGB,
-	P_ERR_RGB_RANGE, 
-	P_ERR_DUP,
-	P_ERR_TEXTURE_EXT,
-	P_ERR_TEXTURE_TRAILING,
-	P_ERR_INVALID_SYMBOLS,
-	P_ERR_PLAYER_COUNT,
-	P_ERR_MAP_NOT_CLOSED,
-	P_ERR_DUP_FLOOR,
-	P_ERR_DUP_CEILING,
-	P_ERR_NOT_COLOR,
-	P_ERR_INVALID_CONFIG_LINE,
-	P_ERR_EMPTY_MAP,
-	P_ERR_EMPTY_FILE,
-	P_ERR_MAP_EMPTY_LINE
 
-} t_parse_error_code;
 
-typedef struct s_parse_error {
-	t_parse_error_code code;
-	const char *info;
-} t_parse_error;
 
-typedef struct s_parse_result {
-	bool ok;
-	t_parse_type parse_type;
-	t_parse_error error;
-} t_parse_result;
+
+
 
 char *map_key(t_direction_key key);
 

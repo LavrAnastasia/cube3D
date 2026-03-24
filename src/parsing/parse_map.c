@@ -1,15 +1,6 @@
 #include "parsing.h"
+#include "parsing_internal.h"
 
-static t_parse_result	make_parse_error_result(t_parse_error_code code)
-{
-	return ((t_parse_result){.ok = false, .error = (t_parse_error){.code = code,
-		.info = NULL}});
-}
-
-static t_parse_result	make_parse_success_result(t_parse_type p_type)
-{
-	return ((t_parse_result){.ok = true, .parse_type = p_type});
-}
 int row_len(char *s)
 {
     int i = 0;
@@ -41,11 +32,11 @@ t_dimensions calc_map_size(char **map)
 t_parse_result	validate_map(char **map, t_configuration *configuration, int height)
 {
 	if (!is_valid_map_rows(map))
-		return make_parse_error_result(P_ERR_INVALID_SYMBOLS);
+		return make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL);
     if (!is_one_player(map))
-		return make_parse_error_result(P_ERR_PLAYER_COUNT);
+		return make_parse_error_result(P_ERR_PLAYER_COUNT, NULL);
 	if (!is_map_closed(map, height, configuration->player_pos))
-	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED)); //добавить сообщение об ошибке
+	    return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
 	return (make_parse_success_result(P_MAP));
 }
 
@@ -82,25 +73,25 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 	char	*tmp;
 
 	if (fd < 0 || !map_in_one_line)
-		return (make_parse_error_result(P_ERR_EMPTY_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	line = get_next_line(fd);
 	while (line)
 	{
 		if(is_empty_map_line(line)) //после начала карты запрещаю пробелы и пустые строки
 		{
 			free(line);
-			return(make_parse_error_result(P_ERR_MAP_EMPTY_LINE));
+			return(make_parse_error_result(P_ERR_MAP_EMPTY_LINE, NULL));
 		}
 		if(!is_map_row(line)) //запрещаю все что не мап строка
 		{
 			free(line);
-			return(make_parse_error_result(P_ERR_INVALID_SYMBOLS));
+			return(make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
 		}
 		tmp = join_lines(*map_in_one_line, line);
 		if (!tmp)
 		{
 			*map_in_one_line = NULL;
-			return (make_parse_error_result(P_ERR_MALLOC));
+			return (make_parse_error_result(P_ERR_MALLOC, NULL));
 		}
 		*map_in_one_line = tmp;
 		line = get_next_line(fd);
@@ -116,10 +107,10 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	t_dimensions map_size;
 
 	if (!first_map_line)
-		return (make_parse_error_result(P_ERR_EMPTY_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	map_in_one_line = ft_strdup(first_map_line);
 	if (!map_in_one_line)
-		return (make_parse_error_result(P_ERR_MALLOC));
+		return (make_parse_error_result(P_ERR_MALLOC, NULL));
 	result = read_map(fd, &map_in_one_line);
 	if (!result.ok)
 	{
@@ -132,7 +123,7 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	if (!map || !map[0])
 	{
 		free_str_array(map);
-		return (make_parse_error_result(P_ERR_EMPTY_MAP));
+		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	}
 	map_size = calc_map_size(map);
 	find_player_start(map, configuration);
