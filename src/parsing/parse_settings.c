@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 13:28:02 by timlive           #+#    #+#             */
-/*   Updated: 2026/03/24 17:35:10 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/24 18:15:34 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ t_parse_result	check_args(int argc, char **argv)
 	char			*dot;
 	t_parse_result	result;
 
-	result.ok = true;
 	if (argc < 2)
 		return (make_parse_error_result(P_ERR_NO_INPUT_FILE, NULL));
 	if (argc > 2)
 		return (make_parse_error_result(P_ERR_ARG, NULL));
+	if (ft_strcmp(argv[1], FILE_EXT) == 0) 
+		return (make_parse_error_result(P_ERR_EMPTY_FILE_NAME, NULL));
 	dot = ft_strrchr(argv[1], '.');
-	if (!dot || ft_strncmp(dot, FILE_EXT, 5) != 0)
+	if (!dot || ft_strcmp(dot, FILE_EXT) != 0)
 		return (make_parse_error_result(P_ERR_EXTENSION, NULL));
+	result.ok = true;
 	return (result);
 }
 

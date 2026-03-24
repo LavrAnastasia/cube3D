@@ -23,7 +23,8 @@ typedef enum e_parse_error_code
 	P_ERR_INVALID_CONFIG_LINE,
 	P_ERR_EMPTY_MAP,
 	P_ERR_EMPTY_FILE,
-	P_ERR_MAP_EMPTY_LINE
+	P_ERR_MAP_EMPTY_LINE,
+	P_ERR_EMPTY_FILE_NAME
 
 } t_parse_error_code;
 

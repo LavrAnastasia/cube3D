@@ -10,7 +10,7 @@ bool is_xpm_extension(const char *value)
     dot = ft_strrchr(value, '.');
     if(!dot)
         return(false);
-    if(ft_strncmp(dot, IMG_EXT, 5) != 0)
+    if(ft_strcmp(dot, IMG_EXT) != 0)
         return(false);
     return(true);
 }
