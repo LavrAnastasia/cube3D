@@ -1,4 +1,3 @@
-#include "parsing.h"
 #include "parsing_internal.h"
 
 bool is_xpm_extension(const char *value)

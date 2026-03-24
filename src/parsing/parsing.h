@@ -31,7 +31,7 @@ void destroy_parsing_config(t_configuration *configuration);
 
 
 
-char *map_key(t_direction_key key);
+
 
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
