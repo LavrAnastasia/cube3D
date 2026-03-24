@@ -85,7 +85,7 @@ char **copy_map(char **map, int rows)
     char **copy;
     int i;
 
-    copy = malloc(sizeof(char *)*(rows + 1));
+    copy = ft_calloc(rows + 1, sizeof(char *));
     if(!copy)
         return NULL;
     i = 0;
@@ -93,26 +93,11 @@ char **copy_map(char **map, int rows)
     {
         copy[i] = ft_strdup(map[i]);
         if(!copy[i])
-            return(free_map(copy, i), NULL);
+            return(free_str_array(copy), NULL);
         i++;
     }
     copy[i] = NULL;
     return(copy);
-}
-
-void free_map(char **map, int rows)
-{
-    int i;
-
-    if(!map)
-        return;
-    i = 0;
-    while(i < rows)
-    {
-        free(map[i]);
-        i++;
-    }
-    free(map);
 }
 int is_map_closed(char **map, int rows, t_position position)
 {
@@ -123,7 +108,7 @@ int is_map_closed(char **map, int rows, t_position position)
     if(!copy)
         return(0);
     leak = flood_fill(copy, rows, position.x, position.y);
-    free_map(copy, rows);
+    free_str_array(copy);
     return(leak == 0);
 }
 
