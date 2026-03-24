@@ -99,16 +99,18 @@ char **copy_map(char **map, int rows)
     copy[i] = NULL;
     return(copy);
 }
-int is_map_closed(char **map, int rows, t_position position)
+t_parse_result is_map_closed(char **map, int rows, t_position position)
 {
     char **copy;
     int leak;
 
     copy = copy_map(map, rows);
     if(!copy)
-        return(0);
+        return(make_parse_error_result(P_ERR_MALLOC, NULL));
     leak = flood_fill(copy, rows, position.x, position.y);
     free_str_array(copy);
-    return(leak == 0);
+    if(leak != 0)
+        return(make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
+    return(make_parse_success_result(P_MAP));
 }
 

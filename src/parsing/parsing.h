@@ -70,7 +70,7 @@ t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map
 int	is_valid_map_rows(char **map);
 bool 	validate_payer_pos(char **map, t_configuration *configuration);
 
-int is_map_closed(char **map, int rows, t_position position);
+t_parse_result is_map_closed(char **map, int rows, t_position position);
 
 
 #endif
