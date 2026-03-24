@@ -121,6 +121,14 @@ t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_
     }
     return make_parse_success_result(P_UNKNOWN);
 }
+static bool looks_like_map_line(const char *s)
+{
+    while (*s && ft_isspace((unsigned char)*s))
+        s++;
+    return (*s == TILE_WALL || *s == TILE_EMPTY
+        || *s == TILE_PLAYER_NORTH || *s == TILE_PLAYER_SOUTH
+        || *s == TILE_PLAYER_WEST || *s == TILE_PLAYER_EAST);
+}
 
 t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st)
 {
@@ -139,10 +147,12 @@ t_parse_result process_config_line(char *line, t_configuration *configuration, t
         return (result);
     if (result.parse_type == P_UNKNOWN)
     {
-        if(is_map_row(trim))
+        if (is_map_row(trim))
             result.parse_type = P_MAP;
+        else if (looks_like_map_line(trim))
+            return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
         else
-            return(make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL)); //здесь я запрещаю все посторонние символы в файле 
+            return (make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL));
     }
     return (result);
 }
