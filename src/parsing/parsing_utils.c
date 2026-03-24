@@ -1,4 +1,4 @@
-#include "parsing.h"
+#include "parsing_internal.h"
 
 char *skip_spaces(char *s)
 {

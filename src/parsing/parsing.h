@@ -35,14 +35,15 @@ void destroy_parsing_config(t_configuration *configuration);
 
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
 t_parse_result check_args(int argc, char **argv);
-void print_error_msg(const char *msg);
 
 
 
 
 
 
-void print_error_key(const char *key, const char *msg);
+
+
+
 t_parse_result parse_color_line(char *raw, t_rgb *color);
 
 void print_parse_error(t_parse_error error);
