@@ -32,7 +32,7 @@ t_parse_result	validate_map(char **map, t_configuration *configuration, int heig
 {
 	if (!is_valid_map_rows(map))
 		return make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL);
-    if (!validate_payer_pos(map, configuration))
+    if (!validate_player_pos(map, configuration))
 		return make_parse_error_result(P_ERR_PLAYER_COUNT, NULL);
 	return (is_map_closed(map, height, configuration->player_pos));
 }

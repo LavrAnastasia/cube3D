@@ -23,7 +23,7 @@ bool is_color_key(const char *line, const char a);
 bool is_direction_key(const char *line, t_direction_key key);
 t_parse_result is_map_closed(char **map, int rows, t_position position);
 int	is_valid_map_rows(char **map);
-bool 	validate_payer_pos(char **map, t_configuration *configuration);
+bool 	validate_player_pos(char **map, t_configuration *configuration);
 t_parse_result parse_map(int fd, t_configuration *configuration, char *first_map_line);
 t_parse_result is_texture_path_missing(t_configuration *configuration);
 t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st);

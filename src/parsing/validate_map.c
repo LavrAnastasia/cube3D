@@ -16,7 +16,7 @@ int	is_valid_map_rows(char **map)
 }
 
 
-bool validate_payer_pos(char **map, t_configuration *config)
+bool validate_player_pos(char **map, t_configuration *config)
 {
 	int x;
 	int y;
