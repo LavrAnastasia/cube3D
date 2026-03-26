@@ -28,6 +28,7 @@ int	main(int argc, char **argv)
 		destroy_parsing_config(&configuration);
 		game_shutdown(&game, EXIT_FAILURE);
 	}
+	destroy_parsing_config(&configuration);
 	engine_run(&game.engine);
 	return (0);
 }
