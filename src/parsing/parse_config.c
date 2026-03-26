@@ -1,24 +1,4 @@
-#include "parsing.h"
-
-static t_parse_result make_parse_error_result(t_parse_error_code code, const char *info)
-{
-    return (t_parse_result) {
-        .ok = false,
-        .error = (t_parse_error) {
-            .code = code,
-            .info = info
-        }
-    };
-}
-
-static t_parse_result make_parse_success_result(t_parse_type p_type)
-{
-    return (t_parse_result) {
-        .ok = true,
-        .parse_type = p_type
-    };
-}
-
+#include "parsing_internal.h"
 
 t_parse_result	parse_rgb_component(char **raw, int *out)
 {
@@ -38,18 +18,18 @@ t_parse_result	parse_rgb_component(char **raw, int *out)
 		val = (val * 10) + (*str - '0');
 		if (val > 255)
 			return (make_parse_error_result(P_ERR_RGB_RANGE, NULL));
-        str++;
+		str++;
 	}
 	str = skip_spaces(str);
 	*raw = str;
 	*out = val;
-	return (make_parse_success_result(P_COLOR));
+	return (make_parse_success_result());
 }
 
-t_parse_result parse_color(char *raw, t_rgb *color)
+t_parse_result parse_color_line(char *raw, t_rgb *color)
 {
 	char	*str;
-    t_parse_result res;
+	t_parse_result res;
 
 	str = raw;
 	res = parse_rgb_component(&str, &color->r);
@@ -76,75 +56,96 @@ t_parse_result parse_color(char *raw, t_rgb *color)
 		if (*str != '\n')
 			return (make_parse_error_result(P_ERR_RGB, NULL));
 	}
-	return (make_parse_success_result(P_COLOR));
+	return (make_parse_success_result());
 }
 
-t_parse_result fill_texture_paths(char *line,t_configuration *configuration)
+t_parse_result parse_texture(char *line,t_configuration *configuration)
 {
-    if(is_direction_key(line, NO))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.north, NO));
-    if(is_direction_key(line, SO))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.south, SO));
-    if(is_direction_key(line, WE))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.west, WE));
-    if(is_direction_key(line, EA))
-        return(fill_texture_path(line + 2, &configuration->samples.paths.east, EA));
-    return  make_parse_success_result(P_UNKNOWN);
+	if(is_direction_key(line, NO))
+		return(parse_texture_line(line + 2, &configuration->samples.paths.north, NO));
+	if(is_direction_key(line, SO))
+		return(parse_texture_line(line + 2, &configuration->samples.paths.south, SO));
+	if(is_direction_key(line, WE))
+		return(parse_texture_line(line + 2, &configuration->samples.paths.west, WE));
+	if(is_direction_key(line, EA))
+		return(parse_texture_line(line + 2, &configuration->samples.paths.east, EA));
+	return  make_parse_success_result();
 }
 
-t_parse_result fill_colors(char *trim, t_configuration *configuration, t_config_state *st)
+t_parse_result parse_color(char *trim, t_configuration *configuration, t_config_state *st)
 {
-    char *path;
-    t_parse_result res;
+	char *path;
+	t_parse_result res;
 
-    if(is_color_key(trim, C_FLOOR))
-    {
-        if(st->seen_floor)
-            return(make_parse_error_result(P_ERR_DUP_FLOOR, NULL));
-        path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.floor);
-        if(!res.ok)
-            return(res);
-        st->seen_floor = 1;
-        return(res);
-    }
-    if(is_color_key(trim, C_CEILING))
-    {
-        if(st->seen_ceiling)
-            return(make_parse_error_result(P_ERR_DUP_CEILING, NULL));
-        path = skip_spaces(trim + 1);
-        res = parse_color(path, &configuration->samples.ceiling);
-        if(!res.ok)
-            return(res);
-        st->seen_ceiling = 1;
-        return(res);
-    }
-    return make_parse_success_result(P_UNKNOWN);
+	if(is_color_key(trim, C_FLOOR))
+	{
+		if(st->seen_floor)
+			return(make_parse_error_result(P_ERR_DUP_FLOOR, NULL));
+		path = skip_spaces(trim + 1);
+		res = parse_color_line(path, &configuration->samples.floor);
+		if(!res.ok)
+			return(res);
+		st->seen_floor = 1;
+		return(res);
+	}
+	if(is_color_key(trim, C_CEILING))
+	{
+		if(st->seen_ceiling)
+			return(make_parse_error_result(P_ERR_DUP_CEILING, NULL));
+		path = skip_spaces(trim + 1);
+		res = parse_color_line(path, &configuration->samples.ceiling);
+		if(!res.ok)
+			return(res);
+		st->seen_ceiling = 1;
+		return(res);
+	}
+	return make_parse_success_result();
 }
-
-t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *st)
+static bool looks_like_map_line(const char *s)
 {
-    char *trim;
-    t_parse_result result;
-
-
-    trim = skip_spaces(line);
-    if (!trim || *trim == '\0' || *trim == '\n')
-        return make_parse_success_result(P_SPACES);
-    result = fill_texture_paths(trim, configuration);
-    if (!result.ok || (result.ok && result.parse_type == P_TEXTURE))
-        return (result);
-    result = fill_colors(trim, configuration, st);
-    if (!result.ok)
-        return (result);
-    if (result.parse_type == P_UNKNOWN)
-    {
-        if(is_map_row(trim))
-            result.parse_type = P_MAP;
-        else
-            return(make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL)); //здесь я запрещаю все посторонние символы в файле 
-    }
-    return (result);
+	while (*s && ft_isspace((unsigned char)*s))
+		s++;
+	return (*s == TILE_WALL || *s == TILE_EMPTY
+		|| *s == TILE_PLAYER_NORTH || *s == TILE_PLAYER_SOUTH
+		|| *s == TILE_PLAYER_WEST || *s == TILE_PLAYER_EAST);
 }
 
+int is_texture_line(char *trim)
+{
+    return(is_direction_key(trim, NO) || is_direction_key(trim, SO) 
+    || is_direction_key(trim, WE) || is_direction_key(trim, EA));
+}
 
+int is_color_line(char *trim)
+{
+    return(is_color_key(trim, C_FLOOR) || is_color_key(trim, C_CEILING));
+}
+
+t_parse_result process_config_line(char *line, t_configuration *configuration, t_config_state *state, t_parse_type *type)
+{
+	char *trim;
+
+	*type = P_NONE;
+	trim = skip_spaces(line);
+	if (!trim || *trim == '\0' || *trim == '\n')
+		return make_parse_success_result();
+
+	if(is_texture_line(trim))
+	{
+		*type = P_TEXTURE;
+		return(parse_texture(trim, configuration));
+	}
+	if(is_color_line(trim))
+	{
+		*type = P_COLOR;
+		return(parse_color(trim, configuration, state));
+	}
+	if(is_map_row(trim))
+	{
+		*type = P_MAP;
+		return(make_parse_success_result());
+	}
+	if(looks_like_map_line(trim))
+		return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
+	return (make_parse_error_result(P_ERR_INVALID_CONFIG_LINE, NULL));
+}
