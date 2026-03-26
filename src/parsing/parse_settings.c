@@ -10,6 +10,7 @@ t_parse_result	read_config_until_map(
 {
 	char			*line;
 	t_parse_result	result;
+	t_parse_type type;
 
 	*first_map_line = NULL;
 	line = get_next_line(fd);
@@ -17,13 +18,13 @@ t_parse_result	read_config_until_map(
 		return (make_parse_error_result(P_ERR_EMPTY_FILE, NULL));
 	while (line)
 	{
-		result = process_config_line(line, configuration, st);
+		result = process_config_line(line, configuration, st, &type);
 		if (!result.ok)
 		{
 			free(line);
 			return (result);
 		}
-		if (result.parse_type == P_MAP)
+		if (type == P_MAP)
 		{
 			*first_map_line = line;
 			return (result);

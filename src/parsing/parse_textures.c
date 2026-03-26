@@ -18,7 +18,7 @@ static t_parse_result validate_texture_token(char *value, t_direction_key key)
 {
 	if(!is_xpm_extension(value))
 		return (make_parse_error_result(P_ERR_TEXTURE_EXT, map_key(key)));
-	return (make_parse_success_result(P_TEXTURE));
+	return (make_parse_success_result());
 }
 
 static char *get_texture_value_start(char *line, t_direction_key key, t_parse_result *res)
@@ -31,7 +31,7 @@ static char *get_texture_value_start(char *line, t_direction_key key, t_parse_re
 		*res = make_parse_error_result(P_ERR_NO_PATH, map_key(key));
 		return (NULL);
 	}
-	*res = make_parse_success_result(P_TEXTURE);
+	*res = make_parse_success_result();
 	return(start);
 }
 static char *extract_texture_token(char *start, char **end_out, t_parse_result *res)
@@ -49,7 +49,7 @@ static char *extract_texture_token(char *start, char **end_out, t_parse_result *
 		return (NULL);
 	}
 	*end_out = end;
-	*res = make_parse_success_result(P_TEXTURE);
+	*res = make_parse_success_result();
 	return (value);
 }
 
@@ -65,7 +65,7 @@ static t_parse_result	validate_texture_path_parts(char *value, char *end, t_dire
 	after_path = skip_spaces(end);
 	if (*after_path != '\0' && *after_path != '\n')
 		return (make_parse_error_result(P_ERR_TEXTURE_TRAILING, map_key(key)));
-	return (make_parse_success_result(P_TEXTURE));
+	return (make_parse_success_result());
 }
 
 t_parse_result	parse_texture_line(char *line, char **path, t_direction_key key)
@@ -87,5 +87,5 @@ t_parse_result	parse_texture_line(char *line, char **path, t_direction_key key)
 	if (!res.ok)
 		return (free(value), res);
 	*path = value;
-	return (make_parse_success_result(P_TEXTURE));
+	return (make_parse_success_result());
 }

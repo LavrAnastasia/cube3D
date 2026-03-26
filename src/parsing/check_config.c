@@ -70,6 +70,6 @@ t_parse_result is_texture_path_missing(t_configuration *configuration)
 		return(make_parse_error_result(err_code ,WE_KEY));
 	if (!configuration->samples.paths.east)
 		return(make_parse_error_result(err_code ,EA_KEY));
-	return (make_parse_success_result(P_NONE));
+	return (make_parse_success_result());
 }
 

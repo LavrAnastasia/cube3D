@@ -111,6 +111,6 @@ t_parse_result is_map_closed(char **map, int rows, t_position position)
 	free_str_array(copy);
 	if(leak != 0)
 		return(make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
-	return(make_parse_success_result(P_MAP));
+	return(make_parse_success_result());
 }
 

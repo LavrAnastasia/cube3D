@@ -93,7 +93,7 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 		*map_in_one_line = tmp;
 		line = get_next_line(fd);
 	}
-	return (make_parse_success_result(P_MAP));
+	return (make_parse_success_result());
 }
 
 t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map_line)
@@ -132,5 +132,5 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 	}
     configuration->map = map;
 	configuration->map_size = map_size;
-	return (make_parse_success_result(P_MAP));
+	return (make_parse_success_result());
 }

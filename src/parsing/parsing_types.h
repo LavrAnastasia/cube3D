@@ -45,7 +45,6 @@ typedef enum e_parse_type
 
 typedef struct s_parse_result {
 	bool ok;
-	t_parse_type parse_type;
 	t_parse_error error;
 } t_parse_result;
 
