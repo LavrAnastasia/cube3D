@@ -23,10 +23,13 @@ SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map/, index.c )
 
 SRC_REPORTER := $(addprefix $(DIR_SRC)reporter/, index.c \
-	reporter_warning.c)
+	reporter_warning.c reporter_validation.c)
 
 SRC_GAME := $(addprefix game/, game_init_scene.c \
 	game_init.c game_init_engine.c game_shutdown.c game_init_textures.c)
+
+
+SRC_INPUT := $(addprefix $(DIR_SRC)input_validation/, index.c )
 
 SRC_MANDATORY := index.c \
 	$(SRC_GAME) \
@@ -39,7 +42,8 @@ SRC_MANDATORY := index.c \
 	$(SRC_TEXTURES) \
 	$(SRC_MOVEMENT) \
 	$(SRC_MAP_UTILS) \
-	$(SRC_REPORTER)
+	$(SRC_REPORTER) \
+	$(SRC_INPUT)
 
 OBJ_DIR := obj
 
@@ -64,7 +68,8 @@ endif
 CC := cc
 BASE_FLAGS := -Wall -Wextra -Werror -Imlx -Iinclude -Ilibft \
 	-Isrc/textures -Isrc/pixels -Isrc/raycast -Isrc/render -Isrc/engine -Isrc/math -Isrc/movement -Isrc/map \
-	-Isrc/reporter -Isrc/parsing -Igame
+	-Isrc/reporter -Isrc/parsing -Isrc/input_validation -Igame
+
 DEBUG_FLAGS := -g
 SANITIZE_FLAGS := -fsanitize=address
 
