@@ -31,14 +31,13 @@ bool validate_player_pos(char **map, t_configuration *config)
 		{
 			if(is_player_pos(map[y][x]))
 			{
+				if (count > 0)
+					return (false);
 				config->player_pos.x = x + 0.5;
 				config->player_pos.y = y + 0.5;
 				config->player_start = map[y][x];
-				if (count > 0)
-					return (false);
 				count++;
-			}
-			   
+			}	   
 			x++;
 		}
 		y++;
