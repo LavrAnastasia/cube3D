@@ -1,5 +1,5 @@
-#ifndef INPUT_ERR_H
-#define INPUT_ERR_H
+#ifndef VALIDATION_ERRORS_H
+#define VALIDATION_ERRORS_H
 
 typedef enum e_validation_error_code
 {

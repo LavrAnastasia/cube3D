@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:21:31 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/26 19:08:44 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/26 19:30:28 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@
 # include "scene_status.h"
 
 const char	*render_msg(int code);
-const char	*err_validation_msg(int code);
+const char	*validation_msg(int code);
 
 #endif

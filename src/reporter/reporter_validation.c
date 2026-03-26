@@ -1,6 +1,6 @@
 #include "reporter_internal.h"
 
-const char	*err_validation_msg(int code)
+const char	*validation_msg(int code)
 {
 	static const char	*map[] = {
 	[V_ERR_NO_INPUT_FILE] = "Please provide a .cub file",

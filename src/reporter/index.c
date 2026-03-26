@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:21:29 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/26 19:06:53 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/26 19:30:28 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static const char	*(*msg_resolver(t_reporter_domain domain))(int c)
 	[D_SCENE] = scene_msg,
 	[D_TEXTURES] = textures_msg,
 	[D_RENDER] = render_msg,
-	[D_VALIDATION] = err_validation_msg
+	[D_VALIDATION] = validation_msg
 	};
 	const size_t		size = sizeof table / sizeof * table;
 
