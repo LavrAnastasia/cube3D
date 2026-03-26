@@ -19,31 +19,6 @@ void destroy_parsing_config(t_configuration *configuration)
 		free(configuration->samples.paths.west);
 }
 
-t_parse_result	check_args(int argc, char **argv)
-{
-	char			*dot;
-	t_parse_result	result;
-	char *filename;
-	char *slash;
-
-	if (argc < 2)
-		return (make_parse_error_result(P_ERR_NO_INPUT_FILE, NULL));
-	if (argc > 2)
-		return (make_parse_error_result(P_ERR_ARG, NULL));
-	slash = ft_strrchr(argv[1], '/');
-	if(slash != NULL)
-		filename = slash + 1;
-	else 
-		filename = argv[1];
-	if(ft_strcmp(filename, FILE_EXT) == 0)
-		return (make_parse_error_result(P_ERR_EMPTY_FILE_NAME, NULL));
-	dot = ft_strrchr(argv[1], '.');
-	if (!dot || ft_strcmp(dot, FILE_EXT) != 0)
-		return (make_parse_error_result(P_ERR_EXTENSION, NULL));
-	result.ok = true;
-	return (result);
-}
-
 t_parse_result	parse_settings(t_configuration *configuration, char **argv)
 {
 	int				fd;

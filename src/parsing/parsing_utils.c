@@ -10,16 +10,17 @@ char *skip_spaces(char *s)
 }
 //# define ERR_MAP "Map section is missing"  -- TODO: find this message
 
+
 const char	*err_parse_msg(int code)
 {
 	static const char	*map[] = {
 	[P_ERR_MALLOC] = "Malloc failed",
-	[P_ERR_NO_INPUT_FILE] = "Please provide a .cub file",
+
 	[P_ERR_EMPTY_FILE] = "The .cub file is empty",
 	[P_ERR_NO_PATH] = "Texture path is missing",
-	[P_ERR_ARG] = "Too many arguments provided, required: program + map",
-	[P_ERR_EXTENSION] = "Map must have .cub extension",
-	[P_ERR_EMPTY_FILE_NAME] = "File name must not be only .cub",
+	
+
+
 	[P_ERR_OPEN_FILE] = "Cannot open the file",
 	[P_ERR_RGB] = "Invalid RGB format",
 	[P_ERR_RGB_RANGE] = "RGB out of range",
@@ -36,7 +37,6 @@ const char	*err_parse_msg(int code)
 	[P_ERR_EMPTY_MAP] = "Map section is missing or empty",
 	[P_ERR_MAP_EMPTY_LINE] = "Empty line inside map is not allowed"};
 	const int			size = sizeof(map) / sizeof(*map);
-
 	if (code < 0 || code >= size)
 		return (NULL);
 	return (map[code]);

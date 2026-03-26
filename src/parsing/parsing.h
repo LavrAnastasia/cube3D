@@ -6,7 +6,6 @@
 
 void destroy_parsing_config(t_configuration *configuration);
 t_parse_result parse_settings(t_configuration *configuration, char **argv);
-t_parse_result check_args(int argc, char **argv);
 void print_parse_error(t_parse_error error);
 
 #endif
