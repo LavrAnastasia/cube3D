@@ -77,3 +77,17 @@ void	free_str_array(char **arr)
 	}
 	free(arr);
 }
+
+bool	is_xpm_extension(const char *value)
+{
+	char	*dot;
+
+	if (!value)
+		return (false);
+	dot = ft_strrchr(value, '.');
+	if (!dot)
+		return (false);
+	if (ft_strcmp(dot, IMG_EXT) != 0)
+		return (false);
+	return (true);
+}

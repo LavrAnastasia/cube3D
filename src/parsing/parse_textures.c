@@ -1,19 +1,5 @@
 #include "parsing_internal.h"
 
-bool	is_xpm_extension(const char *value)
-{
-	char	*dot;
-
-	if (!value)
-		return (false);
-	dot = ft_strrchr(value, '.');
-	if (!dot)
-		return (false);
-	if (ft_strcmp(dot, IMG_EXT) != 0)
-		return (false);
-	return (true);
-}
-
 static t_parse_result	validate_texture_token(char *value, t_direction_key key)
 {
 	if (!is_xpm_extension(value))
