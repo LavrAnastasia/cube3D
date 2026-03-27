@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_types.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:02 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:43:41 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_TYPES_H
 # define PARSING_TYPES_H
 
@@ -27,7 +39,6 @@ typedef enum e_parse_error_code
 	P_ERR_EMPTY_FILE,
 	P_ERR_MAP_EMPTY_LINE,
 	P_ERR_EMPTY_FILE_NAME
-
 }						t_parse_error_code;
 
 typedef struct s_parse_error

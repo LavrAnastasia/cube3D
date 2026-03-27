@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_config.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:38:12 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:38:32 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "map_utils.h"
 #include "parsing_internal.h"
 
@@ -46,6 +58,7 @@ bool	is_direction_key(const char *line, t_direction_key key)
 		return (false);
 	return (true);
 }
+
 bool	is_color_key(const char *line, const char a)
 {
 	if (!line || !line[0] || !line[1])

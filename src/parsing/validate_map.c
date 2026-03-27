@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_map.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:17 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:44:41 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "map_utils.h"
 #include "parsing_internal.h"
 
@@ -10,6 +22,7 @@ t_parse_result	validate_map(char **map, t_configuration *configuration,
 		return (make_parse_error_result(P_ERR_PLAYER_COUNT, NULL));
 	return (is_map_closed(map, height, configuration->player_pos));
 }
+
 bool	validate_player_pos(char **map, t_configuration *config)
 {
 	int	x;
@@ -58,6 +71,7 @@ char	**copy_map(char **map, int rows)
 	copy[i] = NULL;
 	return (copy);
 }
+
 t_parse_result	is_map_closed(char **map, int rows, t_position position)
 {
 	char	**copy;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_config.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:25 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:41:10 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
 t_parse_result	parse_texture(char *line, t_configuration *configuration)
@@ -16,6 +28,7 @@ t_parse_result	parse_texture(char *line, t_configuration *configuration)
 				EA));
 	return (make_parse_success_result());
 }
+
 static bool	looks_like_map_line(const char *s)
 {
 	while (*s && ft_isspace((unsigned char)*s))

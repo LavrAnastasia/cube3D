@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:30 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:41:37 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
 int	row_len(char *s)
@@ -48,7 +60,7 @@ char	*join_lines(char *s1, char *s2)
 
 bool	is_empty_map_line(char *line)
 {
-	char *str;
+	char	*str;
 
 	str = skip_spaces(line);
 	if (!str || *str == '\0' || *str == '\n')

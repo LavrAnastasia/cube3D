@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:06 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:44:23 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
 char	*skip_spaces(char *s)
@@ -8,6 +20,7 @@ char	*skip_spaces(char *s)
 		s++;
 	return (s);
 }
+
 void	cleanup_parse_resource(int fd, char *line)
 {
 	if (line)
@@ -32,7 +45,7 @@ void	free_str_array(char **arr)
 
 bool	is_xpm_extension(const char *value)
 {
-	char *dot;
+	char	*dot;
 
 	if (!value)
 		return (false);

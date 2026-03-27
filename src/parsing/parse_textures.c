@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_textures.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:43 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:41:51 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
 static t_parse_result	validate_texture_token(char *value, t_direction_key key)
@@ -21,6 +33,7 @@ static char	*get_texture_value_start(char *line, t_direction_key key,
 	*res = make_parse_success_result();
 	return (start);
 }
+
 static char	*extract_texture_token(char *start, char **end_out,
 		t_parse_result *res)
 {

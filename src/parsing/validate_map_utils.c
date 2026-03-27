@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_map_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:14 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:45:16 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "map_utils.h"
 #include "parsing_internal.h"
 
@@ -31,9 +43,10 @@ static int	is_out_of_map(char **map, int rows, int x, int y)
 		return (1);
 	return (0);
 }
+
 int	flood_fill(char **map, int rows, int x, int y)
 {
-	char c;
+	char	c;
 
 	if (is_out_of_map(map, rows, x, y))
 		return (1);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_internal.h                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:48 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:43:17 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_INTERNAL_H
 # define PARSING_INTERNAL_H
 
@@ -37,14 +49,13 @@ const char		*err_parse_msg(int code);
 t_parse_result	read_config_until_map(int fd, t_configuration *configuration,
 					char **first_map_line, t_config_state *st);
 t_parse_result	parse_color(char *trim, t_configuration *configuration,
-	t_config_state *st);
-
+					t_config_state *st);
 t_dimensions	calc_map_size(char **map);
 t_parse_result	validate_map(char **map, t_configuration *configuration,
-	int height);
-char	*join_lines(char *s1, char *s2);
-bool	is_empty_map_line(char *line);
-bool	is_xpm_extension(const char *value);
-int	flood_fill(char **map, int rows, int x, int y);
+					int height);
+char			*join_lines(char *s1, char *s2);
+bool			is_empty_map_line(char *line);
+bool			is_xpm_extension(const char *value);
+int				flood_fill(char **map, int rows, int x, int y);
 
 #endif
