@@ -49,15 +49,23 @@ int is_walkable(char c)
 {
 	return(c == TILE_EMPTY || is_player_pos(c));
 }
+
+static int	is_out_of_map(char **map, int rows, int x, int y)
+{
+	int	len;
+
+	if (y < 0 || y >= rows || x < 0)
+		return (1);
+	len = row_len(map[y]);
+	if (x >= len)
+		return (1);
+	return (0);
+}
 int flood_fill(char **map, int rows, int x, int y)
 {
-	int len;
 	char c;
 
-	if(y < 0 || y >= rows || x < 0)
-		return 1;
-	len = row_len(map[y]);
-	if(x >= len)
+	if (is_out_of_map(map, rows, x, y))
 		return 1;
 	c = map[y][x];
 
