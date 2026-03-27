@@ -1,6 +1,16 @@
 #include "map_utils.h"
 #include "parsing_internal.h"
 
+t_parse_result	validate_map(char **map, t_configuration *configuration,
+	int height)
+{
+if (!is_valid_map_rows(map))
+	return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
+if (!validate_player_pos(map, configuration))
+	return (make_parse_error_result(P_ERR_PLAYER_COUNT, NULL));
+return (is_map_closed(map, height, configuration->player_pos));
+}
+
 int	is_valid_map_rows(char **map)
 {
 	int	i;

@@ -39,4 +39,10 @@ t_parse_result	read_config_until_map(int fd, t_configuration *configuration,
 t_parse_result	parse_color(char *trim, t_configuration *configuration,
 	t_config_state *st);
 
+t_dimensions	calc_map_size(char **map);
+t_parse_result	validate_map(char **map, t_configuration *configuration,
+	int height);
+char	*join_lines(char *s1, char *s2);
+bool	is_empty_map_line(char *line);
+
 #endif
