@@ -45,5 +45,6 @@ t_parse_result	validate_map(char **map, t_configuration *configuration,
 char	*join_lines(char *s1, char *s2);
 bool	is_empty_map_line(char *line);
 bool	is_xpm_extension(const char *value);
+int	flood_fill(char **map, int rows, int x, int y);
 
 #endif
