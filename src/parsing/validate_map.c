@@ -1,5 +1,5 @@
-#include "parsing_internal.h"
 #include "map_utils.h"
+#include "parsing_internal.h"
 
 int	is_valid_map_rows(char **map)
 {
@@ -15,21 +15,20 @@ int	is_valid_map_rows(char **map)
 	return (1);
 }
 
-
-bool validate_player_pos(char **map, t_configuration *config)
+bool	validate_player_pos(char **map, t_configuration *config)
 {
-	int x;
-	int y;
-	int count;
+	int	x;
+	int	y;
+	int	count;
 
 	count = 0;
 	y = 0;
-	while(map[y])
+	while (map[y])
 	{
 		x = 0;
-		while(map[y][x] && map[y][x] != '\n')
+		while (map[y][x] && map[y][x] != '\n')
 		{
-			if(is_player_pos(map[y][x]))
+			if (is_player_pos(map[y][x]))
 			{
 				if (count > 0)
 					return (false);
@@ -37,7 +36,7 @@ bool validate_player_pos(char **map, t_configuration *config)
 				config->player_pos.y = y + 0.5;
 				config->player_start = map[y][x];
 				count++;
-			}	   
+			}
 			x++;
 		}
 		y++;
@@ -45,9 +44,9 @@ bool validate_player_pos(char **map, t_configuration *config)
 	return (count == 1);
 }
 
-int is_walkable(char c)
+int	is_walkable(char c)
 {
-	return(c == TILE_EMPTY || is_player_pos(c));
+	return (c == TILE_EMPTY || is_player_pos(c));
 }
 
 static int	is_out_of_map(char **map, int rows, int x, int y)
@@ -61,20 +60,19 @@ static int	is_out_of_map(char **map, int rows, int x, int y)
 		return (1);
 	return (0);
 }
-int flood_fill(char **map, int rows, int x, int y)
+int	flood_fill(char **map, int rows, int x, int y)
 {
-	char c;
+	char	c;
 
 	if (is_out_of_map(map, rows, x, y))
-		return 1;
+		return (1);
 	c = map[y][x];
-
-	if(c == SKIP_SIGN)
-		return 1;
-	if(c == TILE_WALL || c == VISITED_SIGN)
-		return 0;
-	if(!is_walkable(c))
-		return 0;
+	if (c == SKIP_SIGN)
+		return (1);
+	if (c == TILE_WALL || c == VISITED_SIGN)
+		return (0);
+	if (!is_walkable(c))
+		return (0);
 	map[y][x] = VISITED_SIGN;
 	if (flood_fill(map, rows, x - 1, y))
 		return (1);
@@ -84,40 +82,39 @@ int flood_fill(char **map, int rows, int x, int y)
 		return (1);
 	if (flood_fill(map, rows, x, y + 1))
 		return (1);
-	return 0;
+	return (0);
 }
 
-char **copy_map(char **map, int rows)
+char	**copy_map(char **map, int rows)
 {
-	char **copy;
-	int i;
+	char	**copy;
+	int		i;
 
 	copy = ft_calloc(rows + 1, sizeof(char *));
-	if(!copy)
-		return NULL;
+	if (!copy)
+		return (NULL);
 	i = 0;
-	while(i < rows)
+	while (i < rows)
 	{
 		copy[i] = ft_strdup(map[i]);
-		if(!copy[i])
-			return(free_str_array(copy), NULL);
+		if (!copy[i])
+			return (free_str_array(copy), NULL);
 		i++;
 	}
 	copy[i] = NULL;
-	return(copy);
+	return (copy);
 }
-t_parse_result is_map_closed(char **map, int rows, t_position position)
+t_parse_result	is_map_closed(char **map, int rows, t_position position)
 {
-	char **copy;
-	int leak;
+	char	**copy;
+	int		leak;
 
 	copy = copy_map(map, rows);
-	if(!copy)
-		return(make_parse_error_result(P_ERR_MALLOC, NULL));
+	if (!copy)
+		return (make_parse_error_result(P_ERR_MALLOC, NULL));
 	leak = flood_fill(copy, rows, position.x, position.y);
 	free_str_array(copy);
-	if(leak != 0)
-		return(make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
-	return(make_parse_success_result());
+	if (leak != 0)
+		return (make_parse_error_result(P_ERR_MAP_NOT_CLOSED, NULL));
+	return (make_parse_success_result());
 }
-

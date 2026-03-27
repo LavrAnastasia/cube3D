@@ -114,7 +114,7 @@ t_parse_result	read_map(int fd, char **map_in_one_line)
 }
 
 static t_parse_result	read_map_in_one_line(int fd, char *first_map_line,
-	char **map_in_one_line)
+		char **map_in_one_line)
 {
 	t_parse_result	result;
 
@@ -134,31 +134,31 @@ static t_parse_result	read_map_in_one_line(int fd, char *first_map_line,
 }
 
 t_parse_result	parse_map(int fd, t_configuration *configuration,
-	char *first_map_line)
+		char *first_map_line)
 {
-char			**map;
-char			*map_in_one_line;
-t_parse_result	result;
-t_dimensions	map_size;
+	char			**map;
+	char			*map_in_one_line;
+	t_parse_result	result;
+	t_dimensions	map_size;
 
-result = read_map_in_one_line(fd, first_map_line, &map_in_one_line);
-if (!result.ok)
-	return (result);
-map = ft_split(map_in_one_line, '\n');
-free(map_in_one_line);
-if (!map || !map[0])
-{
-	free_str_array(map);
-	return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
-}
-map_size = calc_map_size(map);
-result = validate_map(map, configuration, map_size.height);
-if (!result.ok)
-{
-	free_str_array(map);
-	return (result);
-}
-configuration->map = map;
-configuration->map_size = map_size;
-return (make_parse_success_result());
+	result = read_map_in_one_line(fd, first_map_line, &map_in_one_line);
+	if (!result.ok)
+		return (result);
+	map = ft_split(map_in_one_line, '\n');
+	free(map_in_one_line);
+	if (!map || !map[0])
+	{
+		free_str_array(map);
+		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
+	}
+	map_size = calc_map_size(map);
+	result = validate_map(map, configuration, map_size.height);
+	if (!result.ok)
+	{
+		free_str_array(map);
+		return (result);
+	}
+	configuration->map = map;
+	configuration->map_size = map_size;
+	return (make_parse_success_result());
 }

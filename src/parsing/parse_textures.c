@@ -1,47 +1,49 @@
 #include "parsing_internal.h"
 
-bool is_xpm_extension(const char *value)
+bool	is_xpm_extension(const char *value)
 {
-	char *dot;
+	char	*dot;
 
-	if(!value)
-		return(false);
+	if (!value)
+		return (false);
 	dot = ft_strrchr(value, '.');
-	if(!dot)
-		return(false);
-	if(ft_strcmp(dot, IMG_EXT) != 0)
-		return(false);
-	return(true);
+	if (!dot)
+		return (false);
+	if (ft_strcmp(dot, IMG_EXT) != 0)
+		return (false);
+	return (true);
 }
 
-static t_parse_result validate_texture_token(char *value, t_direction_key key)
+static t_parse_result	validate_texture_token(char *value, t_direction_key key)
 {
-	if(!is_xpm_extension(value))
+	if (!is_xpm_extension(value))
 		return (make_parse_error_result(P_ERR_TEXTURE_EXT, map_key(key)));
 	return (make_parse_success_result());
 }
 
-static char *get_texture_value_start(char *line, t_direction_key key, t_parse_result *res)
+static char	*get_texture_value_start(char *line, t_direction_key key,
+		t_parse_result *res)
 {
-	char *start;
+	char	*start;
 
 	start = skip_spaces(line);
-	if(!start || *start == '\0' || *start == '\n')
+	if (!start || *start == '\0' || *start == '\n')
 	{
 		*res = make_parse_error_result(P_ERR_NO_PATH, map_key(key));
 		return (NULL);
 	}
 	*res = make_parse_success_result();
-	return(start);
+	return (start);
 }
-static char *extract_texture_token(char *start, char **end_out, t_parse_result *res)
+static char	*extract_texture_token(char *start, char **end_out,
+		t_parse_result *res)
 {
-	char *end;
-	char *value;
+	char	*end;
+	char	*value;
 
 	end = start;
 	while (*end && !ft_isspace((unsigned char)*end))
-	end++;
+		end++;
 	value = ft_substr(start, 0, (size_t)(end - start));
 	if (!value)
 	{
@@ -53,7 +55,8 @@ static char *extract_texture_token(char *start, char **end_out, t_parse_result *
 	return (value);
 }
 
-static t_parse_result	validate_texture_path_parts(char *value, char *end, t_direction_key key)
+static t_parse_result	validate_texture_path_parts(char *value, char *end,
+		t_direction_key key)
 {
 	t_parse_result	res;
 	char			*after_path;
@@ -61,7 +64,6 @@ static t_parse_result	validate_texture_path_parts(char *value, char *end, t_dire
 	res = validate_texture_token(value, key);
 	if (!res.ok)
 		return (res);
-
 	after_path = skip_spaces(end);
 	if (*after_path != '\0' && *after_path != '\n')
 		return (make_parse_error_result(P_ERR_TEXTURE_TRAILING, map_key(key)));
