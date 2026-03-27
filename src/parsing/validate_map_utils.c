@@ -1,5 +1,5 @@
-#include "parsing_internal.h"
 #include "map_utils.h"
+#include "parsing_internal.h"
 
 int	is_valid_map_rows(char **map)
 {
@@ -33,7 +33,7 @@ static int	is_out_of_map(char **map, int rows, int x, int y)
 }
 int	flood_fill(char **map, int rows, int x, int y)
 {
-	char	c;
+	char c;
 
 	if (is_out_of_map(map, rows, x, y))
 		return (1);

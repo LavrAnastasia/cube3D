@@ -48,7 +48,7 @@ char	*join_lines(char *s1, char *s2)
 
 bool	is_empty_map_line(char *line)
 {
-	char	*str;
+	char *str;
 
 	str = skip_spaces(line);
 	if (!str || *str == '\0' || *str == '\n')

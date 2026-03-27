@@ -64,27 +64,27 @@ t_parse_result	parse_color_line(char *raw, t_rgb *color)
 }
 
 static t_parse_result	parse_single_color(char *trim, int *seen, t_rgb *dst,
-    t_parse_error_code dup_err)
+		t_parse_error_code dup_err)
 {
-t_parse_result	res;
+	t_parse_result	res;
 
-if (*seen)
-    return (make_parse_error_result(dup_err, NULL));
-res = parse_color_line(skip_spaces(trim + 1), dst);
-if (!res.ok)
-    return (res);
-*seen = 1;
-return (res);
+	if (*seen)
+		return (make_parse_error_result(dup_err, NULL));
+	res = parse_color_line(skip_spaces(trim + 1), dst);
+	if (!res.ok)
+		return (res);
+	*seen = 1;
+	return (res);
 }
 
 t_parse_result	parse_color(char *trim, t_configuration *configuration,
-    t_config_state *st)
+		t_config_state *st)
 {
-if (is_color_key(trim, C_FLOOR))
-    return (parse_single_color(trim, &st->seen_floor,
-            &configuration->samples.floor, P_ERR_DUP_FLOOR));
-if (is_color_key(trim, C_CEILING))
-    return (parse_single_color(trim, &st->seen_ceiling,
-            &configuration->samples.ceiling, P_ERR_DUP_CEILING));
-return (make_parse_success_result());
+	if (is_color_key(trim, C_FLOOR))
+		return (parse_single_color(trim, &st->seen_floor,
+				&configuration->samples.floor, P_ERR_DUP_FLOOR));
+	if (is_color_key(trim, C_CEILING))
+		return (parse_single_color(trim, &st->seen_ceiling,
+				&configuration->samples.ceiling, P_ERR_DUP_CEILING));
+	return (make_parse_success_result());
 }

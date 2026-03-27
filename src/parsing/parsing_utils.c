@@ -17,7 +17,7 @@ void	cleanup_parse_resource(int fd, char *line)
 
 void	free_str_array(char **arr)
 {
-	int i;
+	int	i;
 
 	if (!arr)
 		return ;
@@ -32,7 +32,7 @@ void	free_str_array(char **arr)
 
 bool	is_xpm_extension(const char *value)
 {
-	char	*dot;
+	char *dot;
 
 	if (!value)
 		return (false);

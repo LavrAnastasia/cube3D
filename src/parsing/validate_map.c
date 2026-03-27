@@ -2,13 +2,13 @@
 #include "parsing_internal.h"
 
 t_parse_result	validate_map(char **map, t_configuration *configuration,
-	int height)
+		int height)
 {
-if (!is_valid_map_rows(map))
-	return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
-if (!validate_player_pos(map, configuration))
-	return (make_parse_error_result(P_ERR_PLAYER_COUNT, NULL));
-return (is_map_closed(map, height, configuration->player_pos));
+	if (!is_valid_map_rows(map))
+		return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
+	if (!validate_player_pos(map, configuration))
+		return (make_parse_error_result(P_ERR_PLAYER_COUNT, NULL));
+	return (is_map_closed(map, height, configuration->player_pos));
 }
 bool	validate_player_pos(char **map, t_configuration *config)
 {
