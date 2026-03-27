@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 15:52:39 by alavrukh          #+#    #+#             */
-/*   Updated: 2026/03/27 15:52:40 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/27 16:03:51 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 #include "parsing_settings.h"
 #include "validation_types.h"
 
-t_validation_result	make_input_success_result(void);
-t_validation_result	make_input_error_result(t_validation_error_code code);
+static t_validation_result	make_input_success_result(void)
+{
+	return ((t_validation_result){.ok = true});
+}
+
+static t_validation_result	make_input_error_result(
+	t_validation_error_code code)
+{
+	return ((t_validation_result){.ok = false, .error_code = code});
+}
 
 t_validation_result	check_args(int argc, char **argv)
 {
@@ -38,15 +46,4 @@ t_validation_result	check_args(int argc, char **argv)
 	if (!dot || ft_strcmp(dot, FILE_EXT) != 0)
 		return (make_input_error_result(V_ERR_EXTENSION));
 	return (make_input_success_result());
-}
-
-static t_validation_result	make_input_success_result(void)
-{
-	return ((t_validation_result){.ok = true});
-}
-
-static t_validation_result	make_input_error_result(
-	t_validation_error_code code)
-{
-	return ((t_validation_result){.ok = false, .error_code = code});
 }
