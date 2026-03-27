@@ -1,0 +1,90 @@
+#include "parsing_internal.h"
+
+t_parse_result	parse_rgb_component(char **raw, int *out)
+{
+	char	*str;
+	int		val;
+
+	str = skip_spaces(*raw);
+	if (str == NULL)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (*str == '\0' || *str == '\n')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	if (ft_isdigit((unsigned char)*str) == 0)
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	val = 0;
+	while (ft_isdigit((unsigned char)*str))
+	{
+		val = (val * 10) + (*str - '0');
+		if (val > 255)
+			return (make_parse_error_result(P_ERR_RGB_RANGE, NULL));
+		str++;
+	}
+	str = skip_spaces(str);
+	*raw = str;
+	*out = val;
+	return (make_parse_success_result());
+}
+
+static t_parse_result	find_rgb_component(char **str, int *dst, int comma)
+{
+	t_parse_result	res;
+
+	res = parse_rgb_component(str, dst);
+	if (!res.ok)
+		return (res);
+	if (comma)
+	{
+		if (**str != ',')
+			return (make_parse_error_result(P_ERR_RGB, NULL));
+		(*str)++;
+	}
+	return (make_parse_success_result());
+}
+
+t_parse_result	parse_color_line(char *raw, t_rgb *color)
+{
+	char			*str;
+	t_parse_result	res;
+
+	str = raw;
+	res = find_rgb_component(&str, &color->r, true);
+	if (res.ok == false)
+		return (res);
+	res = find_rgb_component(&str, &color->g, true);
+	if (res.ok == false)
+		return (res);
+	res = find_rgb_component(&str, &color->b, false);
+	if (res.ok == false)
+		return (res);
+	str = skip_spaces(str);
+	if (*str != '\0' && *str != '\n')
+		return (make_parse_error_result(P_ERR_RGB, NULL));
+	return (make_parse_success_result());
+}
+
+static t_parse_result	parse_single_color(char *trim, int *seen, t_rgb *dst,
+    t_parse_error_code dup_err)
+{
+t_parse_result	res;
+
+if (*seen)
+    return (make_parse_error_result(dup_err, NULL));
+res = parse_color_line(skip_spaces(trim + 1), dst);
+if (!res.ok)
+    return (res);
+*seen = 1;
+return (res);
+}
+
+t_parse_result	parse_color(char *trim, t_configuration *configuration,
+    t_config_state *st)
+{
+if (is_color_key(trim, C_FLOOR))
+    return (parse_single_color(trim, &st->seen_floor,
+            &configuration->samples.floor, P_ERR_DUP_FLOOR));
+if (is_color_key(trim, C_CEILING))
+    return (parse_single_color(trim, &st->seen_ceiling,
+            &configuration->samples.ceiling, P_ERR_DUP_CEILING));
+return (make_parse_success_result());
+}

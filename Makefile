@@ -18,7 +18,7 @@ SRC_MOVEMENT := $(addprefix $(DIR_SRC)movement/, index.c \
 
 SRC_PARSING := $(addprefix $(DIR_SRC)parsing/, parse_settings.c \
 	parse_config.c check_config.c parsing_utils.c parse_textures.c \
-	parse_map.c validate_map.c parsing_result.c index.c)
+	parse_map.c validate_map.c parsing_result.c index.c parse_colors.c)
 
 SRC_MAP_UTILS := $(addprefix $(DIR_SRC)map/, index.c )
 
