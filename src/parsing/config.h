@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/18 23:00:49 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/21 18:59:18 by timlive          ###   ########.fr       */
+/*   Created: 2026/03/27 15:39:04 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:39:05 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,20 @@ typedef struct s_config
 	t_wall_texture_paths	paths;
 	t_rgb					floor;
 	t_rgb					ceiling;
-}	t_config;
+}							t_config;
 
 typedef struct s_config_state
 {
-	int	seen_floor;
-	int	seen_ceiling;
-}	t_config_state;
-
+	int						seen_floor;
+	int						seen_ceiling;
+}							t_config_state;
 
 typedef struct s_configuration
 {
-	char			**map;
-	t_dimensions	map_size;
-	t_position		player_pos;
-	t_player_tile	player_start;
-	t_config		samples;
-}	t_configuration;
-#endif 
+	char					**map;
+	t_dimensions			map_size;
+	t_position				player_pos;
+	t_player_tile			player_start;
+	t_config				samples;
+}							t_configuration;
+#endif

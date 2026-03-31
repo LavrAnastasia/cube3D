@@ -1,7 +1,19 @@
-#ifndef PARSING_TYPES_H
-#define PARSING_TYPES_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_types.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:02 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:43:41 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdbool.h>
+#ifndef PARSING_TYPES_H
+# define PARSING_TYPES_H
+
+# include <stdbool.h>
 
 typedef enum e_parse_error_code
 {
@@ -12,7 +24,7 @@ typedef enum e_parse_error_code
 	P_ERR_EXTENSION,
 	P_ERR_OPEN_FILE,
 	P_ERR_RGB,
-	P_ERR_RGB_RANGE, 
+	P_ERR_RGB_RANGE,
 	P_ERR_DUP,
 	P_ERR_TEXTURE_EXT,
 	P_ERR_TEXTURE_TRAILING,
@@ -27,13 +39,13 @@ typedef enum e_parse_error_code
 	P_ERR_EMPTY_FILE,
 	P_ERR_MAP_EMPTY_LINE,
 	P_ERR_EMPTY_FILE_NAME
+}						t_parse_error_code;
 
-} t_parse_error_code;
-
-typedef struct s_parse_error {
-	t_parse_error_code code;
-	const char *info;
-} t_parse_error;
+typedef struct s_parse_error
+{
+	t_parse_error_code	code;
+	const char			*info;
+}						t_parse_error;
 
 typedef enum e_parse_type
 {
@@ -41,12 +53,13 @@ typedef enum e_parse_type
 	P_TEXTURE,
 	P_COLOR,
 	P_MAP
-} t_parse_type;
+}						t_parse_type;
 
-typedef struct s_parse_result {
-	bool ok;
-	t_parse_error error;
-} t_parse_result;
+typedef struct s_parse_result
+{
+	bool				ok;
+	t_parse_error		error;
+}						t_parse_result;
 
 typedef enum e_direction_key
 {
@@ -54,13 +67,12 @@ typedef enum e_direction_key
 	SO,
 	WE,
 	EA
-}	t_direction_key;
+}						t_direction_key;
 
 typedef enum e_color_key
 {
 	C_FLOOR = 'F',
 	C_CEILING = 'C'
-}	t_color_key;
-
+}						t_color_key;
 
 #endif

@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:40:10 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:40:11 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
-#define PARSING_H
+# define PARSING_H
 
-#include "config.h"
-#include "parsing_types.h"
+# include "config.h"
+# include "parsing_types.h"
 
-void destroy_parsing_config(t_configuration *configuration);
-t_parse_result parse_settings(t_configuration *configuration, char **argv);
-void print_parse_error(t_parse_error error);
+void			destroy_parsing_config(t_configuration *configuration);
+t_parse_result	parse_settings(t_configuration *configuration, char **argv);
+void			print_parse_error(t_parse_error error);
 
 #endif

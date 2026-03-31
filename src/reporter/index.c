@@ -6,7 +6,7 @@
 /*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:21:29 by audobnai          #+#    #+#             */
-/*   Updated: 2026/03/26 19:30:28 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/27 16:15:52 by alavrukh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ static const char	*scene_msg(int code)
 		return (NULL);
 	return (map[code]);
 }
-
-
 
 static const char	*(*msg_resolver(t_reporter_domain domain))(int c)
 {

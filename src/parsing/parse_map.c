@@ -1,120 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:34 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:39:35 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
-int row_len(char *s)
+static t_parse_result	validate_map_line(char *line)
 {
-    int i = 0;
-    while(s[i] && s[i] != '\n')
-        i++;
-    return(i);
+	if (is_empty_map_line(line))
+		return (make_parse_error_result(P_ERR_MAP_EMPTY_LINE, NULL));
+	if (!is_map_row(line))
+		return (make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
+	return (make_parse_success_result());
 }
 
-t_dimensions calc_map_size(char **map)
-{	
-	t_dimensions size;
+static t_parse_result	append_map_line(char **map_in_one_line, char *line)
+{
+	char	*tmp;
 
-	size.width = 0;
-	size.height = 0;
-	int max_width;
-
-	if(!map)
-		return size;
-	while (map[size.height])
+	tmp = join_lines(*map_in_one_line, line);
+	if (!tmp)
 	{
-		max_width = row_len(map[size.height]);
-        if(max_width > size.width)
-            size.width = max_width;
-		size.height++;
+		*map_in_one_line = NULL;
+		return (make_parse_error_result(P_ERR_MALLOC, NULL));
 	}
-	return (size);
-}
-
-t_parse_result	validate_map(char **map, t_configuration *configuration, int height)
-{
-	if (!is_valid_map_rows(map))
-		return make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL);
-    if (!validate_player_pos(map, configuration))
-		return make_parse_error_result(P_ERR_PLAYER_COUNT, NULL);
-	return (is_map_closed(map, height, configuration->player_pos));
-}
-
-char	*join_lines(char *s1, char *s2)
-{
-	char	*joined_line;
-
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		joined_line = ft_strdup(s2);
-	else if (!s2)
-		joined_line = ft_strdup(s1);
-	else
-		joined_line = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (joined_line);
-}
-
-bool is_empty_map_line(char *line)
-{
-	char *str;
-
-	str = skip_spaces(line);
-	if(!str || *str == '\0' || *str == '\n')
-		return (true);
-	return (false);
+	*map_in_one_line = tmp;
+	return (make_parse_success_result());
 }
 
 t_parse_result	read_map(int fd, char **map_in_one_line)
 {
-	char	*line;
-	char	*tmp;
+	char			*line;
+	t_parse_result	res;
 
 	if (fd < 0 || !map_in_one_line)
 		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	line = get_next_line(fd);
 	while (line)
 	{
-		if(is_empty_map_line(line))
+		res = validate_map_line(line);
+		if (!res.ok)
 		{
 			free(line);
-			return(make_parse_error_result(P_ERR_MAP_EMPTY_LINE, NULL));
+			return (res);
 		}
-		if(!is_map_row(line))
-		{
-			free(line);
-			return(make_parse_error_result(P_ERR_INVALID_SYMBOLS, NULL));
-		}
-		tmp = join_lines(*map_in_one_line, line);
-		if (!tmp)
-		{
-			*map_in_one_line = NULL;
-			return (make_parse_error_result(P_ERR_MALLOC, NULL));
-		}
-		*map_in_one_line = tmp;
+		res = append_map_line(map_in_one_line, line);
+		if (!res.ok)
+			return (res);
 		line = get_next_line(fd);
 	}
 	return (make_parse_success_result());
 }
 
-t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map_line)
+static t_parse_result	read_map_in_one_line(int fd, char *first_map_line,
+		char **map_in_one_line)
+{
+	t_parse_result	result;
+
+	if (!map_in_one_line || !first_map_line)
+		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
+	*map_in_one_line = ft_strdup(first_map_line);
+	if (!*map_in_one_line)
+		return (make_parse_error_result(P_ERR_MALLOC, NULL));
+	result = read_map(fd, map_in_one_line);
+	if (!result.ok)
+	{
+		free(*map_in_one_line);
+		*map_in_one_line = NULL;
+		return (result);
+	}
+	return (make_parse_success_result());
+}
+
+t_parse_result	parse_map(int fd, t_configuration *configuration,
+		char *first_map_line)
 {
 	char			**map;
 	char			*map_in_one_line;
 	t_parse_result	result;
-	t_dimensions map_size;
+	t_dimensions	map_size;
 
-	if (!first_map_line)
-		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
-	map_in_one_line = ft_strdup(first_map_line);
-	if (!map_in_one_line)
-		return (make_parse_error_result(P_ERR_MALLOC, NULL));
-	result = read_map(fd, &map_in_one_line);
+	result = read_map_in_one_line(fd, first_map_line, &map_in_one_line);
 	if (!result.ok)
-	{
-		if(map_in_one_line)
-			free(map_in_one_line);
 		return (result);
-	}
 	map = ft_split(map_in_one_line, '\n');
 	free(map_in_one_line);
 	if (!map || !map[0])
@@ -123,14 +98,13 @@ t_parse_result	parse_map(int fd, t_configuration *configuration, char *first_map
 		return (make_parse_error_result(P_ERR_EMPTY_MAP, NULL));
 	}
 	map_size = calc_map_size(map);
-
 	result = validate_map(map, configuration, map_size.height);
 	if (!result.ok)
 	{
 		free_str_array(map);
 		return (result);
 	}
-    configuration->map = map;
+	configuration->map = map;
 	configuration->map_size = map_size;
 	return (make_parse_success_result());
 }

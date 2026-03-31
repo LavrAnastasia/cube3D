@@ -1,16 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_settings.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/27 15:39:38 by alavrukh          #+#    #+#             */
+/*   Updated: 2026/03/27 15:39:40 by alavrukh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing_internal.h"
 
-
-
-t_parse_result	read_config_until_map(
-	int fd,
-	t_configuration *configuration,
-	char **first_map_line,
-	t_config_state *st)
+t_parse_result	read_config_until_map(int fd, t_configuration *configuration,
+		char **first_map_line, t_config_state *st)
 {
 	char			*line;
 	t_parse_result	result;
-	t_parse_type type;
+	t_parse_type	type;
 
 	*first_map_line = NULL;
 	line = get_next_line(fd);
@@ -34,5 +41,3 @@ t_parse_result	read_config_until_map(
 	}
 	return (result);
 }
-
-
