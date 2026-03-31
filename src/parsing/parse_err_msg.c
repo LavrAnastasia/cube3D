@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_err_msg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alavrukh <alavrukh@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: timlive <timlive@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 15:37:46 by alavrukh          #+#    #+#             */
-/*   Updated: 2026/03/27 15:37:48 by alavrukh         ###   ########.fr       */
+/*   Updated: 2026/03/31 10:30:15 by timlive          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ const char	*err_parse_msg(int code)
 	[P_ERR_INVALID_CONFIG_LINE] = "Expected NO/SO/WE/EA/F/C or map row",
 	[P_ERR_MAP_NOT_CLOSED] = "Map is open to empty space or outside map bounds",
 	[P_ERR_EMPTY_MAP] = "Map section is missing or empty",
-	[P_ERR_MAP_EMPTY_LINE] = "Empty line inside map is not allowed"};
+	[P_ERR_MAP_EMPTY_LINE] = "Empty line in or after map is not allowed"};
 
 	size = sizeof(map) / sizeof(*map);
 	if (code < 0 || code >= size)
