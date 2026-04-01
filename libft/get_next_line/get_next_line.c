@@ -6,11 +6,13 @@
 /*   By: audobnai <audobnai@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:54:12 by audobnai          #+#    #+#             */
-/*   Updated: 2025/05/03 18:18:12 by audobnai         ###   ########.fr       */
+/*   Updated: 2026/04/01 22:45:54 by audobnai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strdup(const char *s);
 
 static void	ft_strcpy(char *dst, const char *str, size_t n)
 {
@@ -25,17 +27,11 @@ static void	ft_strcpy(char *dst, const char *str, size_t n)
 	dst[i] = '\0';
 }
 
-static char	*ft_strdup(const char *s)
+static char	*gnl_error(char *line, char *buf)
 {
-	char	*str;
-	size_t	len;
-
-	len = ft_strlen(s);
-	str = malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	ft_strcpy(str, s, 0);
-	return (str);
+	buf[0] = '\0';
+	free(line);
+	return (NULL);
 }
 
 static char	*ft_strjoin(const char *s1, const char *s2, size_t s2_n)
@@ -91,7 +87,7 @@ char	*get_next_line(int fd)
 	while (buf_size)
 	{
 		if (buf_size < 0)
-			return (NULL);
+			return (gnl_error(line, buf));
 		i = 0;
 		buf[buf_size] = '\0';
 		while (i < buf_size && buf[i] != '\n')
@@ -100,7 +96,7 @@ char	*get_next_line(int fd)
 			return (ft_merge_line_buf(line, buf, i + 1));
 		line = ft_merge_line_buf(line, buf, i);
 		if (!line)
-			return (NULL);
+			return (gnl_error(line, buf));
 		buf_size = read(fd, buf, BUFFER_SIZE);
 	}
 	return (line);
