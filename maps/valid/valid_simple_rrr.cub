@@ -1,14 +1,15 @@
 
-NO resources/gost/ea.xpm
-SO resources/gost/ea.xpm  
+WE resources/eye/wall_eye_scattered.xpm
+NO resources/eye/wall_eye_wallpaper.xpm
 
 
-F 0,255,255
-C 0,0,1
+
+F 122,13,18
+C 15,15,16
 
 
-EA resources/gost/ea.xpm
-WE resources/gost/ea.xpm
+SO resources/eye/wall_eye_sigil.xpm
+EA resources/eye/wall_rune_ring.xpm
 
 
 
